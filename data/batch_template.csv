@@ -1,0 +1,4 @@
+company,domain,signal_type,signal_date,signal_source,signal_summary
+Acme Corp,acme.com,funding,2026-03-15,Crunchbase,Raised $4M Seed led by a16z
+Example Inc,example.io,hiring,2026-04-01,LinkedIn,Posted for VP Sales and 2 AEs
+Demo SaaS,demo.com,gtm_struggle,2026-04-10,LinkedIn,CEO posted about pipeline challenges
