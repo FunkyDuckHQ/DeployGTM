@@ -1,0 +1,453 @@
+"""
+DeployGTM — HubSpot CRM Sync
+
+Pushes enriched accounts and contacts to HubSpot.
+ALWAYS requires explicit confirmation before writing to production CRM.
+
+Custom properties created by this script (run setup_properties() once):
+  Signal Source, Signal Type, Signal Date, Signal Summary,
+  ICP Fit Score, Signal Strength, Priority Score,
+  Pain Hypothesis, Enrichment Confidence, Outreach Angle
+
+HubSpot API v3: https://developers.hubspot.com/docs/api/crm/contacts
+
+Standalone:
+  python scripts/hubspot.py setup-properties
+  python scripts/hubspot.py push --pipeline-output output/acme_2024-03-15.json
+  python scripts/hubspot.py push --pipeline-output output/acme_2024-03-15.json --dry-run
+"""
+
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+from typing import Optional
+
+import click
+import requests
+import yaml
+from dotenv import load_dotenv
+
+load_dotenv()
+
+HS_BASE = "https://api.hubapi.com"
+
+
+def load_config(config_path: str = "config.yaml") -> dict:
+    with open(config_path) as f:
+        return yaml.safe_load(f)
+
+
+def _headers() -> dict:
+    token = os.environ.get("HUBSPOT_ACCESS_TOKEN", "")
+    if not token:
+        raise EnvironmentError(
+            "HUBSPOT_ACCESS_TOKEN is not set. Add it to your .env file.\n"
+            "Create a private app at: HubSpot → Settings → Integrations → Private Apps\n"
+            "Scopes: crm.objects.contacts.write, crm.objects.companies.write, "
+            "crm.schemas.contacts.write"
+        )
+    return {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
+
+
+# ─── Custom property definitions ─────────────────────────────────────────────
+
+CUSTOM_CONTACT_PROPERTIES = [
+    {
+        "name": "deploygtm_signal_source",
+        "label": "Signal Source",
+        "type": "string",
+        "fieldType": "text",
+        "groupName": "contactinformation",
+        "description": "Where the buying signal was detected (e.g. BirdDog, LinkedIn, Crunchbase)",
+    },
+    {
+        "name": "deploygtm_signal_type",
+        "label": "Signal Type",
+        "type": "enumeration",
+        "fieldType": "select",
+        "groupName": "contactinformation",
+        "description": "Type of buying signal",
+        "options": [
+            {"label": "Funding", "value": "funding", "displayOrder": 1},
+            {"label": "Hiring (Sales)", "value": "hiring", "displayOrder": 2},
+            {"label": "GTM Struggle Post", "value": "gtm_struggle", "displayOrder": 3},
+            {"label": "Agency Churn", "value": "agency_churn", "displayOrder": 4},
+            {"label": "Tool Adoption", "value": "tool_adoption", "displayOrder": 5},
+            {"label": "Manual / ICP Match", "value": "manual", "displayOrder": 6},
+        ],
+    },
+    {
+        "name": "deploygtm_signal_date",
+        "label": "Signal Date",
+        "type": "date",
+        "fieldType": "date",
+        "groupName": "contactinformation",
+        "description": "Date the buying signal was detected",
+    },
+    {
+        "name": "deploygtm_signal_summary",
+        "label": "Signal Summary",
+        "type": "string",
+        "fieldType": "textarea",
+        "groupName": "contactinformation",
+        "description": "Free-text description of the signal",
+    },
+    {
+        "name": "deploygtm_icp_fit_score",
+        "label": "ICP Fit Score",
+        "type": "number",
+        "fieldType": "number",
+        "groupName": "contactinformation",
+        "description": "ICP fit score 1–5 (5 = perfect fit)",
+    },
+    {
+        "name": "deploygtm_signal_strength",
+        "label": "Signal Strength",
+        "type": "number",
+        "fieldType": "number",
+        "groupName": "contactinformation",
+        "description": "Signal strength score 1–3 (3 = active signal < 30 days)",
+    },
+    {
+        "name": "deploygtm_priority_score",
+        "label": "Priority Score",
+        "type": "number",
+        "fieldType": "number",
+        "groupName": "contactinformation",
+        "description": "Priority = ICP Fit × Signal Strength (max 15). ≥12 = reach out immediately.",
+    },
+    {
+        "name": "deploygtm_pain_hypothesis",
+        "label": "Pain Hypothesis",
+        "type": "string",
+        "fieldType": "textarea",
+        "groupName": "contactinformation",
+        "description": "Claude-generated hypothesis about the contact's GTM pain",
+    },
+    {
+        "name": "deploygtm_enrichment_confidence",
+        "label": "Enrichment Confidence",
+        "type": "enumeration",
+        "fieldType": "select",
+        "groupName": "contactinformation",
+        "description": "Confidence level of research data",
+        "options": [
+            {"label": "High", "value": "high", "displayOrder": 1},
+            {"label": "Medium", "value": "medium", "displayOrder": 2},
+            {"label": "Low", "value": "low", "displayOrder": 3},
+        ],
+    },
+    {
+        "name": "deploygtm_outreach_angle",
+        "label": "Outreach Angle",
+        "type": "enumeration",
+        "fieldType": "select",
+        "groupName": "contactinformation",
+        "description": "Which messaging persona was used for outreach",
+        "options": [
+            {"label": "Founder-Seller", "value": "founder_seller", "displayOrder": 1},
+            {"label": "First Sales Leader", "value": "first_sales_leader", "displayOrder": 2},
+            {"label": "RevOps / Growth", "value": "revops_growth", "displayOrder": 3},
+        ],
+    },
+]
+
+
+def setup_properties(dry_run: bool = False) -> list[dict]:
+    """
+    Create all DeployGTM custom contact properties in HubSpot.
+    Safe to run multiple times — skips existing properties.
+    """
+    results = []
+    for prop in CUSTOM_CONTACT_PROPERTIES:
+        if dry_run:
+            click.echo(f"  [dry-run] Would create property: {prop['name']}")
+            results.append({"property": prop["name"], "status": "dry_run"})
+            continue
+
+        resp = requests.post(
+            f"{HS_BASE}/crm/v3/properties/contacts",
+            headers=_headers(),
+            json=prop,
+            timeout=15,
+        )
+
+        if resp.status_code == 409:
+            results.append({"property": prop["name"], "status": "already_exists"})
+            click.echo(f"  ✓ {prop['name']} (already exists)")
+        elif resp.status_code in (200, 201):
+            results.append({"property": prop["name"], "status": "created"})
+            click.echo(f"  + {prop['name']} (created)")
+        else:
+            results.append({"property": prop["name"], "status": "error", "detail": resp.text})
+            click.echo(f"  ✗ {prop['name']} — {resp.status_code}: {resp.text}", err=True)
+
+    return results
+
+
+# ─── Upsert helpers ───────────────────────────────────────────────────────────
+
+def upsert_company(company_data: dict, dry_run: bool = False) -> Optional[str]:
+    """
+    Create or update a company record. Returns the HubSpot company ID.
+    Matches by domain.
+    """
+    domain = company_data.get("domain", "")
+    if not domain:
+        return None
+
+    props = {
+        "name": company_data.get("name") or company_data.get("company", ""),
+        "domain": domain,
+        "numberofemployees": str(company_data.get("employee_count") or ""),
+        "industry": company_data.get("industry", ""),
+        "city": company_data.get("city", ""),
+        "state": company_data.get("state", ""),
+    }
+    props = {k: v for k, v in props.items() if v}
+
+    if dry_run:
+        click.echo(f"  [dry-run] Would upsert company: {props.get('name', domain)}")
+        return "dry_run_company_id"
+
+    resp = requests.post(
+        f"{HS_BASE}/crm/v3/objects/companies",
+        headers=_headers(),
+        json={"properties": props},
+        timeout=15,
+    )
+
+    if resp.status_code in (200, 201):
+        return resp.json()["id"]
+
+    # Try to find existing by domain
+    search = requests.post(
+        f"{HS_BASE}/crm/v3/objects/companies/search",
+        headers=_headers(),
+        json={
+            "filterGroups": [{"filters": [
+                {"propertyName": "domain", "operator": "EQ", "value": domain}
+            ]}],
+            "limit": 1,
+        },
+        timeout=15,
+    )
+    results = search.json().get("results", [])
+    if results:
+        company_id = results[0]["id"]
+        # Update existing
+        requests.patch(
+            f"{HS_BASE}/crm/v3/objects/companies/{company_id}",
+            headers=_headers(),
+            json={"properties": props},
+            timeout=15,
+        )
+        return company_id
+
+    click.echo(f"  ✗ Could not upsert company {domain}: {resp.status_code}", err=True)
+    return None
+
+
+def upsert_contact(
+    contact: dict,
+    score: dict,
+    outreach: Optional[dict],
+    signal: dict,
+    research: dict,
+    company_id: Optional[str],
+    dry_run: bool = False,
+) -> Optional[str]:
+    """
+    Create or update a contact record with all DeployGTM enrichment data.
+    Returns the HubSpot contact ID.
+    """
+    email = contact.get("email", "")
+    if not email:
+        click.echo(f"  ~ Skipping {contact.get('name', 'unknown')} — no email", err=True)
+        return None
+
+    props = {
+        "email": email,
+        "firstname": (contact.get("name", "") or "").split()[0] if contact.get("name") else "",
+        "lastname": " ".join((contact.get("name", "") or "").split()[1:]) if contact.get("name") else "",
+        "jobtitle": contact.get("title", ""),
+        "hs_linkedin_bio": contact.get("linkedin_url", ""),
+        "phone": contact.get("phone", ""),
+        # DeployGTM custom properties
+        "deploygtm_signal_type": signal.get("type", ""),
+        "deploygtm_signal_source": signal.get("source", "manual"),
+        "deploygtm_signal_summary": signal.get("summary", ""),
+        "deploygtm_icp_fit_score": str(score.get("icp_fit", "")),
+        "deploygtm_signal_strength": str(score.get("signal_strength", "")),
+        "deploygtm_priority_score": str(score.get("priority", "")),
+        "deploygtm_pain_hypothesis": research.get("pain_hypothesis", ""),
+        "deploygtm_enrichment_confidence": research.get("confidence", "low"),
+    }
+
+    if outreach:
+        props["deploygtm_outreach_angle"] = outreach.get("persona", "")
+
+    if signal.get("date"):
+        # HubSpot date fields expect Unix ms timestamp at midnight UTC
+        from datetime import datetime
+        try:
+            dt = datetime.strptime(signal["date"], "%Y-%m-%d")
+            props["deploygtm_signal_date"] = str(int(dt.timestamp() * 1000))
+        except ValueError:
+            pass
+
+    props = {k: v for k, v in props.items() if v}
+
+    if dry_run:
+        click.echo(f"  [dry-run] Would upsert contact: {email}")
+        return "dry_run_contact_id"
+
+    resp = requests.post(
+        f"{HS_BASE}/crm/v3/objects/contacts",
+        headers=_headers(),
+        json={"properties": props},
+        timeout=15,
+    )
+
+    if resp.status_code in (200, 201):
+        contact_id = resp.json()["id"]
+    elif resp.status_code == 409:
+        # Contact exists — find and update
+        existing = requests.post(
+            f"{HS_BASE}/crm/v3/objects/contacts/search",
+            headers=_headers(),
+            json={
+                "filterGroups": [{"filters": [
+                    {"propertyName": "email", "operator": "EQ", "value": email}
+                ]}],
+                "limit": 1,
+            },
+            timeout=15,
+        )
+        results = existing.json().get("results", [])
+        if not results:
+            return None
+        contact_id = results[0]["id"]
+        requests.patch(
+            f"{HS_BASE}/crm/v3/objects/contacts/{contact_id}",
+            headers=_headers(),
+            json={"properties": props},
+            timeout=15,
+        )
+    else:
+        click.echo(f"  ✗ Could not upsert {email}: {resp.status_code} {resp.text}", err=True)
+        return None
+
+    # Associate contact → company
+    if company_id and company_id != "dry_run_company_id":
+        requests.put(
+            f"{HS_BASE}/crm/v3/objects/contacts/{contact_id}"
+            f"/associations/companies/{company_id}/contact_to_company",
+            headers=_headers(),
+            timeout=15,
+        )
+
+    return contact_id
+
+
+# ─── Main push function ───────────────────────────────────────────────────────
+
+def push_pipeline_output(pipeline_output: dict, dry_run: bool = False) -> dict:
+    """
+    Push a complete pipeline.py output record to HubSpot.
+
+    pipeline_output structure (from pipeline.py):
+      company, contacts, research, score, outreach, signal
+    """
+    results = {"company_id": None, "contact_ids": [], "errors": []}
+
+    company_data = pipeline_output.get("company") or pipeline_output.get("research", {})
+    signal = pipeline_output.get("signal", {})
+    score = pipeline_output.get("score", {})
+    research = pipeline_output.get("research", {})
+    contacts = pipeline_output.get("contacts", [])
+    outreach_map = pipeline_output.get("outreach", {})
+
+    # 1. Upsert company
+    company_id = upsert_company(company_data, dry_run=dry_run)
+    results["company_id"] = company_id
+    if company_id:
+        click.echo(f"  Company → {company_id}")
+
+    # 2. Upsert each contact
+    for contact in contacts:
+        email = contact.get("email", "")
+        contact_outreach = outreach_map.get(email)
+
+        contact_id = upsert_contact(
+            contact=contact,
+            score=score,
+            outreach=contact_outreach,
+            signal=signal,
+            research=research,
+            company_id=company_id,
+            dry_run=dry_run,
+        )
+
+        if contact_id:
+            results["contact_ids"].append(contact_id)
+            name = contact.get("name", email)
+            click.echo(f"  Contact → {name} ({contact_id})")
+
+    return results
+
+
+# ─── CLI ──────────────────────────────────────────────────────────────────────
+
+@click.group()
+def cli():
+    """HubSpot CRM sync for DeployGTM."""
+    pass
+
+
+@cli.command("setup-properties")
+@click.option("--dry-run", is_flag=True, help="Preview without writing")
+def cmd_setup(dry_run):
+    """Create all DeployGTM custom contact properties in HubSpot (run once)."""
+    if not dry_run:
+        click.echo("\n⚠️  This will create custom properties in your HubSpot account.")
+        click.confirm("Continue?", abort=True)
+
+    click.echo("\nCreating custom properties...")
+    setup_properties(dry_run=dry_run)
+    click.echo("\nDone. Run this command once per HubSpot account.")
+
+
+@cli.command("push")
+@click.option("--pipeline-output", "-f", required=True,
+              help="Path to JSON file from pipeline.py")
+@click.option("--dry-run", is_flag=True,
+              help="Preview what would be pushed without writing to HubSpot")
+@click.option("--config", "config_path", default="config.yaml")
+def cmd_push(pipeline_output, dry_run, config_path):
+    """Push a pipeline.py output file to HubSpot."""
+    config = load_config(config_path)
+
+    if config.get("tools", {}).get("hubspot", {}).get("require_confirmation") and not dry_run:
+        click.echo(f"\nAbout to push to HubSpot CRM: {pipeline_output}")
+        click.confirm("Confirm push to production CRM?", abort=True)
+
+    data = json.loads(Path(pipeline_output).read_text())
+    click.echo(f"\nPushing {pipeline_output}...")
+
+    results = push_pipeline_output(data, dry_run=dry_run)
+
+    click.echo(f"\n{'[DRY RUN] ' if dry_run else ''}Push complete.")
+    click.echo(f"  Company ID:   {results['company_id']}")
+    click.echo(f"  Contact IDs:  {results['contact_ids']}")
+    if results["errors"]:
+        click.echo(f"  Errors:       {results['errors']}", err=True)
+
+
+if __name__ == "__main__":
+    cli()

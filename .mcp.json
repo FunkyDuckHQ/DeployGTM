@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "Fetch web pages for account research (LinkedIn, Crunchbase, company sites)"
+    },
+    "google-drive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-drive"],
+      "env": {
+        "GDRIVE_CREDENTIALS_FILE": "${GDRIVE_CREDENTIALS_FILE}",
+        "GDRIVE_INTAKE_FOLDER_ID": "${GDRIVE_INTAKE_FOLDER_ID}"
+      },
+      "description": "Read voice memo transcripts and raw intake files from Google Drive Transcript Inbox"
+    }
+  }
+}
