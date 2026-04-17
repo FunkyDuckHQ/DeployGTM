@@ -68,7 +68,7 @@ report:  ## Generate weekly signal report from output/
 report-hs:  ## Weekly report with live HubSpot stage data
 	python scripts/report.py generate --include-hubspot
 
-# ─── BirdDog ──────────────────────────────────────────────────────────────────
+# ─── Signals & BirdDog ────────────────────────────────────────────────────────
 
 signals:  ## Find signals from Apollo (hiring + funded) → signals_intake.csv
 	python scripts/signals.py all --output data/signals_intake.csv

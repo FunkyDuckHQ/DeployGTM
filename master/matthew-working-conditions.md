@@ -29,10 +29,10 @@ PLACEHOLDER — fill this in.
 
 ## Projects in flight
 *Quick status on active work. Update this when context shifts.*
-- deploygtm-own: Week 1 — building the system, targeting YC W26 + recent Seed/A raises
-- peregrine-space: Needs proof-point artifact for Tyler
-- mindra: 30/60/90 needs final polish
-- fibinaci: Waiting on NDA + demo before deciding on advisory
-- sybill: Active interview process — next conversation prep
-- rex: Intro call — light discovery
-- terzo: Needs scheduling note to Brodie
+- deploygtm-own: Week 1 — system is built; next action is populating yc_w26_targets.csv (see yc_research_guide.md) + running `make signals && make batch`
+- peregrine-space: Proof-point artifact built + send message drafted (follow_up_message.md) — READY TO SEND to Tyler; no open loops except waiting on his reply
+- mindra: 30/60/90 plan built (30_60_90.md) — ready to present to Deniz
+- fibinaci: Response posture built (response_posture.md) — send the warm follow-up asking for NDA + demo; don't start work until economics are clear
+- sybill: Prep questions built (prep_questions.md) — show up curious, reference prior product use
+- rex: Prep notes built (prep_notes.md) — light discovery, 30-45 min, just detect signal
+- terzo: Scheduling note drafted (scheduling_note.md) — send when Brodie context is clear
