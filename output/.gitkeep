@@ -1,0 +1,3 @@
+# Pipeline output directory
+# JSON, CSV, and MD files here are gitignored (may contain enriched prospect data).
+# The directory itself is tracked via this file.

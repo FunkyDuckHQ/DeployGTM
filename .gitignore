@@ -24,8 +24,12 @@ projects/*/client-data/
 .vscode/
 .idea/
 
-# Pipeline output (may contain enriched prospect data)
-output/
+# Pipeline output files (may contain enriched prospect data — never commit)
+output/*.json
+output/*.csv
+output/*.md
+# Keep the directory itself in the repo
+!output/.gitkeep
 
 # Python virtualenv alternatives
 .venv/

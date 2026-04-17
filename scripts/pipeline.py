@@ -328,5 +328,28 @@ def setup_hubspot(dry_run):
     setup_properties(dry_run=dry_run)
 
 
+# ─── new-client ───────────────────────────────────────────────────────────────
+
+@cli.command("new-client")
+@click.option("--client", "-c", required=True,
+              help="Client slug (lowercase, hyphens, e.g. acme-corp)")
+@click.option("--domain", "-d", required=True, help="Client domain (e.g. acme.com)")
+def new_client(client, domain):
+    """
+    Create a new client project + brain stubs. Shortcut for signal_audit.py new.
+
+    Sets up:
+      projects/<client>/context.md, handoff.md, open-loops.md, targets.csv
+      brain/clients/<client>/icp.md, personas.md, messaging.md
+    """
+    import subprocess
+    result = subprocess.run([
+        sys.executable, "scripts/signal_audit.py", "new",
+        "--client", client,
+        "--domain", domain,
+    ], check=False)
+    sys.exit(result.returncode)
+
+
 if __name__ == "__main__":
     cli()
