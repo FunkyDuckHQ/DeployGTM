@@ -449,5 +449,149 @@ def cmd_push(pipeline_output, dry_run, config_path):
         click.echo(f"  Errors:       {results['errors']}", err=True)
 
 
+# ─── Sequence enrollment ──────────────────────────────────────────────────────
+
+def enroll_in_sequence(
+    contact_id: str,
+    sequence_id: str,
+    from_email: str,
+    dry_run: bool = False,
+) -> dict:
+    """
+    Enroll a contact in a HubSpot sequence.
+
+    Requires Sales Hub Starter or above.
+    sequence_id: found in HubSpot → Sequences → [sequence] → URL
+    from_email:  the sender email address (must be connected to HubSpot)
+    """
+    if dry_run:
+        return {"status": "dry_run", "contact_id": contact_id, "sequence_id": sequence_id}
+
+    resp = requests.post(
+        f"{HS_BASE}/automation/v4/sequences/enrollments",
+        headers=_headers(),
+        json={
+            "sequenceId": int(sequence_id),
+            "contactId": int(contact_id),
+            "fromUserId": None,       # HubSpot resolves from fromEmail
+            "fromEmail": from_email,
+            "startingStepNumber": 1,
+        },
+        timeout=15,
+    )
+
+    if resp.status_code in (200, 201):
+        return {"status": "enrolled", "contact_id": contact_id, "data": resp.json()}
+    elif resp.status_code == 409:
+        return {"status": "already_enrolled", "contact_id": contact_id}
+    else:
+        return {"status": "error", "contact_id": contact_id,
+                "code": resp.status_code, "detail": resp.text}
+
+
+def enroll_contacts_from_output(
+    pipeline_output: dict,
+    persona_sequence_map: dict[str, str],
+    from_email: str,
+    contact_ids: list[str],
+    dry_run: bool = False,
+) -> list[dict]:
+    """
+    Enroll contacts from a pipeline output into persona-matched HubSpot sequences.
+
+    persona_sequence_map: {persona_slug: hubspot_sequence_id}
+      e.g. {"founder_seller": "123456", "first_sales_leader": "123457"}
+    """
+    outreach_map = pipeline_output.get("outreach", {})
+    contacts = pipeline_output.get("contacts", [])
+    results = []
+
+    for contact, contact_id in zip(contacts, contact_ids):
+        email = contact.get("email", "")
+        outreach = outreach_map.get(email, {})
+        persona = outreach.get("persona", "founder_seller")
+        sequence_id = persona_sequence_map.get(persona)
+
+        if not sequence_id:
+            results.append({"status": "no_sequence_configured", "email": email, "persona": persona})
+            continue
+
+        result = enroll_in_sequence(contact_id, sequence_id, from_email, dry_run=dry_run)
+        result["email"] = email
+        result["persona"] = persona
+        results.append(result)
+
+    return results
+
+
+@cli.command("enroll")
+@click.option("--pipeline-output", "-f", required=True,
+              help="Path to pipeline.py JSON output file")
+@click.option("--from-email", required=True,
+              help="Sender email address (must be connected in HubSpot)")
+@click.option("--dry-run", is_flag=True)
+@click.option("--config", "config_path", default="config.yaml")
+def cmd_enroll(pipeline_output, from_email, dry_run, config_path):
+    """
+    Enroll contacts from a pipeline output into HubSpot sequences.
+
+    Sequences are mapped by persona in config.yaml:
+      tools.hubspot.sequences.founder_seller: "SEQUENCE_ID"
+      tools.hubspot.sequences.first_sales_leader: "SEQUENCE_ID"
+      tools.hubspot.sequences.revops_growth: "SEQUENCE_ID"
+
+    Get sequence IDs from HubSpot → Sales → Sequences → [sequence] → URL bar.
+    Requires Sales Hub Starter or above.
+    """
+    config = load_config(config_path)
+    sequences = config.get("tools", {}).get("hubspot", {}).get("sequences", {})
+
+    if not sequences:
+        click.echo(
+            "\nNo sequences configured. Add to config.yaml:\n\n"
+            "  tools:\n"
+            "    hubspot:\n"
+            "      sequences:\n"
+            "        founder_seller: \"123456\"\n"
+            "        first_sales_leader: \"123457\"\n"
+            "        revops_growth: \"123458\"\n\n"
+            "Find sequence IDs in HubSpot → Sales → Sequences → open sequence → URL.",
+            err=True,
+        )
+        return
+
+    if not dry_run:
+        click.echo(f"\nAbout to enroll contacts into HubSpot sequences from {from_email}")
+        click.confirm("Confirm?", abort=True)
+
+    data = json.loads(Path(pipeline_output).read_text())
+
+    # First push to get contact IDs (or they may already be pushed)
+    click.echo("\nPushing contacts to CRM first...")
+    push_results = push_pipeline_output(data, dry_run=dry_run)
+    contact_ids = push_results.get("contact_ids", [])
+
+    if not contact_ids:
+        click.echo("No contact IDs returned from push. Cannot enroll.", err=True)
+        return
+
+    click.echo(f"\nEnrolling {len(contact_ids)} contacts into sequences...")
+    enroll_results = enroll_contacts_from_output(
+        pipeline_output=data,
+        persona_sequence_map=sequences,
+        from_email=from_email,
+        contact_ids=contact_ids,
+        dry_run=dry_run,
+    )
+
+    for r in enroll_results:
+        status = r.get("status", "?")
+        email = r.get("email", "?")
+        persona = r.get("persona", "?")
+        seq = sequences.get(persona, "—")
+        icon = "✓" if status == "enrolled" else ("~" if status in ("already_enrolled", "dry_run") else "✗")
+        click.echo(f"  {icon} {email} [{persona}] → sequence {seq} ({status})")
+
+
 if __name__ == "__main__":
     cli()

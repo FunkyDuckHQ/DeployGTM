@@ -1,6 +1,6 @@
 # DeployGTM Own Outbound — Project Context
 
-## Status: Week 1 — Building the system
+## Status: Week 1 — System built, ready to run
 
 ## Objective
 Build the full pipeline engine for DeployGTM's own outbound. This serves three purposes:
@@ -41,7 +41,31 @@ Lead with: "You just raised. You need pipeline. You probably don't have the infr
 - 2+ Signal Audits sold within 30 days
 - Full system documented as case study
 
+## System status (as of 2026-04-17)
+
+**Built and ready:**
+- Pipeline scripts: research, score, Apollo enrichment, outreach generation, HubSpot sync
+- Batch runner: process 50 accounts from CSV in one command
+- Signal detection: Apollo hiring + funding search (scripts/signals.py)
+- Export: HubSpot import CSVs from output/ files
+- Sequence enrollment: auto-enroll contacts into HubSpot sequences by persona
+- Brain: ICP, personas, messaging, objections, product docs fully populated
+- BirdDog: integration built, activate when API key is set
+- Report: weekly signal report generator
+
+**Immediate next actions:**
+1. Run `python scripts/signals.py all --output data/signals_intake.csv` to find first 50 accounts
+2. For YC W26: manually pull from ycombinator.com/companies?batch=W26, add to data/yc_w26_targets.csv
+3. Run `python scripts/batch.py run --input data/signals_intake.csv`
+4. Review output/, push priority accounts to HubSpot
+5. Set HUBSPOT_ACCESS_TOKEN in .env and run `make setup-hubspot`
+6. Configure HubSpot sequences, add IDs to config.yaml
+7. Run `make push-hubspot` for all priority accounts (≥8 priority score)
+8. Send outreach
+
+**Time to first outreach from a standing start:** ~2 hours with API keys set.
+
 ## Tracking
 | Date | Action | Result | Learning |
 |------|--------|--------|----------|
-| | | | |
+| 2026-04-17 | Built full pipeline system | All scripts live on GitHub | System is complete — bottleneck is now API keys + account list |

@@ -50,6 +50,18 @@ report-hs:  ## Weekly report with live HubSpot stage data
 
 # ─── BirdDog ──────────────────────────────────────────────────────────────────
 
+signals:  ## Find signals from Apollo (hiring + funded) → signals_intake.csv
+	python scripts/signals.py all --output data/signals_intake.csv
+
+signals-hiring:  ## Find companies posting sales roles via Apollo
+	python scripts/signals.py apollo-hiring --output data/signals_intake.csv
+
+signals-funded:  ## Find recently funded B2B SaaS companies via Apollo
+	python scripts/signals.py apollo-funded --output data/signals_intake.csv
+
+signals-yc:  ## Fetch YC W26 companies from public YC directory
+	python scripts/signals.py yc-batch --batch W26 --output data/yc_w26_targets.csv
+
 birddog-status:  ## Check BirdDog connection and monitored account count
 	python scripts/birddog.py status
 

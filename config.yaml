@@ -34,6 +34,15 @@ tools:
     require_confirmation: true
     # Set to true to use HubSpot sandbox environment.
     sandbox: false
+    # Sequence IDs for automatic enrollment after CRM push.
+    # Find IDs in HubSpot → Sales → Sequences → open sequence → URL bar.
+    # Requires Sales Hub Starter or above.
+    sequences:
+      founder_seller: ""        # CEO/Founder/Co-Founder persona sequence ID
+      first_sales_leader: ""    # VP Sales/Head of Sales persona sequence ID
+      revops_growth: ""         # RevOps/Growth persona sequence ID
+    # Sender email for sequence enrollment (must be connected in HubSpot)
+    from_email: ""
 
 # Brain (local Octave replacement) — always available as fallback
 brain:
