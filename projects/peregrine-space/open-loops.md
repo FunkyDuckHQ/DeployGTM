@@ -10,8 +10,8 @@
 
 ## Need to build
 - ~~One polished client-facing artifact~~ → built at projects/peregrine-space/deliverable/gtm_os_proof_point.md
-- Follow-up message to Tyler when sending the artifact
-- Pricing decision: Signal Audit ($3,500) vs. jump straight to retainer?
+- ~~Follow-up message to Tyler when sending the artifact~~ → drafted at projects/peregrine-space/follow_up_message.md
+- ~~Pricing decision~~ → Recommendation: skip Signal Audit, go straight to retainer ($7,500/mo) with Signal Audit as on-ramp if needed
 
 ## Blocked by
 - Nothing material; main issue is packaging and sending

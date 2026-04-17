@@ -23,6 +23,12 @@ setup: install env  ## Full setup: install deps + create .env
 run-one:  ## Run pipeline on one account (prompts for input)
 	@echo "Usage: python scripts/pipeline.py run --company NAME --domain DOMAIN --signal TYPE --signal-date YYYY-MM-DD"
 
+qualify:  ## Quick ICP qualifier for inbound leads (set COMPANY=name DOMAIN=domain.com)
+	python scripts/qualify.py run --company "$(COMPANY)" --domain $(DOMAIN)
+
+qualify-context:  ## Qualify with context (set COMPANY DOMAIN CONTEXT="reply text...")
+	python scripts/qualify.py run --company "$(COMPANY)" --domain $(DOMAIN) --context "$(CONTEXT)"
+
 batch:  ## Run batch pipeline on data/signals_intake.csv
 	python scripts/batch.py run --input data/signals_intake.csv
 
