@@ -30,6 +30,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 APOLLO_BASE = "https://api.apollo.io/v1"
+_MAX_RETRIES = 4
+_RETRY_BACKOFF = [2, 4, 8, 16]  # seconds
 
 
 def load_config(config_path: str = "config.yaml") -> dict:
@@ -51,6 +53,42 @@ def _apollo_key() -> str:
             "APOLLO_API_KEY is not set. Add it to your .env file."
         )
     return key
+
+
+def _apollo_post(endpoint: str, payload: dict, timeout: int = 15) -> dict:
+    """
+    POST to Apollo API with retry logic for 429 and 5xx responses.
+    Raises requests.RequestException on unrecoverable failure.
+    """
+    url = f"{APOLLO_BASE}/{endpoint}"
+    for attempt, wait in enumerate([0] + _RETRY_BACKOFF, start=1):
+        if wait:
+            click.echo(f"  [apollo] Waiting {wait}s before retry (attempt {attempt}/{_MAX_RETRIES + 1})...", err=True)
+            time.sleep(wait)
+        try:
+            resp = requests.post(url, json=payload, headers=_apollo_headers(), timeout=timeout)
+        except requests.RequestException as e:
+            if attempt > _MAX_RETRIES:
+                raise
+            click.echo(f"  [apollo] Network error: {e}", err=True)
+            continue
+
+        if resp.status_code == 429:
+            retry_after = int(resp.headers.get("Retry-After", wait or 5))
+            click.echo(f"  [apollo] Rate limited (429). Waiting {retry_after}s...", err=True)
+            time.sleep(retry_after)
+            continue
+
+        if resp.status_code >= 500:
+            if attempt > _MAX_RETRIES:
+                resp.raise_for_status()
+            click.echo(f"  [apollo] Server error ({resp.status_code}). Will retry.", err=True)
+            continue
+
+        resp.raise_for_status()
+        return resp.json()
+
+    raise requests.RequestException(f"Apollo API failed after {_MAX_RETRIES + 1} attempts")
 
 
 def find_contacts(
@@ -93,17 +131,9 @@ def find_contacts(
         }
 
         try:
-            resp = requests.post(
-                f"{APOLLO_BASE}/mixed_people/search",
-                json=payload,
-                headers=_apollo_headers(),
-                timeout=15,
-            )
-            resp.raise_for_status()
-            data = resp.json()
+            data = _apollo_post("mixed_people/search", payload)
         except requests.RequestException as e:
             click.echo(f"  [apollo] Error searching for '{title}' at {domain}: {e}", err=True)
-            time.sleep(1)
             continue
 
         people = data.get("people") or data.get("contacts") or []
@@ -161,14 +191,7 @@ def enrich_company(domain: str) -> dict:
     }
 
     try:
-        resp = requests.post(
-            f"{APOLLO_BASE}/organizations/enrich",
-            json=payload,
-            headers=_apollo_headers(),
-            timeout=15,
-        )
-        resp.raise_for_status()
-        data = resp.json()
+        data = _apollo_post("organizations/enrich", payload)
     except requests.RequestException as e:
         return {"error": str(e), "source": "apollo", "domain": domain}
 

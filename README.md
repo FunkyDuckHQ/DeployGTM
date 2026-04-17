@@ -109,6 +109,8 @@ DeployGTM/
 │   ├── outreach.py               Claude outreach generation (persona-aware)
 │   ├── follow_up.py              Follow-up cadence: due/generate/log/respond/create-tasks
 │   ├── qualify.py                Inbound qualifier for replies and bookings
+│   ├── crm_audit.py              Data quality scanner — run before every HubSpot push
+│   ├── sequence_builder.py       Generate HubSpot sequence step templates from brain/
 │   ├── hubspot.py                HubSpot CRM sync, custom properties, sequence enrollment
 │   ├── export.py                 Export output/ JSON → HubSpot import CSVs
 │   ├── birddog.py                BirdDog signal monitoring integration
@@ -131,7 +133,7 @@ DeployGTM/
 │   └── playbooks/
 │       ├── enrichment.md         Signal → Research → Enrich → Score → Activate
 │       ├── signal-audit.md       $3,500 / 2-week engagement playbook
-│       ├── outreach-ops.md       Full outreach loop: signal to close
+│       ├── outreach-ops.md       Full outreach loop: signal to close (incl. audit gate)
 │       └── hubspot-setup.md      One-time HubSpot configuration guide
 │
 └── projects/
