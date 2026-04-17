@@ -21,6 +21,9 @@ generate-sequences:  ## Generate HubSpot sequence step templates → master/hubs
 setup: install env  ## Full setup: install deps + create .env
 	@echo "\nSetup complete. Fill in .env, then run: make run-one"
 
+ui:  ## Launch pipeline dashboard in browser (streamlit)
+	streamlit run ui/app.py
+
 # ─── Daily Ops ────────────────────────────────────────────────────────────────
 
 daily:  ## Morning briefing — follow-ups due, project status, pipeline activity
