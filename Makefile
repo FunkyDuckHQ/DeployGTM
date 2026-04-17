@@ -94,6 +94,9 @@ followup-status:  ## Show follow-up status for one account (set FILE=output/x.js
 followup-tasks:  ## Create HubSpot tasks for all due follow-ups
 	python scripts/follow_up.py create-tasks
 
+followup-respond:  ## Generate response to a prospect reply (set FILE EMAIL REPLY="they said...")
+	python scripts/follow_up.py respond --file $(FILE) --email $(EMAIL) --reply-summary "$(REPLY)" --save
+
 # ─── Transcripts ──────────────────────────────────────────────────────────────
 
 transcript:  ## Process a voice memo transcript (set FILE=path/to/file.txt)

@@ -545,5 +545,141 @@ def create_tasks(output_dir: str, dry_run: bool):
         click.echo(f"\n  {tasks_created} task(s) created in HubSpot.")
 
 
+@cli.command()
+@click.option("--file", "file_path", required=True, type=click.Path(exists=True),
+              help="Pipeline output JSON file.")
+@click.option("--email", required=True, help="Contact email address.")
+@click.option("--reply-summary", required=True,
+              help="Summary of what they replied. Quote the key parts.")
+@click.option("--brain", "brain_path", default="brain", show_default=True)
+@click.option("--save", is_flag=True, default=False,
+              help="Save generated response to the output file and update status to replied.")
+def respond(file_path: str, email: str, reply_summary: str, brain_path: str, save: bool):
+    """Generate a suggested response to a prospect reply."""
+    fpath = Path(file_path)
+    data = load_output_file(fpath)
+
+    if email not in data.get("outreach", {}):
+        click.echo(f"Error: No outreach found for {email}.", err=True)
+        raise SystemExit(1)
+
+    original_outreach = data["outreach"][email]
+    original_primary = original_outreach.get("primary", {})
+    research = data.get("research", {})
+    company = data.get("company", "")
+    signal = data.get("signal", {})
+
+    contact = next(
+        (c for c in data.get("contacts", []) if c.get("email") == email),
+        {},
+    )
+    contact_name = contact.get("name", "")
+    contact_title = contact.get("title", "")
+    persona = original_outreach.get("persona", "founder_seller")
+
+    brain_context = load_brain(brain_path)
+    api_client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+    sent_followups = []
+    log_entry = data.get("follow_up_log", {}).get(email, {})
+    generated = data.get("generated_followups", {}).get(email, {})
+    for t in [1, 2, 3]:
+        if log_entry.get(f"followup_{t}_sent"):
+            fu = generated.get(f"followup_{t}", {})
+            if fu.get("body"):
+                sent_followups.append(f"Follow-up #{t}: {fu['body']}")
+
+    followups_context = "\n\n".join(sent_followups) if sent_followups else "No follow-ups sent yet."
+
+    system_prompt = f"""You are the DeployGTM response writer. A prospect has replied to outreach and you need to write the next message to advance the conversation toward a call or a close.
+
+{brain_context}
+
+Rules:
+- The goal is to book a call or get a clear next step
+- Match their energy — if they're brief, be brief; if they're engaged, be warmer
+- Don't over-sell; they replied, which means there's interest — don't blow it with a wall of text
+- Under 80 words unless they asked a specific question that requires a real answer
+- No AI language, no filler
+- If they objected, address it using the objection framework
+- If they asked about pricing, answer directly: Signal Audit $3,500 / 2 weeks; Retainer $7,500/month
+"""
+
+    user_prompt = f"""A prospect replied to our outreach. Write the ideal response.
+
+PROSPECT:
+- Company: {company}
+- Contact: {contact_name} ({contact_title})
+- Persona: {persona}
+- Pain hypothesis: {research.get('pain_hypothesis', '')}
+- Signal: {signal.get('type', '')} on {signal.get('date', '')}
+
+ORIGINAL MESSAGE WE SENT:
+Subject: {original_primary.get('subject', '')}
+Body: {original_primary.get('body', '')}
+
+FOLLOW-UPS SENT:
+{followups_context}
+
+THEIR REPLY (summary):
+{reply_summary}
+
+Return JSON only:
+{{
+  "subject": "Re: [original subject]",
+  "body": "the response body",
+  "next_step": "what we want to happen after this message",
+  "notes": "brief note on the angle and why"
+}}"""
+
+    response = api_client.messages.create(
+        model=MODEL,
+        max_tokens=600,
+        system=[
+            {
+                "type": "text",
+                "text": system_prompt,
+                "cache_control": {"type": "ephemeral"},
+            }
+        ],
+        messages=[{"role": "user", "content": user_prompt}],
+    )
+
+    raw = response.content[0].text.strip()
+    if raw.startswith("```"):
+        raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+
+    msg = json.loads(raw)
+
+    click.echo(f"\n{'─'*60}")
+    click.echo(f"  Suggested Response to {contact_name} ({company})")
+    click.echo(f"{'─'*60}")
+    click.echo(f"\nSubject: {msg.get('subject', '')}")
+    click.echo(f"\n{msg.get('body', '')}")
+    click.echo(f"\nNext step: {msg.get('next_step', '')}")
+    if msg.get("notes"):
+        click.echo(f"[Note: {msg['notes']}]")
+
+    if save:
+        follow_up_log = get_follow_up_log(data)
+        entry = init_contact_log(follow_up_log, email, data.get("meta", {}).get("run_date"))
+        entry["status"] = "replied"
+        today = date.today().isoformat()
+        existing_notes = entry.get("notes", "")
+        entry["notes"] = f"{existing_notes}\n{today}: replied — {reply_summary}".strip()
+
+        replies = data.setdefault("reply_log", {})
+        replies.setdefault(email, []).append({
+            "date": today,
+            "summary": reply_summary,
+            "suggested_response": msg,
+        })
+
+        save_output_file(fpath, data)
+        click.echo(f"\n  Status set to 'replied'. Saved to {file_path}")
+    else:
+        click.echo(f"\n  (Use --save to log the reply and update status)")
+
+
 if __name__ == "__main__":
     cli()
