@@ -71,6 +71,23 @@ birddog-pull:  ## Pull signals from BirdDog (last 7 days)
 birddog-run:  ## Pull BirdDog signals and run pipeline on them
 	python scripts/birddog.py pull-signals --run-pipeline
 
+# ─── Follow-Up Cadence ────────────────────────────────────────────────────────
+
+followup-due:  ## List all contacts with follow-up touches due
+	python scripts/follow_up.py due
+
+followup-generate:  ## Generate follow-up message (set FILE=output/x.json EMAIL=e TOUCH=1)
+	python scripts/follow_up.py generate --file $(FILE) --email $(EMAIL) --touch $(TOUCH) --save
+
+followup-log:  ## Log a follow-up as sent (set FILE EMAIL TOUCH, optional DATE STATUS)
+	python scripts/follow_up.py log --file $(FILE) --email $(EMAIL) --touch $(TOUCH)
+
+followup-status:  ## Show follow-up status for one account (set FILE=output/x.json)
+	python scripts/follow_up.py status --file $(FILE)
+
+followup-tasks:  ## Create HubSpot tasks for all due follow-ups
+	python scripts/follow_up.py create-tasks
+
 # ─── Transcripts ──────────────────────────────────────────────────────────────
 
 transcript:  ## Process a voice memo transcript (set FILE=path/to/file.txt)
