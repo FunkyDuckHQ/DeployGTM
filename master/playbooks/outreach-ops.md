@@ -57,6 +57,20 @@ If any of these fail → regenerate or edit manually before sending.
 
 ---
 
+## Step 2.5: Audit before sending
+
+Run before any push to catch data quality problems:
+```bash
+make audit
+```
+Fix any errors before proceeding. Warnings can be accepted with context.
+
+```bash
+make audit-summary     # high-level view across all accounts
+```
+
+---
+
 ## Step 3: Send via HubSpot or manual
 
 **Option A (HubSpot sequence enrollment — preferred):**

@@ -15,6 +15,9 @@ env:  ## Copy .env.example to .env (won't overwrite existing)
 setup-hubspot:  ## Create DeployGTM custom properties in HubSpot (run once)
 	python scripts/pipeline.py setup-hubspot
 
+generate-sequences:  ## Generate HubSpot sequence step templates → master/hubspot_sequences.md
+	python scripts/sequence_builder.py generate
+
 setup: install env  ## Full setup: install deps + create .env
 	@echo "\nSetup complete. Fill in .env, then run: make run-one"
 
