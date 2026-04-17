@@ -1,7 +1,8 @@
-# API keys and secrets
+# API keys and secrets — never commit real values
 .env
-*.env
-.env.*
+.env.local
+.env.*.local
+# Note: .env.example IS tracked (it's a template with no real values)
 
 # OS files
 .DS_Store
@@ -22,3 +23,14 @@ projects/*/client-data/
 # IDE
 .vscode/
 .idea/
+
+# Pipeline output (may contain enriched prospect data)
+output/
+
+# Python virtualenv alternatives
+.venv/
+env/
+
+# Google credentials (never commit)
+*-credentials.json
+credentials.json
