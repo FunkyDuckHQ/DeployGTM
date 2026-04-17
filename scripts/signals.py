@@ -48,6 +48,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 sys.path.insert(0, str(Path(__file__).parent))
+from apollo import _apollo_post, _apollo_key  # reuse retry logic
 
 APOLLO_BASE = "https://api.apollo.io/v1"
 YC_API_BASE = "https://www.ycombinator.com"
@@ -56,17 +57,7 @@ YC_API_BASE = "https://www.ycombinator.com"
 def load_config(config_path: str = "config.yaml") -> dict:
     with open(config_path) as f:
         return yaml.safe_load(f)
-
-
-def _apollo_key() -> str:
-    key = os.environ.get("APOLLO_API_KEY", "")
-    if not key:
-        raise EnvironmentError("APOLLO_API_KEY is not set in .env")
     return key
-
-
-def _apollo_headers() -> dict:
-    return {"Content-Type": "application/json", "Cache-Control": "no-cache"}
 
 
 def read_existing_domains(csv_path: str) -> set[str]:
@@ -145,17 +136,9 @@ def apollo_hiring_signals(
         }
 
         try:
-            resp = requests.post(
-                f"{APOLLO_BASE}/mixed_people/search",
-                json=payload,
-                headers=_apollo_headers(),
-                timeout=20,
-            )
-            resp.raise_for_status()
-            data = resp.json()
+            data = _apollo_post("mixed_people/search", payload, timeout=20)
         except requests.RequestException as e:
             click.echo(f"  Apollo hiring search error for '{title}': {e}", err=True)
-            time.sleep(2)
             continue
 
         for person in data.get("people", []):
@@ -225,14 +208,7 @@ def apollo_funded_signals(
     }
 
     try:
-        resp = requests.post(
-            f"{APOLLO_BASE}/organizations/search",
-            json=payload,
-            headers=_apollo_headers(),
-            timeout=20,
-        )
-        resp.raise_for_status()
-        data = resp.json()
+        data = _apollo_post("organizations/search", payload, timeout=20)
     except requests.RequestException as e:
         click.echo(f"  Apollo funding search error: {e}", err=True)
         return []
