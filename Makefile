@@ -48,6 +48,12 @@ batch-resume:  ## Resume interrupted batch (skips already-processed domains)
 export:  ## Export output/ to HubSpot import CSVs (priority ≥ 8)
 	python scripts/export.py run --min-priority 8
 
+audit:  ## Scan output/ for data quality issues before pushing to HubSpot
+	python scripts/crm_audit.py scan
+
+audit-summary:  ## Pipeline summary across all output files
+	python scripts/crm_audit.py summary
+
 push-hubspot:  ## Push output/ directly to HubSpot via API (requires confirmation)
 	python scripts/export.py run --push-to-hubspot --min-priority 8
 
