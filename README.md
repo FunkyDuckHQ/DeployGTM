@@ -8,23 +8,31 @@ GTM engineering practice run by Matthew Stegenga. We build outbound pipeline inf
 
 ```bash
 # 1. Install dependencies
-pip install -r requirements.txt
+make install
 
-# 2. Set up environment
-cp .env.example .env
-# Fill in ANTHROPIC_API_KEY at minimum
+# 2. Create .env from template
+make env
+# Fill in ANTHROPIC_API_KEY at minimum — everything else is optional
 
-# 3. Create HubSpot custom properties (run once per account)
-python scripts/pipeline.py setup-hubspot
+# 3. Run morning briefing (no API keys needed)
+make daily
 
-# 4. Run one account through the full pipeline
+# 4. Find accounts to target
+make signals
+
+# 5. Run full pipeline on a batch
+make batch
+
+# 6. Push priority accounts to HubSpot (≥8 priority)
+make push-hubspot
+```
+
+One account at a time:
+```bash
 python scripts/pipeline.py run \
   --company "Acme" --domain "acme.com" \
   --signal funding --signal-date 2026-03-15 \
   --signal-summary "Raised $4M Seed from a16z"
-
-# 5. Review output, then push to HubSpot
-python scripts/pipeline.py push --file output/acme_com_2026-03-15.json
 ```
 
 ---
@@ -35,24 +43,39 @@ python scripts/pipeline.py push --file output/acme_com_2026-03-15.json
 Signal detected
     │
     ▼
-scripts/pipeline.py run          ← single account
-scripts/batch.py run             ← list of accounts from CSV
+scripts/signals.py           ← find accounts (Apollo hiring/funding, YC batch)
     │
-    ├─ research.py               Claude: company research + pain hypothesis
-    ├─ score.py                  ICP Fit (1–5) × Signal Strength (1–3) = Priority
-    ├─ apollo.py                 Contact enrichment (titles, emails, LinkedIn)
-    └─ outreach.py               Claude: signal-led message + 2 follow-ups
+    ▼
+scripts/pipeline.py run      ← single account
+scripts/batch.py run         ← list of accounts from CSV
+    │
+    ├─ research.py            Claude: company research + pain hypothesis
+    ├─ score.py               ICP Fit (1–5) × Signal Strength (1–3) = Priority
+    ├─ apollo.py              Contact enrichment (titles, emails, LinkedIn)
+    └─ outreach.py            Claude: signal-led message + follow-up variants
           │
           ▼
-      output/                    JSON files, one per account
+      output/                 JSON files, one per account
           │
-          ├─ export.py           → HubSpot import CSVs (companies + contacts)
-          └─ hubspot.py push     → Direct API push (requires confirmation)
+          ├─ export.py        → HubSpot import CSVs
+          ├─ hubspot.py push  → Direct API push (requires confirmation)
+          └─ hubspot.py enroll→ Sequence enrollment by persona
+                │
+                ▼
+          follow_up.py        Track cadence: due / generate / log / respond
+          qualify.py          Inbound qualification on replies/bookings
+          daily.py            Morning briefing — status across all activity
+          report.py           Weekly signal report
 
 Signal sources:
-    BirdDog (continuous)         → birddog.py pull-signals → batch.py run
-    Manual intake                → data/signals_intake.csv → batch.py run
-    Google Drive transcripts     → transcript.py process   → project files
+    BirdDog (continuous)      → birddog.py pull-signals → batch.py run
+    Apollo hiring/funding     → signals.py all          → batch.py run
+    YC batch companies        → signals.py yc-batch     → batch.py run
+    Manual intake             → data/signals_intake.csv → batch.py run
+    Voice memos               → transcript.py process   → project files
+
+Client engagements:
+    Signal Audit ($3,500)     → signal_audit.py new/week1/week2/deliverable
 ```
 
 ---
@@ -61,99 +84,126 @@ Signal sources:
 
 ```
 DeployGTM/
-├── CLAUDE.md                    Master context (read every session)
-├── config.yaml                  Tool toggles — on/off without touching code
-├── .env.example                 API key template (copy to .env, never commit .env)
-├── requirements.txt             Python dependencies
-├── .mcp.json                    MCP servers: fetch (web research) + Google Drive (intake)
+├── CLAUDE.md                     Master context (read every session)
+├── config.yaml                   Tool toggles — on/off without touching code
+├── .env.example                  API key template (copy to .env, never commit .env)
+├── requirements.txt              Python dependencies
+├── .mcp.json                     MCP servers: fetch (web) + Google Drive (intake)
 │
-├── brain/                       Octave replacement — free, local, editable
-│   ├── icp.md                   Who we target and why
-│   ├── personas.md              Founder-Seller, First Sales Leader, RevOps/Growth
-│   ├── messaging.md             Message structure, per-persona openers, rules
-│   ├── objections.md            7 common objections with positioning
-│   └── product.md               What we sell (Signal Audit + Retainer)
+├── brain/                        Messaging + ICP intelligence (Octave replacement)
+│   ├── icp.md                    Who we target and why
+│   ├── personas.md               Founder-Seller, First Sales Leader, RevOps/Growth
+│   ├── messaging.md              Message structure, per-persona openers, rules
+│   ├── objections.md             7 common objections with positioning
+│   ├── product.md                What we sell (Signal Audit + Retainer)
+│   └── clients/                  Per-client brain overrides (Signal Audit engagements)
 │
 ├── scripts/
-│   ├── pipeline.py              Main CLI: run / push / score / setup-hubspot
-│   ├── batch.py                 Batch runner: process CSV of accounts
-│   ├── export.py                Export output/ JSON → HubSpot import CSVs
-│   ├── research.py              Claude account research + pain hypothesis
-│   ├── score.py                 ICP × Signal scoring engine
-│   ├── apollo.py                Apollo contact enrichment
-│   ├── outreach.py              Claude outreach generation (persona-aware)
-│   ├── hubspot.py               HubSpot CRM sync + custom property setup
-│   ├── birddog.py               BirdDog signal monitoring integration
-│   └── transcript.py            Voice memo → structured project updates
+│   ├── daily.py                  Morning briefing — follow-ups, projects, activity
+│   ├── pipeline.py               Main CLI: run / push / score / setup-hubspot
+│   ├── batch.py                  Batch runner: process CSV of accounts (with resume)
+│   ├── signals.py                Signal detection: Apollo hiring/funding + YC batch
+│   ├── research.py               Claude account research + pain hypothesis
+│   ├── score.py                  ICP × Signal scoring engine
+│   ├── apollo.py                 Apollo contact enrichment
+│   ├── outreach.py               Claude outreach generation (persona-aware)
+│   ├── follow_up.py              Follow-up cadence: due/generate/log/respond/create-tasks
+│   ├── qualify.py                Inbound qualifier for replies and bookings
+│   ├── hubspot.py                HubSpot CRM sync, custom properties, sequence enrollment
+│   ├── export.py                 Export output/ JSON → HubSpot import CSVs
+│   ├── birddog.py                BirdDog signal monitoring integration
+│   ├── report.py                 Weekly signal report generator
+│   ├── signal_audit.py           Signal Audit engagement workflow ($3,500 / 2 weeks)
+│   └── transcript.py             Voice memo → structured project updates
 │
 ├── data/
-│   ├── batch_template.csv       Template for batch pipeline input
-│   ├── signals_intake.csv       Manual signal capture (add rows here)
-│   └── yc_w26_targets.csv       YC W26 target list (populate and run)
+│   ├── batch_template.csv        Template for batch pipeline input
+│   ├── signals_intake.csv        Manual signal capture (add rows here)
+│   └── yc_w26_targets.csv        YC W26 target list (populate and run)
 │
-├── output/                      Pipeline outputs (gitignored — may contain prospect data)
+├── output/                       Pipeline outputs (gitignored)
 │
 ├── master/
-│   ├── field-manual.md          GTM engineering operating principles
-│   ├── learnings.md             Promoted patterns (3+ projects to qualify)
-│   ├── context-engine.md        How the repo + Drive + AI tools divide labor
+│   ├── field-manual.md           GTM engineering operating principles
+│   ├── learnings.md              Promoted patterns (3+ projects to qualify)
+│   ├── context-engine.md         How repo + Drive + AI tools divide labor
 │   ├── matthew-working-conditions.md  Per-session operating preferences
 │   └── playbooks/
-│       ├── enrichment.md        Signal → Research → Enrich → Score → Activate
-│       └── signal-audit.md      $3,500 / 2-week engagement playbook
+│       ├── enrichment.md         Signal → Research → Enrich → Score → Activate
+│       ├── signal-audit.md       $3,500 / 2-week engagement playbook
+│       ├── outreach-ops.md       Full outreach loop: signal to close
+│       └── hubspot-setup.md      One-time HubSpot configuration guide
 │
 └── projects/
-    ├── client-template/         Copy this for every new client
-    ├── deploygtm-own/           DeployGTM's own outbound (client zero)
-    ├── peregrine-space/
-    ├── mindra/
-    ├── fibinaci/
-    ├── sybill/
-    ├── rex/
-    └── terzo/
+    ├── client-template/          Copy this for every new client
+    ├── deploygtm-own/            DeployGTM's own outbound (client zero)
+    ├── peregrine-space/          Space GTM proof-point
+    ├── mindra/                   30/60/90 plan built
+    ├── fibinaci/                 Advisory engagement decision pending
+    ├── sybill/                   Job process — active
+    ├── rex/                      Intro call — discovery
+    └── terzo/                    Scheduling note drafted
 ```
 
 ---
 
-## Core workflow
+## Daily workflow
 
-### Single account
 ```bash
-python scripts/pipeline.py run \
-  --company "Name" \
-  --domain "domain.com" \
-  --signal [funding|hiring|gtm_struggle|agency_churn|tool_adoption|manual] \
-  --signal-date YYYY-MM-DD \
-  --signal-summary "What you saw"
-```
-Saves enriched JSON to `output/`. Push separately after reviewing.
-
-### Batch (50+ accounts)
-```bash
-# 1. Populate data/yc_w26_targets.csv
-# 2. Run
-python scripts/batch.py run --input data/yc_w26_targets.csv
-
-# 3. Resume if interrupted
-python scripts/batch.py run --input data/yc_w26_targets.csv --resume
-
-# 4. Export to HubSpot import CSVs
-python scripts/export.py run --min-priority 8
-
-# 5. Or push directly via API
-python scripts/export.py run --push-to-hubspot
+make daily               # Morning briefing — where everything stands
+make followup-due        # Full follow-up queue with generate commands
+make signals             # Find new accounts via Apollo + YC
+make batch               # Run pipeline on signals_intake.csv
+make push-hubspot        # Push priority accounts (≥8) to HubSpot
+make report              # Weekly signal report from output/
+make birddog-pull        # Pull fresh signals from BirdDog
 ```
 
-### BirdDog → Pipeline (when enabled)
+---
+
+## Follow-up cadence
+
 ```bash
-python scripts/birddog.py pull-signals --run-pipeline
+# See what's due
+make followup-due
+
+# Generate and review touch
+make followup-generate FILE=output/acme_com.json EMAIL=ceo@acme.com TOUCH=1
+
+# Log it as sent
+python scripts/follow_up.py log --file output/acme_com.json --email ceo@acme.com --touch 1
+
+# Someone replied — generate a response
+make followup-respond FILE=output/acme_com.json EMAIL=ceo@acme.com REPLY="asked about pricing"
+
+# Qualify an inbound lead
+make qualify COMPANY="Acme" DOMAIN=acme.com
+make qualify-context COMPANY="Acme" DOMAIN=acme.com CONTEXT="replied asking about pricing"
 ```
 
-### Voice memo → Project update
+Cadence: Touch 1 (day 3) → Touch 2 (day 7) → Touch 3 (day 14) → pause, wait for next signal.
+
+---
+
+## Signal detection
+
 ```bash
-python scripts/transcript.py process --file ~/Desktop/memo.txt --update-project
-# or pipe it
-cat ~/Desktop/memo.txt | python scripts/transcript.py process --stdin --project mindra
+make signals             # All sources → signals_intake.csv
+make signals-hiring      # Companies posting sales roles via Apollo
+make signals-funded      # Recently funded B2B SaaS via Apollo
+make signals-yc          # YC W26 batch → yc_w26_targets.csv
+```
+
+---
+
+## Signal Audit engagements ($3,500 / 2 weeks)
+
+```bash
+make new-client CLIENT=acme DOMAIN=acme.com     # Create project + brain stubs
+make audit-week1 CLIENT=acme                    # BirdDog setup + prerequisite check
+make audit-week2 CLIENT=acme                    # Batch enrichment with client brain
+make audit-deliverable CLIENT=acme              # Compile final deliverable package
+make audit-status CLIENT=acme                   # Show enrichment progress
 ```
 
 ---
