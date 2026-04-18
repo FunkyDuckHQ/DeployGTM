@@ -364,8 +364,9 @@ def push_pipeline_output(pipeline_output: dict, dry_run: bool = False) -> dict:
     pipeline_output structure (from pipeline.py):
       company, contacts, research, score, outreach, signal
     """
-    results = {"company_id": None, "contact_ids": [], "errors": []}
+    results = {"company_id": None, "contact_ids": [], "deal_id": None, "errors": []}
 
+    company_name = pipeline_output.get("company", "")
     company_data = pipeline_output.get("company") or pipeline_output.get("research", {})
     signal = pipeline_output.get("signal", {})
     score = pipeline_output.get("score", {})
@@ -399,7 +400,138 @@ def push_pipeline_output(pipeline_output: dict, dry_run: bool = False) -> dict:
             name = contact.get("name", email)
             click.echo(f"  Contact → {name} ({contact_id})")
 
+    # 3. Create deal at outreach_sent stage
+    if company_name and outreach_map:
+        try:
+            deal_id = create_or_update_deal(
+                company_name=company_name,
+                stage="outreach_sent",
+                company_id=company_id,
+                contact_ids=results["contact_ids"],
+                dry_run=dry_run,
+            )
+            results["deal_id"] = deal_id
+        except Exception as e:
+            results["errors"].append(f"Deal creation failed: {e}")
+
     return results
+
+
+# ─── Deal management ──────────────────────────────────────────────────────────
+
+DEAL_STAGES = {
+    "outreach_sent":   "appointmentscheduled",   # closest default: "Appointment Scheduled"
+    "replied":         "qualifiedtobuy",          # "Qualified to Buy"
+    "meeting_booked":  "presentationscheduled",   # "Presentation Scheduled"
+    "proposal_sent":   "decisionmakerboughtin",   # "Decision Maker Bought-In"
+    "closed_won":      "closedwon",
+    "closed_lost":     "closedlost",
+}
+
+DEAL_STAGE_LABELS = {v: k for k, v in DEAL_STAGES.items()}
+
+
+def create_or_update_deal(
+    company_name: str,
+    stage: str = "outreach_sent",
+    amount: Optional[int] = None,
+    deal_name: Optional[str] = None,
+    close_date: Optional[str] = None,
+    company_id: Optional[str] = None,
+    contact_ids: Optional[list] = None,
+    pipeline_id: str = "default",
+    dry_run: bool = False,
+) -> Optional[str]:
+    """
+    Create a deal in HubSpot, or update if one already exists for this company.
+
+    stage: one of outreach_sent | replied | meeting_booked | proposal_sent | closed_won | closed_lost
+    amount: deal value in dollars (7500 for retainer, 3500 for Signal Audit)
+    Returns deal ID or None.
+    """
+    hs_stage = DEAL_STAGES.get(stage, DEAL_STAGES["outreach_sent"])
+    name = deal_name or f"{company_name} — DeployGTM"
+
+    properties = {
+        "dealname": name,
+        "dealstage": hs_stage,
+        "pipeline": pipeline_id,
+    }
+    if amount:
+        properties["amount"] = str(amount)
+    if close_date:
+        properties["closedate"] = close_date
+
+    if dry_run:
+        click.echo(f"  [dry-run] Would create deal: {name} → stage: {stage} / ${amount or '?'}")
+        return "dry-run-deal-id"
+
+    headers = _headers()
+
+    # Search for existing deal with this name
+    search_resp = requests.post(
+        f"{HS_BASE}/crm/v3/objects/deals/search",
+        headers=headers,
+        json={
+            "filterGroups": [{
+                "filters": [{"propertyName": "dealname", "operator": "EQ", "value": name}]
+            }],
+            "properties": ["dealname", "dealstage"],
+            "limit": 1,
+        },
+        timeout=15,
+    )
+
+    deal_id = None
+    if search_resp.ok:
+        results = search_resp.json().get("results", [])
+        if results:
+            deal_id = results[0]["id"]
+
+    if deal_id:
+        # Update existing deal
+        resp = requests.patch(
+            f"{HS_BASE}/crm/v3/objects/deals/{deal_id}",
+            headers=headers,
+            json={"properties": properties},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        click.echo(f"  Deal updated → {name} ({stage})")
+    else:
+        # Create new deal
+        resp = requests.post(
+            f"{HS_BASE}/crm/v3/objects/deals",
+            headers=headers,
+            json={"properties": properties},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        deal_id = resp.json()["id"]
+        click.echo(f"  Deal created → {name} ({stage}) [{deal_id}]")
+
+    # Associate with company
+    if company_id and deal_id and deal_id != "dry-run-deal-id":
+        try:
+            requests.put(
+                f"{HS_BASE}/crm/v3/objects/deals/{deal_id}/associations/companies/{company_id}/deal_to_company",
+                headers=headers, timeout=10,
+            )
+        except requests.RequestException:
+            pass
+
+    # Associate with contacts
+    for cid in (contact_ids or []):
+        if cid and deal_id != "dry-run-deal-id":
+            try:
+                requests.put(
+                    f"{HS_BASE}/crm/v3/objects/deals/{deal_id}/associations/contacts/{cid}/deal_to_contact",
+                    headers=headers, timeout=10,
+                )
+            except requests.RequestException:
+                pass
+
+    return deal_id
 
 
 # ─── CLI ──────────────────────────────────────────────────────────────────────
@@ -591,6 +723,48 @@ def cmd_enroll(pipeline_output, from_email, dry_run, config_path):
         seq = sequences.get(persona, "—")
         icon = "✓" if status == "enrolled" else ("~" if status in ("already_enrolled", "dry_run") else "✗")
         click.echo(f"  {icon} {email} [{persona}] → sequence {seq} ({status})")
+
+
+@cli.command("create-deal")
+@click.option("--company", "-c", required=True, help="Company name")
+@click.option("--stage", "-s",
+              type=click.Choice(list(DEAL_STAGES.keys())),
+              default="outreach_sent", show_default=True,
+              help="Deal stage")
+@click.option("--amount", "-a", type=int, default=None,
+              help="Deal value in dollars (3500 for Signal Audit, 7500 for Retainer)")
+@click.option("--deal-name", default=None, help="Override default deal name")
+@click.option("--dry-run", is_flag=True)
+def cmd_create_deal(company: str, stage: str, amount: Optional[int], deal_name: Optional[str], dry_run: bool):
+    """Create or update a HubSpot deal for a company."""
+    deal_id = create_or_update_deal(
+        company_name=company,
+        stage=stage,
+        amount=amount,
+        deal_name=deal_name,
+        dry_run=dry_run,
+    )
+    if deal_id and not dry_run:
+        click.echo(f"\nDeal ID: {deal_id}")
+        click.echo(f"View at: https://app.hubspot.com/contacts/deals/{deal_id}")
+
+
+@cli.command("advance-deal")
+@click.option("--company", "-c", required=True, help="Company name (matches deal name)")
+@click.option("--stage", "-s",
+              type=click.Choice(list(DEAL_STAGES.keys())),
+              required=True,
+              help="New stage to advance to")
+@click.option("--amount", "-a", type=int, default=None, help="Update deal value if known")
+@click.option("--dry-run", is_flag=True)
+def cmd_advance_deal(company: str, stage: str, amount: Optional[int], dry_run: bool):
+    """Advance a deal to a new stage (e.g. outreach_sent → replied → meeting_booked)."""
+    create_or_update_deal(
+        company_name=company,
+        stage=stage,
+        amount=amount,
+        dry_run=dry_run,
+    )
 
 
 if __name__ == "__main__":

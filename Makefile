@@ -66,6 +66,12 @@ audit-summary:  ## Pipeline summary across all output files
 push-hubspot:  ## Push output/ directly to HubSpot via API (requires confirmation)
 	python scripts/export.py run --push-to-hubspot --min-priority 8
 
+deal:  ## Create/update a HubSpot deal (set COMPANY="Name" STAGE=replied AMOUNT=3500)
+	python scripts/hubspot.py create-deal --company "$(COMPANY)" $(if $(STAGE),--stage $(STAGE),) $(if $(AMOUNT),--amount $(AMOUNT),)
+
+advance-deal:  ## Advance a deal stage (set COMPANY="Name" STAGE=meeting_booked)
+	python scripts/hubspot.py advance-deal --company "$(COMPANY)" --stage $(STAGE)
+
 # ─── Reports ──────────────────────────────────────────────────────────────────
 
 report:  ## Generate weekly signal report from output/
