@@ -29,6 +29,9 @@ ui:  ## Launch pipeline dashboard in browser (streamlit)
 daily:  ## Morning briefing — follow-ups due, project status, pipeline activity
 	python scripts/daily.py
 
+precall:  ## Pre-call brief before a discovery/close call (set DOMAIN=acme.com CONTACT="Name")
+	python scripts/precall.py --domain $(DOMAIN) $(if $(CONTACT),--contact "$(CONTACT)",)
+
 # ─── Pipeline ─────────────────────────────────────────────────────────────────
 
 run-one:  ## Run pipeline on one account (prompts for input)

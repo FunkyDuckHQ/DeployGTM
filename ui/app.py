@@ -411,41 +411,100 @@ elif page == "Outreach":
             contact = next((c for c in contacts if c.get("email") == email), {})
             name = contact.get("name", email)
             title = contact.get("title", "")
-            status = contact.get("email_status", "?")
+            email_status = contact.get("email_status", "?")
+            linkedin_url = contact.get("linkedin_url", "")
 
-            st.subheader(f"{name}")
-            st.caption(f"{title} · {email} · email status: {status}")
+            # Support both schema versions:
+            # New: {primary: {subject, body}, followup_1: {body}, followup_2: {body}, linkedin_connection_note, ...}
+            # Old flat: {subject, body, follow_up_1, follow_up_2}
+            primary = msgs.get("primary") or {}
+            subj = primary.get("subject") or msgs.get("subject", "")
+            body = primary.get("body") or msgs.get("body", "")
+            fu1_obj = msgs.get("followup_1") or {}
+            fu1 = fu1_obj.get("body") if fu1_obj else msgs.get("follow_up_1", "")
+            fu2_obj = msgs.get("followup_2") or {}
+            fu2 = fu2_obj.get("body") if fu2_obj else msgs.get("follow_up_2", "")
+            linkedin_note = msgs.get("linkedin_connection_note", "")
+            pain_used = msgs.get("pain_used", "")
+            signal_used = msgs.get("signal_used", "")
+            notes = msgs.get("notes", "")
+            persona = msgs.get("persona", "")
 
-            tab1, tab2, tab3 = st.tabs(["Touch 1 (primary)", "Touch 2 (follow-up)", "Touch 3 (last)"])
+            header_parts = [f"**{name}**", title, email]
+            if persona:
+                header_parts.append(f"persona: *{persona}*")
+            st.subheader(name)
+            st.caption(f"{title} · {email} · email: {email_status}" + (f" · [LinkedIn]({linkedin_url})" if linkedin_url else ""))
 
-            with tab1:
-                subj = msgs.get("subject", "")
-                body = msgs.get("body", "")
-                col1, col2 = st.columns([3, 1])
-                col1.markdown(f"**Subject:** {subj}")
-                if col2.button("Copy subject", key=f"copy_subj_{email}"):
-                    st.toast("Copied to clipboard — paste into your email client")
+            tabs = ["Touch 1", "Touch 2 (day 3)", "Touch 3 (day 7)"]
+            if linkedin_note:
+                tabs.append("LinkedIn")
+            tab_objects = st.tabs(tabs)
+
+            with tab_objects[0]:
+                if subj:
+                    st.markdown(f"**Subject:** {subj}")
                 st.text_area("Body", value=body, height=200, key=f"body_{email}", label_visibility="collapsed")
+                if pain_used or signal_used:
+                    with st.expander("What this message is built on"):
+                        if signal_used:
+                            st.markdown(f"**Signal used:** {signal_used}")
+                        if pain_used:
+                            st.markdown(f"**Pain used:** {pain_used}")
+                        if notes:
+                            st.markdown(f"**Notes:** {notes}")
 
-            with tab2:
-                fu1 = msgs.get("follow_up_1", "")
+            with tab_objects[1]:
                 if fu1:
+                    day = fu1_obj.get("send_on_day", 3) if fu1_obj else 3
+                    st.caption(f"Send ~day {day} after touch 1")
                     st.text_area("Follow-up 1", value=fu1, height=120, key=f"fu1_{email}", label_visibility="collapsed")
                 else:
-                    st.info("No follow-up 1 generated. Run: `python scripts/follow_up.py generate`")
+                    st.info("Not yet generated.")
+                    st.code(
+                        f"python scripts/follow_up.py generate \\\n"
+                        f"  --file output/{a['_file']} \\\n"
+                        f"  --email {email} --touch 1",
+                        language="bash",
+                    )
 
-            with tab3:
-                fu2 = msgs.get("follow_up_2", "")
+            with tab_objects[2]:
                 if fu2:
+                    day = fu2_obj.get("send_on_day", 7) if fu2_obj else 7
+                    st.caption(f"Send ~day {day} after touch 1")
                     st.text_area("Follow-up 2", value=fu2, height=100, key=f"fu2_{email}", label_visibility="collapsed")
                 else:
-                    st.info("No follow-up 2 generated.")
+                    st.info("Not yet generated.")
+                    st.code(
+                        f"python scripts/follow_up.py generate \\\n"
+                        f"  --file output/{a['_file']} \\\n"
+                        f"  --email {email} --touch 2",
+                        language="bash",
+                    )
+
+            if linkedin_note and len(tabs) > 3:
+                with tab_objects[3]:
+                    char_count = len(linkedin_note)
+                    color = "🔴" if char_count > 300 else "🟢"
+                    st.caption(f"{color} {char_count}/300 chars (connection note limit)")
+                    st.text_area(
+                        "LinkedIn connection note",
+                        value=linkedin_note,
+                        height=100,
+                        key=f"li_{email}",
+                        label_visibility="collapsed",
+                    )
+                    if linkedin_url:
+                        st.markdown(f"[Open LinkedIn profile]({linkedin_url})")
 
             # Follow-up log
             log_entry = a.get("follow_up_log", {}).get(email)
             if log_entry:
+                status_icon = {"booked": "📅", "paused": "⏸", "replied": "💬", "active": "🟢"}.get(
+                    log_entry.get("status", "active"), "⚪"
+                )
                 st.caption(
-                    f"Log: {log_entry.get('touches_sent', 0)} touch(es) sent · "
+                    f"{status_icon} {log_entry.get('touches_sent', 0)} touch(es) sent · "
                     f"last: {log_entry.get('last_touch_date', 'never')} · "
                     f"status: {log_entry.get('status', 'active')} · "
                     f"next due: {log_entry.get('next_touch_due', '—')}"
