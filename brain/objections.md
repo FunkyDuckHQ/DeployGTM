@@ -51,3 +51,23 @@
 ## "We tried cold email before and it didn't work."
 
 **Reframe:** "That's usually a signal problem, not an email problem. If you're sending cold email to accounts that aren't showing buying intent, even perfect copy won't fix the conversion rate. What we build starts with signal detection — only reaching out to companies that are actively showing indicators that they need what you have."
+
+---
+
+## "We're talking to a few other options / evaluating vendors."
+
+**When it's a stall:** Usually means they liked the conversation but haven't decided to move. Ask who else they're talking to — if it's a Clay agency or a fractional CRO, use the positioning from above. If it's another GTM engineer, that's fine — ask what they're looking for to make the comparison useful.
+
+**If they're seriously evaluating:** "Happy to be part of that process. What does your decision look like — is it price, scope, speed, or something else?" Get the criteria on the table. Then address directly: "Here's how I'd stack up on those..."
+
+**Don't drop price to win a comparison.** If they're choosing on price, it's not the right fit.
+
+---
+
+## "Can you share references / case studies?"
+
+**The honest answer:** "I don't publish client names publicly — my clients are early-stage and competitive intelligence is real. But I can share the Signal Audit deliverable format so you can see exactly what you'd get. And I'll give you the direct contact of a founder I've worked with who's willing to take a call if that's a deciding factor."
+
+**Prep:** Know which past clients have agreed to be references. Peregrine Space is one example of a proof-point engagement.
+
+**If they want a case study:** "I'll send you the Signal Audit scope doc — it shows the exact deliverables, methodology, and what the first two weeks look like. That's usually more useful than a case study because it shows you what you're actually buying."
