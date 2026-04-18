@@ -183,7 +183,7 @@ def scan(output_dir: str, config_path: str, min_priority: Optional[int],
     threshold = min_priority or config.get("scoring", {}).get("activate_this_week", 8)
 
     out_dir = Path(output_dir)
-    files = sorted(out_dir.glob("*.json"))
+    files = sorted(out_dir.glob("*.json")) + sorted(out_dir.glob("*/*.json"))
 
     if not files:
         click.echo(f"No output files found in {output_dir}/")
@@ -295,7 +295,7 @@ def scan(output_dir: str, config_path: str, min_priority: Optional[int],
 def summary(output_dir: str):
     """Show a high-level pipeline summary across all output files."""
     out_dir = Path(output_dir)
-    files = sorted(out_dir.glob("*.json"))
+    files = sorted(out_dir.glob("*.json")) + sorted(out_dir.glob("*/*.json"))
 
     if not files:
         click.echo("No output files.")

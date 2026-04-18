@@ -55,22 +55,26 @@ st.markdown("""
 
 @st.cache_data(ttl=30)
 def load_accounts() -> list[dict]:
-    """Load all output/ JSON files. Falls back to sample data if empty."""
-    files = sorted(OUTPUT_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    """Load output/ JSON files (top-level and client subdirs). Falls back to sample data."""
+    top = sorted(OUTPUT_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    client_files = sorted(OUTPUT_DIR.glob("*/*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
     accounts = []
-    for fpath in files:
+    for fpath in top + client_files:
         try:
             data = json.loads(fpath.read_text())
-            data["_file"] = fpath.name
+            rel = fpath.relative_to(OUTPUT_DIR)
+            data["_file"] = str(rel)
+            data["_client"] = fpath.parent.name if fpath.parent != OUTPUT_DIR else None
             accounts.append(data)
         except Exception:
             continue
 
     if not accounts:
         from sample_data import SAMPLE_ACCOUNTS
-        for i, a in enumerate(SAMPLE_ACCOUNTS):
+        for a in SAMPLE_ACCOUNTS:
             a["_file"] = f"sample_{a['domain'].replace('.', '_')}.json"
             a["_is_sample"] = True
+            a["_client"] = None
         return SAMPLE_ACCOUNTS
 
     return accounts
@@ -123,6 +127,17 @@ with st.sidebar:
         st.info("**Preview mode** — showing sample data. Run `make batch` to populate with real accounts.", icon="ℹ️")
     else:
         st.success(f"**{len(accounts)} accounts** in pipeline", icon="✅")
+
+    # Client filter
+    clients = sorted({a.get("_client") for a in accounts if a.get("_client")})
+    if clients:
+        st.divider()
+        client_filter = st.selectbox(
+            "Filter by client",
+            ["All"] + clients,
+        )
+        if client_filter != "All":
+            accounts = [a for a in accounts if a.get("_client") == client_filter]
 
     st.divider()
     st.markdown("**Quick actions**")

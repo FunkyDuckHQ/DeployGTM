@@ -60,11 +60,19 @@ def next_touch_due(entry: dict) -> Optional[tuple[int, int]]:
 
 
 def load_output_files(output_dir: Path) -> list[dict]:
+    """Load output JSON files from output/ and output/[client]/ subdirectories."""
     results = []
-    for fpath in sorted(output_dir.glob("*.json")):
+    # Top-level files (own pipeline)
+    top_level = sorted(output_dir.glob("*.json"))
+    # Client subdirectory files (signal_audit.py writes here)
+    client_files = sorted(output_dir.glob("*/*.json"))
+    for fpath in top_level + client_files:
         try:
             data = json.loads(fpath.read_text())
-            data["_file"] = fpath.name
+            # Use relative path so follow-up commands work correctly
+            rel = fpath.relative_to(output_dir)
+            data["_file"] = str(rel)
+            data["_client"] = fpath.parent.name if fpath.parent != output_dir else None
             results.append(data)
         except Exception:
             continue
