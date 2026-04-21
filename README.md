@@ -107,6 +107,7 @@ DeployGTM/
 ├── CLAUDE.md                     Master context (read every session)
 ├── config.yaml                   Tool toggles — on/off without touching code
 ├── .env.example                  API key template (copy to .env, never commit .env)
+├── .env.local.example            Local API test harness template (copy to .env.local)
 ├── requirements.txt              Python dependencies
 ├── .mcp.json                     MCP servers: fetch (web) + Google Drive (intake)
 │
@@ -114,29 +115,38 @@ DeployGTM/
 │   ├── icp.md                    Who we target and why
 │   ├── personas.md               Founder-Seller, First Sales Leader, RevOps/Growth
 │   ├── messaging.md              Message structure, per-persona openers, rules
-│   ├── objections.md             7 common objections with positioning
+│   ├── objections.md             8 objections with positioning + responses
 │   ├── product.md                What we sell (Signal Audit + Retainer)
 │   └── clients/                  Per-client brain overrides (Signal Audit engagements)
 │
 ├── scripts/
 │   ├── daily.py                  Morning briefing — follow-ups, projects, activity
-│   ├── pipeline.py               Main CLI: run / push / score / setup-hubspot
+│   ├── pipeline.py               Main CLI: run / push / score / setup-hubspot / new-client
 │   ├── batch.py                  Batch runner: process CSV of accounts (with resume)
 │   ├── signals.py                Signal detection: Apollo hiring/funding + YC batch
 │   ├── research.py               Claude account research + pain hypothesis
 │   ├── score.py                  ICP × Signal scoring engine
-│   ├── apollo.py                 Apollo contact enrichment
-│   ├── outreach.py               Claude outreach generation (persona-aware)
+│   ├── apollo.py                 Apollo contact enrichment (with retry/backoff)
+│   ├── outreach.py               Claude outreach generation (persona-aware + LinkedIn)
 │   ├── follow_up.py              Follow-up cadence: due/generate/log/respond/create-tasks
 │   ├── qualify.py                Inbound qualifier for replies and bookings
+│   ├── precall.py                Pre-call brief for discovery/close calls
 │   ├── crm_audit.py              Data quality scanner — run before every HubSpot push
 │   ├── sequence_builder.py       Generate HubSpot sequence step templates from brain/
-│   ├── hubspot.py                HubSpot CRM sync, custom properties, sequence enrollment
+│   ├── hubspot.py                HubSpot CRM: contacts, companies, deals, sequences
 │   ├── export.py                 Export output/ JSON → HubSpot import CSVs
 │   ├── birddog.py                BirdDog signal monitoring integration
 │   ├── report.py                 Weekly signal report generator
 │   ├── signal_audit.py           Signal Audit engagement workflow ($3,500 / 2 weeks)
-│   └── transcript.py             Voice memo → structured project updates
+│   ├── transcript.py             Voice memo → structured project updates
+│   └── local_api_harness.py      Validate API connections before first run
+│
+├── tests/
+│   └── test_local_api_harness.py Unit tests (offline, no API keys needed)
+│
+├── ui/
+│   ├── app.py                    Streamlit dashboard (run: make ui)
+│   └── sample_data.py            Preview data when output/ is empty
 │
 ├── data/
 │   ├── batch_template.csv        Template for batch pipeline input
@@ -145,25 +155,32 @@ DeployGTM/
 │
 ├── output/                       Pipeline outputs (gitignored)
 │
+├── logs/                         API harness run logs (JSONL format, gitignored)
+│
 ├── master/
+│   ├── progress.md               Build log + activation checklist ← START HERE
 │   ├── field-manual.md           GTM engineering operating principles
 │   ├── learnings.md              Promoted patterns (3+ projects to qualify)
 │   ├── context-engine.md         How repo + Drive + AI tools divide labor
+│   ├── design-principles.md      7 design principles for the system
+│   ├── local-api-testing-plan.md API harness runbook
 │   ├── matthew-working-conditions.md  Per-session operating preferences
 │   └── playbooks/
 │       ├── enrichment.md         Signal → Research → Enrich → Score → Activate
 │       ├── signal-audit.md       $3,500 / 2-week engagement playbook
-│       ├── outreach-ops.md       Full outreach loop: signal to close (incl. audit gate)
-│       └── hubspot-setup.md      One-time HubSpot configuration guide
+│       ├── outreach-ops.md       Full outreach loop: signal to close
+│       ├── hubspot-setup.md      One-time HubSpot configuration guide
+│       ├── qualification.md      Discovery call structure + close language
+│       └── retainer-ops.md       Monthly rhythm for Pipeline Engine retainer
 │
 └── projects/
     ├── client-template/          Copy this for every new client
     ├── deploygtm-own/            DeployGTM's own outbound (client zero)
-    ├── peregrine-space/          Space GTM proof-point
-    ├── mindra/                   30/60/90 plan built
-    ├── fibinaci/                 Advisory engagement decision pending
-    ├── sybill/                   Job process — active
-    ├── rex/                      Intro call — discovery
+    ├── peregrine-space/          Send message ready for Tyler
+    ├── mindra/                   30/60/90 plan built for Deniz
+    ├── fibinaci/                 Advisory response posture built
+    ├── sybill/                   Prep questions built
+    ├── rex/                      Discovery prep notes built
     └── terzo/                    Scheduling note drafted
 ```
 

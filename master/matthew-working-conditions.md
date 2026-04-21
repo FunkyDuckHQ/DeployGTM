@@ -3,7 +3,11 @@
 *This file is read at the start of every Claude Code session. Fill it in so Claude knows how to work with you — not around you.*
 
 ## Status
-PLACEHOLDER — fill this in.
+**BUILT / PRE-ACTIVATION** — system is complete, zero accounts have run through it yet.
+
+See `master/progress.md` for full build log and activation checklist.
+
+Immediate next action: confirm API keys work → `make api-test`
 
 ---
 

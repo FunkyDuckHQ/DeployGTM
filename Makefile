@@ -12,6 +12,14 @@ env:  ## Copy .env.example to .env (won't overwrite existing)
 	@if [ -f .env ]; then echo ".env already exists — edit it directly."; \
 	else cp .env.example .env && echo "Created .env — fill in your API keys."; fi
 
+api-test:  ## Validate API connections (HubSpot + external). Run before first batch.
+	python scripts/local_api_harness.py validate-env && \
+	python scripts/local_api_harness.py hubspot-read && \
+	python scripts/local_api_harness.py one-second-read
+
+test:  ## Run offline unit tests (no API keys needed)
+	python -m pytest tests/ -v
+
 setup-hubspot:  ## Create DeployGTM custom properties in HubSpot (run once)
 	python scripts/pipeline.py setup-hubspot
 
