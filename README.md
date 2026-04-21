@@ -37,6 +37,28 @@ python scripts/pipeline.py run \
 
 ---
 
+
+## Local API test harness
+
+If `python` is not found on macOS, use `python3` in all commands below.
+
+```bash
+cp .env.local.example .env.local
+# fill credentials/endpoints (HubSpot + one-second now; BirdDog + Deepline can be added next)
+
+python3 scripts/local_api_harness.py validate-env
+python3 scripts/local_api_harness.py crm-read
+python3 scripts/local_api_harness.py crm-upsert-company --domain example.com --name "DeployGTM API Harness"
+python3 scripts/local_api_harness.py one-second-read
+```
+
+Write tests are gated by `LOCAL_API_ALLOW_WRITE=1` and CRM selection is controlled by `CRM_PROVIDER=hubspot|generic`.
+`.env.local.example` is only a template; real keys go in your local `.env.local`.
+- This harness is **local-first**, not local-only: in shared/staging/prod, inject the same keys via your secret manager or CI environment variables.
+- You can also load extra env files for team/stage profiles: `python3 scripts/local_api_harness.py --env-file .env.staging validate-env`.
+
+---
+
 ## System architecture
 
 ```
