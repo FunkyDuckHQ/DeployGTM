@@ -27,3 +27,7 @@
 ## 7) Minimal onboarding cost
 - New contributors should be able to run first tests in minutes.
 - Commands and environment expectations should be documented next to code.
+
+## 8) Provider-agnostic interfaces
+- Avoid hard-coding one CRM vendor into test harnesses and adapters.
+- Use a provider switch and stable command surface so teams can migrate without rewiring runbooks.

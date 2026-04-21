@@ -37,6 +37,23 @@ python scripts/pipeline.py run \
 
 ---
 
+## Local API test harness
+
+Validate your API connections before running the first batch.
+
+```bash
+cp .env.local.example .env.local
+# fill in HUBSPOT_ACCESS_TOKEN (and optionally ONE_SECOND_API_URL)
+
+python scripts/local_api_harness.py validate-env
+python scripts/local_api_harness.py crm-read
+python scripts/local_api_harness.py one-second-read
+```
+
+Write tests are gated by `LOCAL_API_ALLOW_WRITE=1`. CRM provider is selected by `CRM_PROVIDER=hubspot|generic` in `.env.local`. HubSpot aliases (`hubspot-read`, `hubspot-upsert-company`) also work. See `master/local-api-testing-plan.md` for the full runbook.
+
+---
+
 ## System architecture
 
 ```
