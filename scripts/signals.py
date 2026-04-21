@@ -57,7 +57,6 @@ YC_API_BASE = "https://www.ycombinator.com"
 def load_config(config_path: str = "config.yaml") -> dict:
     with open(config_path) as f:
         return yaml.safe_load(f)
-    return key
 
 
 def read_existing_domains(csv_path: str) -> set[str]:
