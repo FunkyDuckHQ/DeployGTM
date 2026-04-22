@@ -38,6 +38,9 @@ ui:  ## Launch pipeline dashboard in browser (streamlit)
 daily:  ## Morning briefing — follow-ups due, project status, pipeline activity
 	$(PYTHON) scripts/daily.py
 
+intake:  ## Start working with a new prospect (set COMPANY="Name" DOMAIN=domain.com)
+	$(PYTHON) scripts/intake.py "$(COMPANY)" $(DOMAIN)
+
 precall:  ## Pre-call brief before a discovery/close call (set DOMAIN=acme.com CONTACT="Name")
 	$(PYTHON) scripts/precall.py --domain $(DOMAIN) $(if $(CONTACT),--contact "$(CONTACT)",)
 
