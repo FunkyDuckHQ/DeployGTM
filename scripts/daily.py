@@ -247,8 +247,33 @@ def briefing(output_dir: str, projects_dir: str, days: int):
         if not any_loops:
             click.echo("  All project open loops are clear.")
 
-    # ── 4. Quick commands ──────────────────────────────────────────────────────
+    # ── 4. Pending rep alerts ──────────────────────────────────────────────────
+    alerts_dir = Path("output/alerts")
+    if alerts_dir.exists():
+        alert_files = sorted(alerts_dir.glob("*.md"))
+        if alert_files:
+            section("Pending Rep Alerts — Ready to Send")
+            for af in alert_files:
+                # Peek at priority line
+                try:
+                    text = af.read_text()
+                    priority_line = next(
+                        (l for l in text.splitlines() if "**Priority:**" in l), ""
+                    )
+                    priority = priority_line.split("**Priority:**")[-1].split("/")[0].strip() if priority_line else "?"
+                    action_line = next(
+                        (l for l in text.splitlines() if "**Action:**" in l), ""
+                    )
+                    action = action_line.split("**Action:**")[-1].strip().rstrip("  ") if action_line else ""
+                    company = af.stem.replace("_", ".")
+                    click.echo(f"  → {company}  [Priority {priority}/15  {action}]")
+                    click.echo(f"    cat {af}")
+                except Exception:
+                    click.echo(f"  → {af.stem}")
+
+    # ── 5. Quick commands ──────────────────────────────────────────────────────
     section("Quick Commands")
+    click.echo("  make intake COMPANY=\"Acme\" DOMAIN=acme.ai  — start with a new prospect")
     click.echo("  make followup-due          — full follow-up queue")
     click.echo("  make signals               — find new accounts (Apollo + YC)")
     click.echo("  make batch                 — run pipeline on signals_intake.csv")
