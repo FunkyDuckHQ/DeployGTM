@@ -35,6 +35,13 @@ python scripts/pipeline.py run \
   --signal-summary "Raised $4M Seed from a16z"
 ```
 
+Platform vNext (client bootstrap + context + strategy):
+```bash
+make platform-bootstrap CLIENT_NAME="Acme Space" DOMAIN=acme.space CLIENT=acme-space
+make context-pack CLIENT=acme-space
+make platform-strategy CLIENT=acme-space
+```
+
 ---
 
 ## Local API test harness

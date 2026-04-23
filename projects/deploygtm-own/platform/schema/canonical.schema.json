@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deploygtm.local/schemas/canonical.schema.json",
+  "title": "DeployGTM Canonical Platform Schema",
+  "description": "Client-agnostic schema for bootstrap, ICP strategy, account scoring, signals, and CRM sync payloads.",
+  "type": "object",
+  "required": ["schema_version", "client", "accounts"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+$"
+    },
+    "client": {
+      "$ref": "#/$defs/client"
+    },
+    "accounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/account"
+      }
+    }
+  },
+  "$defs": {
+    "client": {
+      "type": "object",
+      "required": ["client_name", "domain", "voice_notes"],
+      "additionalProperties": false,
+      "properties": {
+        "client_name": { "type": "string", "minLength": 2 },
+        "domain": { "type": "string", "minLength": 3 },
+        "voice_notes": { "type": "string", "minLength": 5 },
+        "crm_provider": { "type": "string", "default": "hubspot" }
+      }
+    },
+    "persona": {
+      "type": "object",
+      "required": ["title", "problem_ownership_reason"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 2 },
+        "problem_ownership_reason": { "type": "string", "minLength": 5 }
+      }
+    },
+    "signal": {
+      "type": "object",
+      "required": ["source", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "minLength": 2 },
+        "type": { "type": "string" },
+        "summary": { "type": "string", "minLength": 5 },
+        "date": { "type": "string", "format": "date" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "score": {
+      "type": "object",
+      "required": ["icp_fit", "signal_strength", "priority"],
+      "additionalProperties": false,
+      "properties": {
+        "icp_fit": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "signal_strength": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "priority": { "type": "integer", "minimum": 1, "maximum": 15 },
+        "reason": { "type": "string" }
+      }
+    },
+    "account": {
+      "type": "object",
+      "required": [
+        "company",
+        "icp_tier",
+        "market",
+        "segment",
+        "persona",
+        "angle",
+        "why_now_signal",
+        "product_fit",
+        "heritage_risk"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "company": { "type": "string", "minLength": 2 },
+        "domain": { "type": "string", "minLength": 3 },
+        "icp_tier": { "type": "integer", "enum": [1, 2, 3] },
+        "market": { "type": "string", "minLength": 2 },
+        "segment": { "type": "string", "minLength": 2 },
+        "persona": { "$ref": "#/$defs/persona" },
+        "angle": { "type": "string", "minLength": 10 },
+        "why_now_signal": { "$ref": "#/$defs/signal" },
+        "product_fit": { "type": "string", "minLength": 10 },
+        "heritage_risk": { "type": "string", "minLength": 2 },
+        "score": { "$ref": "#/$defs/score" }
+      }
+    }
+  }
+}
