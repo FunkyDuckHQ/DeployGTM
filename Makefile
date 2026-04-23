@@ -159,11 +159,14 @@ audit-status:  ## Show Signal Audit engagement status (set CLIENT=slug)
 
 # ─── Account Matrix (client-agnostic artifacts) ──────────────────────────────
 
-outreach-variants:  ## Generate 3 outreach variants for one account (set CLIENT=slug COMPANY="Name")
-	$(PYTHON) projects/deploygtm-own/scripts/generate_outreach.py --client $(CLIENT) --company "$(COMPANY)"
+outreach-variants:  ## Generate 3 outreach variants (set CLIENT=slug COMPANY="Name" [LOG=1|2|3])
+	$(PYTHON) projects/deploygtm-own/scripts/generate_outreach.py --client $(CLIENT) --company "$(COMPANY)" $(if $(LOG),--log-variant $(LOG),)
 
-variant-log:  ## Log a variant send/response (see `python projects/deploygtm-own/scripts/variant_tracker.py --help`)
-	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py $(ARGS)
+variant-respond:  ## Record a response to a tracked variant (set ID=n SENTIMENT=positive|neutral|negative)
+	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py respond --id $(ID) --sentiment $(SENTIMENT)
+
+variant-list:  ## List logged variants (optional CLIENT=slug)
+	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py list $(if $(CLIENT),--client $(CLIENT),)
 
 variant-report:  ## Weekly variant performance by angle (set CLIENT=slug)
 	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py report --client $(CLIENT)

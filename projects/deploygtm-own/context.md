@@ -69,3 +69,33 @@ Lead with: "You just raised. You need pipeline. You probably don't have the infr
 | Date | Action | Result | Learning |
 |------|--------|--------|----------|
 | 2026-04-17 | Built full pipeline system | All scripts live on GitHub | System is complete — bottleneck is now API keys + account list |
+| 2026-04-23 | Shipped 4-artifact account matrix system | Schema + 14 Peregrine seed accounts, outreach generator, SQLite variant tracker, weekly report — all client-agnostic | The matrix is the single source of truth per client; every script reads from it. Adding a new client = drop a JSON file in `data/`. |
+
+## Account Matrix System (client-agnostic, lives in this project)
+
+All four artifacts are parameterized by `--client <slug>`. To onboard a new client, drop a `data/<slug>_accounts.json` file that conforms to `account_matrix_schema.json`, then every command below works unchanged.
+
+**The workflow:**
+
+```bash
+# 1. Generate 3 outreach variants for one account, auto-log variant #2 as sent
+make outreach-variants CLIENT=peregrine-space COMPANY="Xona Space Systems" LOG=2
+
+# 2. When a response comes in, record it (use ID from `make variant-list`)
+make variant-respond ID=3 SENTIMENT=positive
+
+# 3. Weekly: see which angles actually work
+make variant-report CLIENT=peregrine-space
+
+# 4. Weekly: full signal + priority report (writes markdown to outputs/<client>/)
+make weekly-report CLIENT=peregrine-space
+```
+
+**File map:**
+- `account_matrix_schema.json` — JSON Schema for the matrix (reusable across every client).
+- `data/<client>_accounts.json` — per-client account list with voice_notes, why_now_signal, angle per account.
+- `data/variants.db` — SQLite tracker (git-ignored — local state).
+- `outputs/<client>/` — generated variants and weekly reports (git-ignored).
+- `scripts/generate_outreach.py` — Artifact 2.
+- `scripts/variant_tracker.py` — Artifact 3.
+- `scripts/weekly_signal_report.py` — Artifact 4.

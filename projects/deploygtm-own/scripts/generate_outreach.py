@@ -268,6 +268,50 @@ def write_output(client: str, company: str, content: str) -> Path:
     return out_path
 
 
+def log_variant_to_tracker(client: str, company: str, variant: dict) -> Optional[int]:
+    """Insert one variant into the SQLite tracker. Returns row id or None on failure."""
+    db_path = DATA_DIR / "variants.db"
+    try:
+        import sqlite3
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(db_path)
+        # Ensure schema exists — same shape as variant_tracker.py
+        conn.executescript("""
+            CREATE TABLE IF NOT EXISTS variants (
+                id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+                client_name        TEXT NOT NULL,
+                company            TEXT NOT NULL,
+                angle_variant      TEXT NOT NULL,
+                angle_text         TEXT NOT NULL,
+                date_sent          TEXT NOT NULL,
+                response_received  INTEGER NOT NULL DEFAULT 0,
+                response_sentiment TEXT,
+                next_action        TEXT,
+                created_at         TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE INDEX IF NOT EXISTS idx_variants_client      ON variants(client_name);
+            CREATE INDEX IF NOT EXISTS idx_variants_client_date ON variants(client_name, date_sent);
+        """)
+        cur = conn.execute(
+            "INSERT INTO variants(client_name, company, angle_variant, angle_text, date_sent) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (
+                client,
+                company,
+                variant.get("angle_label", "unlabeled"),
+                variant.get("body", ""),
+                date.today().isoformat(),
+            ),
+        )
+        conn.commit()
+        rid = cur.lastrowid
+        conn.close()
+        return rid
+    except Exception as e:
+        click.echo(f"  WARN: could not log to tracker: {e}", err=True)
+        return None
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 
@@ -276,7 +320,9 @@ def write_output(client: str, company: str, content: str) -> Path:
 @click.option("--company", required=True, help="Target account company name (as in the matrix).")
 @click.option("--dry-run", is_flag=True, help="Build prompts and skip the API call. Prints prompts.")
 @click.option("--no-write", is_flag=True, help="Print output but do not write to disk.")
-def main(client: str, company: str, dry_run: bool, no_write: bool):
+@click.option("--log-variant", type=click.IntRange(1, 3), default=None,
+              help="Log variant N (1-3) to the SQLite tracker as sent-today.")
+def main(client: str, company: str, dry_run: bool, no_write: bool, log_variant: Optional[int]):
     """Generate 3 outreach variants for one account in one client's matrix."""
     matrix = load_client_matrix(client)
     account = find_account(matrix, company)
@@ -303,12 +349,17 @@ def main(client: str, company: str, dry_run: bool, no_write: bool):
 
     content = format_output(matrix, account, variants)
 
-    if no_write:
+    if not no_write:
+        out_path = write_output(client, account["company"], content)
+        click.echo(f"\nSaved: {out_path.relative_to(Path.cwd()) if out_path.is_relative_to(Path.cwd()) else out_path}")
+    else:
         click.echo("\n" + content)
-        return
 
-    out_path = write_output(client, account["company"], content)
-    click.echo(f"\nSaved: {out_path.relative_to(Path.cwd()) if out_path.is_relative_to(Path.cwd()) else out_path}")
+    if log_variant is not None:
+        chosen = variants[log_variant - 1]
+        rid = log_variant_to_tracker(client, account["company"], chosen)
+        if rid:
+            click.echo(f"Logged variant {log_variant} to tracker (id={rid}).")
 
 
 if __name__ == "__main__":
