@@ -157,6 +157,20 @@ audit-deliverable:  ## Compile final deliverable package (set CLIENT=slug)
 audit-status:  ## Show Signal Audit engagement status (set CLIENT=slug)
 	$(PYTHON) scripts/signal_audit.py status --client $(CLIENT)
 
+# ─── Account Matrix (client-agnostic artifacts) ──────────────────────────────
+
+outreach-variants:  ## Generate 3 outreach variants for one account (set CLIENT=slug COMPANY="Name")
+	$(PYTHON) projects/deploygtm-own/scripts/generate_outreach.py --client $(CLIENT) --company "$(COMPANY)"
+
+variant-log:  ## Log a variant send/response (see `python projects/deploygtm-own/scripts/variant_tracker.py --help`)
+	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py $(ARGS)
+
+variant-report:  ## Weekly variant performance by angle (set CLIENT=slug)
+	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py report --client $(CLIENT)
+
+weekly-report:  ## Weekly signal report for a client (set CLIENT=slug)
+	$(PYTHON) projects/deploygtm-own/scripts/weekly_signal_report.py --client $(CLIENT)
+
 # ─── Git ──────────────────────────────────────────────────────────────────────
 
 push:  ## Commit staged changes and push to current branch
