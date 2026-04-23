@@ -1,0 +1,282 @@
+{
+  "client_name": "deploygtm",
+  "voice_notes": "Direct. Open on the verifiable fact, not on yourself. Short sentences — aim for 10 words or fewer. Never use: strategy, leverage, synergy, exciting, innovative, transformative, I hope this finds you. The close is always '20 minutes?' or 'Worth a call?' — nothing else. Technical vocabulary is fine; these buyers know what a CRM is, what Clay does, what a BDR costs. The first message is never about DeployGTM — it is about their problem. Show you did the work. One verifiable reference. One question. Done. Never explain what the Signal Audit is in the first touch — ask the question that makes them curious about the answer.",
+  "accounts": [
+    {
+      "company": "Loops",
+      "domain": "loops.so",
+      "icp_tier": 1,
+      "market": "B2B SaaS",
+      "segment": "Segment A — Just Raised, No Pipeline Infrastructure",
+      "persona": {
+        "title": "Co-Founder / CEO",
+        "why_they_feel_it": "Just closed a round and the board wants pipeline metrics in 90 days. Has been doing outreach manually in Gmail. Never built a proper sequence or CRM workflow. About to hire a first AE who will land in a system that does not exist yet — wasted first quarter guaranteed."
+      },
+      "angle": "The AE you hire in the next 60 days will spend their first quarter building what should already be there — not closing.",
+      "why_now_signal": {
+        "type": "funding",
+        "description": "VERIFY — Loops raised a Series A to scale their email-for-SaaS platform. Check Crunchbase for round size and announcement date.",
+        "source": "Crunchbase / TechCrunch",
+        "date": "VERIFY-2026"
+      },
+      "product_fit": "Signal Audit maps the buying signals for SaaS email tool purchasers, builds a qualified target list of B2B companies at Loops's sweet spot, and delivers 3-5 outreach angles grounded in that ICP — ready to hand to the first AE before their start date.",
+      "heritage_risk": "Low — commercial SaaS buyer, no procurement complexity",
+      "status": "monitor",
+      "notes": "UPDATE signal date from Crunchbase before outreach. If funding was more than 90 days ago, pair with a hiring signal to refresh the why-now.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "Orb",
+      "domain": "withorb.com",
+      "icp_tier": 1,
+      "market": "B2B SaaS",
+      "segment": "Segment A — Just Raised, No Pipeline Infrastructure",
+      "persona": {
+        "title": "Co-Founder / CEO",
+        "why_they_feel_it": "Usage-based billing requires a very specific ICP — companies on consumption models who will realize ROI fast. Founder is selling but has no signal detection. About to invest in a sales hire and does not have the system to make them productive."
+      },
+      "angle": "Hiring the first rep before the pipeline infrastructure is live will cost you their first quarter and your credibility with the board.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "VERIFY — Orb posted a BDR or first AE role on LinkedIn, signaling investment in a formal sales function.",
+        "source": "LinkedIn Jobs",
+        "date": "VERIFY-2026"
+      },
+      "product_fit": "Signal Audit identifies companies on usage-based pricing models hitting growth inflection — exactly the trigger for an Orb demo. Delivers enriched target list with contact intel and outreach templates calibrated to finance and engineering buyers.",
+      "heritage_risk": "Low",
+      "status": "monitor",
+      "notes": "If LinkedIn hiring signal is stale, check Crunchbase for recent funding — double signal is strongest. UPDATE date before outreach.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "Mintlify",
+      "domain": "mintlify.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS / Developer Tools",
+      "segment": "Segment A — Just Raised, No Pipeline Infrastructure",
+      "persona": {
+        "title": "Co-Founder / CEO",
+        "why_they_feel_it": "PLG has been the motion but enterprise accounts are now inbound and there is no outbound system to pursue them proactively. CRM reflects activity, not pipeline. No sequences, no signal detection, no scoring. About to add a sales hire without the infrastructure to make them effective."
+      },
+      "angle": "Product-led does not mean pipeline-free — you need signal detection for accounts already in the product but not upgraded, plus an outbound motion for net-new enterprise.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "VERIFY — Mintlify posted an enterprise AE or first-sales-hire role, signaling a shift from PLG-only to an enterprise sales motion.",
+        "source": "LinkedIn Jobs",
+        "date": "VERIFY-2026"
+      },
+      "product_fit": "Signal Audit maps the upgrade triggers for documentation-platform buyers (team size, API volume, enterprise procurement activity) and builds a target list of accounts ripe for enterprise outreach — ready to hand to the first AE on day one.",
+      "heritage_risk": "Low — PLG familiarity means infrastructure-positive, fast decisions",
+      "status": "monitor",
+      "notes": "VERIFY hiring signal first. Mintlify may have an active enterprise motion already — do not assume greenfield without checking.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "Plain",
+      "domain": "plain.com",
+      "icp_tier": 1,
+      "market": "B2B SaaS",
+      "segment": "Segment B — First Sales Leader Just Started",
+      "persona": {
+        "title": "VP Sales / Head of Revenue",
+        "why_they_feel_it": "Just joined and spent onboarding week auditing what exists — found no reliable sequences, no lead scoring, no signal detection. Quota attainment in Q1 is make-or-break for credibility. Every week spent in HubSpot config is a week not selling. Cannot build the system and hit quota simultaneously."
+      },
+      "angle": "You were hired to close, not to build the stack from scratch — that 90-day build is runway you do not have.",
+      "why_now_signal": {
+        "type": "leadership_change",
+        "description": "VERIFY — Plain announced or posted a new VP Sales or Head of Revenue joining the team within the last 60 days.",
+        "source": "LinkedIn announcement",
+        "date": "VERIFY-2026"
+      },
+      "product_fit": "We build the full pipeline infrastructure in 2 weeks — HubSpot workflows, signal detection for the customer-support-tool ICP, sequence templates, ICP-scored contact list — so the new sales leader's first quarter is about selling, not configuring.",
+      "heritage_risk": "Low — B2B SaaS, fast decision cycle, founder-accessible",
+      "status": "monitor",
+      "notes": "Search LinkedIn: 'Plain' + 'VP Sales' OR 'Head of Sales' OR 'Head of Revenue'. If founder is still selling, use Persona 1 (Founder-Seller) messaging instead.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "Campsite",
+      "domain": "campsite.co",
+      "icp_tier": 1,
+      "market": "B2B SaaS",
+      "segment": "Segment B — First Sales Leader Just Started",
+      "persona": {
+        "title": "Founding AE / Head of Sales",
+        "why_they_feel_it": "Hired as the first AE into a founder-led motion. The CRM is a mess, there are no sequences, and they are expected to build pipeline while simultaneously building the system. Cannot do both. Every day without infrastructure is a day of wasted sales capacity."
+      },
+      "angle": "First AE at a founder-led company spends their first 60 days on setup instead of selling — we build the infrastructure before they start so day one is a selling day.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "VERIFY — Campsite posted a founding AE or first sales hire role on LinkedIn within the last 60 days.",
+        "source": "LinkedIn Jobs",
+        "date": "VERIFY-2026"
+      },
+      "product_fit": "Signal Audit plus retainer builds the infra underneath the new AE — sequences, CRM hygiene, lead scoring, signal detection tuned to the async-comms buyer — so their first quarter is about pipeline, not plumbing.",
+      "heritage_risk": "Low",
+      "status": "monitor",
+      "notes": "VERIFY: Campsite may be founder-selling currently. If no sales hire posted, Persona 1 (Founder-Seller) applies — adjust angle accordingly.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "Koala",
+      "domain": "getkoala.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS / Sales Intelligence",
+      "segment": "Segment B — First Sales Leader Just Started",
+      "persona": {
+        "title": "Head of Sales / VP Revenue",
+        "why_they_feel_it": "Koala is an intent data product — ironic that their own outbound motion may not be fully instrumented. A new sales leader joining sees a gap between what the product promises customers and what they actually have running for their own pipeline."
+      },
+      "angle": "You sell signal detection to other companies — your own outbound stack should be the best example of the product working.",
+      "why_now_signal": {
+        "type": "leadership_change",
+        "description": "VERIFY — Koala posted or announced a new Head of Sales or VP Revenue within the last 60 days.",
+        "source": "LinkedIn",
+        "date": "VERIFY-2026"
+      },
+      "product_fit": "Signal Audit benchmarks what Koala's own signal stack is actually detecting vs. what it should be, identifies the gaps in their outbound motion, and delivers a ready-to-run pipeline system — something Koala could point to as a case study.",
+      "heritage_risk": "Medium — they may view themselves as self-sufficient given their product; position as complementary operator layer, not a competing intelligence tool",
+      "status": "monitor",
+      "notes": "Sensitive positioning. Lead with the irony angle carefully — can land well or feel like a gotcha. Test the opener on dry-run first.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "< FILL IN — Segment C target >",
+      "domain": "FILL_IN.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS",
+      "segment": "Segment C — Using Clay / Apollo but Not Getting Results",
+      "persona": {
+        "title": "Founder / CEO or Head of Growth",
+        "why_they_feel_it": "Did what the playbooks said — bought Clay, set up Apollo, launched sequences. The tools are running. Pipeline is not. Starting to wonder if the tools are wrong, when the real problem is the missing orchestration layer between signal → message → CRM → measurement."
+      },
+      "angle": "The tools are fine. The orchestration is missing — nobody sold you the layer that connects signals to messages to CRM to measurement.",
+      "why_now_signal": {
+        "type": "manual",
+        "description": "FILL IN — Founder or growth lead posted on LinkedIn about cold outbound not working, tool bloat, or reply rate frustration. Reference the specific post.",
+        "source": "LinkedIn post",
+        "date": "FILL_IN"
+      },
+      "product_fit": "We do not touch their Clay table. We build the orchestration layer around it — signal prioritization, message-to-ICP matching, CRM write-back, and measurement — so the tools they already paid for start generating pipeline.",
+      "heritage_risk": "Low — they already believe in the tools, just frustrated with results",
+      "status": "monitor",
+      "notes": "LinkedIn search terms: 'cold email not working' OR 'Clay' OR 'Apollo' + 'reply rate' OR 'outbound not converting' from B2B SaaS founders and growth leads. Filter to Seed-A companies. Replace company/domain/signal when found.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "< FILL IN — Segment C target 2 >",
+      "domain": "FILL_IN_2.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS",
+      "segment": "Segment C — Using Clay / Apollo but Not Getting Results",
+      "persona": {
+        "title": "Founder / Head of Revenue",
+        "why_they_feel_it": "Running sequences through Apollo or Instantly. Open rates look fine. Reply rates are not. Cannot tell if it is the list, the message, the timing, or the offer. No measurement layer to diagnose it. Every week that passes is budget burning on a system they cannot debug."
+      },
+      "angle": "A better Clay table is not what you are missing — it is the measurement layer that tells you where the sequence is actually breaking.",
+      "why_now_signal": {
+        "type": "manual",
+        "description": "FILL IN — Founder posted asking for outbound advice or venting about sequence performance on LinkedIn or Twitter/X.",
+        "source": "LinkedIn / Twitter/X",
+        "date": "FILL_IN"
+      },
+      "product_fit": "Signal Audit delivers a full diagnostic — sequence audit, ICP scoring, signal-to-message mapping — and hands over a system with measurement baked in so every future campaign has a clear answer to 'where is this breaking.'",
+      "heritage_risk": "Low — open to new approaches, already proven they will spend on tools",
+      "status": "monitor",
+      "notes": "Same LinkedIn search as Segment C target 1. Do not batch-message; each Segment C message must reference their specific post or it reads as spray-and-pray.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "< FILL IN — Segment D target >",
+      "domain": "FILL_IN.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS",
+      "segment": "Segment D — Recently Churned an Agency or Fractional CRO",
+      "persona": {
+        "title": "Founder / CEO",
+        "why_they_feel_it": "Paid a fractional CRO or outbound agency for 3-6 months. Got a strategy deck and a list. No pipeline. Now burned and skeptical. About to hire internally, post about it on LinkedIn, or just go quiet. The window where they are frustrated and open to a different approach is narrow."
+      },
+      "angle": "We do not advise. We build. You will finish with a working system inside your CRM — not a strategy document in a Drive folder.",
+      "why_now_signal": {
+        "type": "manual",
+        "description": "FILL IN — Founder posted on LinkedIn about frustration with their last agency, fractional CRO, or outsourced SDR play. Often followed within 30 days by an internal hiring post.",
+        "source": "LinkedIn post",
+        "date": "FILL_IN"
+      },
+      "product_fit": "Signal Audit is the opposite of what burned them — every deliverable is a thing running inside their CRM, not a slide. By end of Week 2 they have a working system they can operate themselves or hand to an internal hire.",
+      "heritage_risk": "Medium — high skepticism from prior bad experience; lead with the Signal Audit deliverable list, not the pitch",
+      "status": "monitor",
+      "notes": "LinkedIn search: 'our last agency' OR 'fractional CRO' OR 'outsourced SDR' + negative sentiment from B2B SaaS founders. Window is short — reply fast when signal fires. Never use the word 'strategy' in this message.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "< FILL IN — Segment D target 2 >",
+      "domain": "FILL_IN_2.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS",
+      "segment": "Segment D — Recently Churned an Agency or Fractional CRO",
+      "persona": {
+        "title": "Founder / CEO",
+        "why_they_feel_it": "Just announced they are hiring an internal sales or revenue ops person after a bad agency experience. Looking for someone to build what the agency failed to build. The hire is the signal — they have given up on outsourcing but they do not yet have a system."
+      },
+      "angle": "The internal hire you just posted for will inherit whatever system exists on their first day — right now that is nothing.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "FILL IN — Founder posted an internal sales or RevOps hire on LinkedIn within 30 days of expressing frustration with an agency or fractional. The two signals together are the trigger.",
+        "source": "LinkedIn Jobs + LinkedIn post",
+        "date": "FILL_IN"
+      },
+      "product_fit": "We build the system before the hire starts — so their first day is a day of selling into infrastructure, not a day of auditing chaos. The hire becomes the operator; we built the engine.",
+      "heritage_risk": "Medium — same skepticism risk; position as temporary specialist building the thing the hire will own, not as another outsourced vendor",
+      "status": "monitor",
+      "notes": "Two-signal trigger: frustration post + hiring post. Both must be present for this angle to land. Single-signal version (just the hiring post) uses Segment A or B messaging instead.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "< FILL IN — Segment E target >",
+      "domain": "FILL_IN.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS",
+      "segment": "Segment E — Solo RevOps / Growth Person Overwhelmed",
+      "persona": {
+        "title": "RevOps Manager / Head of Growth",
+        "why_they_feel_it": "Hired to be strategic but spending 80% of time on Zapier workflows, HubSpot maintenance, and integration firefighting. CEO expects both — the plumbing and the strategy. No time to do either well. Not getting promoted for fixing pipelines they did not break."
+      },
+      "angle": "We take the plumbing. You take the credit for the system working — and the time back to do the strategy work you were hired for.",
+      "why_now_signal": {
+        "type": "manual",
+        "description": "FILL IN — RevOps or Growth person at a Seed-A company posted on LinkedIn about tool sprawl, integration debt, or spending time on plumbing instead of strategy.",
+        "source": "LinkedIn post",
+        "date": "FILL_IN"
+      },
+      "product_fit": "We operate quietly inside their CRM — building and maintaining the workflows, signal detection, and integration layer — while the RevOps person gets clean data and reporting to show the CEO. They ship; we build.",
+      "heritage_risk": "Low — but note they may need to sell the engagement internally to the founder; give them the ROI framing they can use with their CEO",
+      "status": "monitor",
+      "notes": "LinkedIn search: RevOps OR Growth at Seed-A SaaS companies + 'tool sprawl' OR 'integration' OR 'workflows' OR 'plumbing' + frustration signal. This persona usually needs ammo to sell internally — include the CEO-facing ROI framing in the follow-up, not the first touch.",
+      "last_updated": "2026-04-23"
+    },
+    {
+      "company": "< FILL IN — Segment E target 2 >",
+      "domain": "FILL_IN_2.com",
+      "icp_tier": 2,
+      "market": "B2B SaaS",
+      "segment": "Segment E — Solo RevOps / Growth Person Overwhelmed",
+      "persona": {
+        "title": "Head of Revenue Operations / Growth Lead",
+        "why_they_feel_it": "Single RevOps person trying to manage CRM hygiene, lead routing, tool stack, and enablement at a 15-30 person SaaS company. CEO added a sales hire without adding ops support. Stack is now more tools than one person can properly run. Data quality is degrading and they know it."
+      },
+      "angle": "Adding a rep without adding ops capacity means the data degrades twice as fast — we add the ops layer without adding headcount.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "FILL IN — Company added a sales hire (AE or BDR) while the RevOps person is still solo, signaling growing ops debt. Verify the hiring post on LinkedIn.",
+        "source": "LinkedIn Jobs",
+        "date": "FILL_IN"
+      },
+      "product_fit": "We operate as embedded RevOps — building the signal detection, sequence infrastructure, and CRM workflows the new rep needs — so the solo ops person stops drowning and starts owning the architecture rather than the maintenance.",
+      "heritage_risk": "Low — founder may need to approve; RevOps person is the champion, not the buyer",
+      "status": "monitor",
+      "notes": "Signal pattern: company just hired a rep AND still has one RevOps person. The hiring post is visible on LinkedIn. Target the RevOps person directly, not the founder — they feel the pain most acutely and can champion the engagement.",
+      "last_updated": "2026-04-23"
+    }
+  ]
+}
