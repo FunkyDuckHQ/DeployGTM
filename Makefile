@@ -165,6 +165,9 @@ init-matrix:  ## Scaffold a new client account matrix stub (set CLIENT=slug)
 outreach-variants:  ## Generate 3 outreach variants (set CLIENT=slug COMPANY="Name" [LOG=1|2|3])
 	$(PYTHON) projects/deploygtm-own/scripts/generate_outreach.py --client $(CLIENT) --company "$(COMPANY)" $(if $(LOG),--log-variant $(LOG),)
 
+batch-outreach:  ## Generate variants across a tier filter (set CLIENT=slug [TIER=1 or 1,2] [LIMIT=n] [LOG=1|2|3])
+	$(PYTHON) projects/deploygtm-own/scripts/batch_outreach.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(LIMIT),--limit $(LIMIT),) $(if $(LOG),--log-variant $(LOG),)
+
 variant-respond:  ## Record a response to a tracked variant (set ID=n SENTIMENT=positive|neutral|negative)
 	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py respond --id $(ID) --sentiment $(SENTIMENT)
 
