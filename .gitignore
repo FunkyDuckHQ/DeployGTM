@@ -38,3 +38,11 @@ env/
 # Google credentials (never commit)
 *-credentials.json
 credentials.json
+
+# Variant tracker local SQLite DB
+projects/*/data/variants.db
+projects/*/data/*.sqlite
+projects/*/data/*.sqlite3
+
+# Generated outreach variants (may contain enriched prospect context)
+projects/*/outputs/*/
