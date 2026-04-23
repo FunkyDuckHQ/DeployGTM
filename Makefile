@@ -159,6 +159,9 @@ audit-status:  ## Show Signal Audit engagement status (set CLIENT=slug)
 
 # ─── Account Matrix (client-agnostic artifacts) ──────────────────────────────
 
+init-matrix:  ## Scaffold a new client account matrix stub (set CLIENT=slug)
+	$(PYTHON) projects/deploygtm-own/scripts/init_matrix.py --client $(CLIENT)
+
 outreach-variants:  ## Generate 3 outreach variants (set CLIENT=slug COMPANY="Name" [LOG=1|2|3])
 	$(PYTHON) projects/deploygtm-own/scripts/generate_outreach.py --client $(CLIENT) --company "$(COMPANY)" $(if $(LOG),--log-variant $(LOG),)
 
