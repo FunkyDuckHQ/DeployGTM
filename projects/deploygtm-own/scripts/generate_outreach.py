@@ -46,7 +46,7 @@ except ImportError:
     pass
 
 
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-sonnet-4-6"
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
@@ -199,7 +199,7 @@ def call_claude(system: str, user: str, api_key: Optional[str] = None) -> str:
     resp = client.messages.create(
         model=MODEL,
         max_tokens=1500,
-        system=system,
+        system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
         messages=[{"role": "user", "content": user}],
     )
     return resp.content[0].text.strip()
