@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeployGTM Account Matrix",
+  "description": "Client-agnostic account intelligence schema. One record per target account per client engagement. Reuse across any DeployGTM client by swapping client_name and the accounts array.",
+  "type": "object",
+  "required": ["client_name", "voice_notes", "accounts"],
+  "properties": {
+    "client_name": {
+      "type": "string",
+      "description": "Slug identifying the DeployGTM client (e.g. peregrine-space, acme-corp)"
+    },
+    "voice_notes": {
+      "type": "string",
+      "description": "How the client writes. Used by the outreach generator to match their tone. Include: sentence length, vocabulary register, things to avoid, preferred close."
+    },
+    "accounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "company", "domain", "icp_tier", "market", "segment",
+          "persona", "angle", "why_now_signal", "product_fit", "heritage_risk"
+        ],
+        "properties": {
+          "company": {
+            "type": "string",
+            "description": "Target account company name"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Company website domain (used for enrichment lookups)"
+          },
+          "icp_tier": {
+            "type": "integer",
+            "enum": [1, 2, 3],
+            "description": "1 = reach out immediately, 2 = reach out this week, 3 = nurture and monitor"
+          },
+          "market": {
+            "type": "string",
+            "description": "Broad market grouping an SDR would recognize (e.g. NewSpace, Defense Tech, B2B SaaS)"
+          },
+          "segment": {
+            "type": "string",
+            "description": "Meaningful subdivision of the market (e.g. Constellation Operators, SAR Imaging, Satellite Bus Manufacturers)"
+          },
+          "persona": {
+            "type": "object",
+            "description": "Who owns the problem at this account",
+            "required": ["title", "why_they_feel_it"],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Job title of the decision-maker or primary influencer"
+              },
+              "why_they_feel_it": {
+                "type": "string",
+                "description": "Why this specific person feels the pain — in their frame, not the client's"
+              }
+            }
+          },
+          "angle": {
+            "type": "string",
+            "description": "The directional argument — a specific claim we are making to this account. Not a pain point. One sentence. Something a rep can build a message around."
+          },
+          "why_now_signal": {
+            "type": "object",
+            "description": "A verifiable public signal that justifies reaching out now. Must be something that can be referenced in outreach without sounding like you surveilled them.",
+            "required": ["type", "description", "source"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "funding", "hiring", "contract_award", "program_announcement",
+                  "acquisition", "sbir_award", "leadership_change",
+                  "product_launch", "conference_signal", "manual"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "description": "What specifically happened — the fact that can be referenced"
+              },
+              "source": {
+                "type": "string",
+                "description": "Where this was found (SAM.gov, LinkedIn, Crunchbase, SpaceNews, etc.)"
+              },
+              "date": {
+                "type": "string",
+                "description": "Approximate signal date (YYYY-MM-DD or YYYY-MM)"
+              }
+            }
+          },
+          "product_fit": {
+            "type": "string",
+            "description": "What specifically about the client's product solves this account's problem — precise, not generic"
+          },
+          "heritage_risk": {
+            "type": "string",
+            "description": "How likely a heritage / qualification objection is to block this deal. Client-specific qualifiers allowed (e.g. 'Low — commercial terms', 'High — MILSPEC required').",
+            "examples": ["Low", "Medium", "High", "Low — commercial terms", "Medium — program-dependent", "High — MILSPEC required"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["monitor", "active", "outreach_sent", "replied", "meeting_booked", "no_fit", "paused"],
+            "default": "monitor"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Anything not captured in structured fields — recent context, prior conversations, watch-outs"
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "ISO date of last update (YYYY-MM-DD)"
+          }
+        }
+      }
+    }
+  }
+}

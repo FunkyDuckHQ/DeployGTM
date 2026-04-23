@@ -1,0 +1,316 @@
+{
+  "client_name": "peregrine-space",
+  "voice_notes": "Direct and technical. Short sentences. Lead immediately with what you know about their specific program or signal — no preamble. Reference the signal in the first line. Close with a single simple question: '20 minutes?' or 'Worth a call?'. Never open with 'I hope this finds you well' or 'I wanted to reach out.' Founder-to-engineer energy. Mention real program names, real specs, real timelines. No feature dumping. The ask is a conversation, not a demo.",
+  "accounts": [
+    {
+      "company": "Xona Space Systems",
+      "domain": "xonaspace.com",
+      "icp_tier": 1,
+      "market": "NewSpace / PNT",
+      "segment": "Alternative PNT Constellation",
+      "persona": {
+        "title": "Chief Technology Officer / Mission Architect",
+        "why_they_feel_it": "Building a GPS-independent positioning constellation from scratch. Every payload decision is a precedent-setting one. Heritage requirements from legacy suppliers add 12-18 months they don't have."
+      },
+      "angle": "Your PULSAR constellation needs payload suppliers who can certify on your schedule, not a heritage provider's — Peregrine's active flight program and commercial qualification process is built for exactly this.",
+      "why_now_signal": {
+        "type": "funding",
+        "description": "Xona raised a $19M Series A to accelerate PULSAR constellation deployment. Now actively hiring mission systems engineers for payload integration.",
+        "source": "Crunchbase / LinkedIn",
+        "date": "2024-03"
+      },
+      "product_fit": "Optical payloads qualified to Xona's SWaP envelope and schedule. Peregrine absorbs heritage risk — Xona gets flight-ready hardware on commercial terms without a 2-year certification cycle.",
+      "heritage_risk": "Low — commercial NewSpace, no government heritage requirement on PULSAR",
+      "status": "active",
+      "notes": "Explicitly called out in done condition for outreach generator test. High-priority test case.",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "HawkEye 360",
+      "domain": "he360.com",
+      "icp_tier": 1,
+      "market": "NewSpace / RF Intelligence",
+      "segment": "RF Signal Intelligence Constellation",
+      "persona": {
+        "title": "VP Engineering / Head of Payload Systems",
+        "why_they_feel_it": "Running a pure-RF constellation and watching customers ask for optical fusion to complete the intelligence picture. Multi-modal is the next capability gap and they know it."
+      },
+      "angle": "Adding optical to your RF constellation turns signal detection into confirmed attribution — Peregrine can deliver an optical payload that integrates with your existing bus architecture without heritage-blocking the program.",
+      "why_now_signal": {
+        "type": "contract_award",
+        "description": "HawkEye 360 awarded multi-year DOD SIGINT analytics contract, expanding constellation to Cluster 7+. Actively sourcing next-generation payload capabilities.",
+        "source": "DefenseNews / HawkEye 360 press release",
+        "date": "2024-01"
+      },
+      "product_fit": "Optical payload that integrates with HE360's existing satellite bus and ground segment. Certification path designed for commercial constellations, not legacy defense programs.",
+      "heritage_risk": "Low — commercial procurement, mission-driven not heritage-driven",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "BlackSky Technology",
+      "domain": "blacksky.com",
+      "icp_tier": 1,
+      "market": "NewSpace EO",
+      "segment": "Commercial EO Constellation",
+      "persona": {
+        "title": "VP Payload Engineering",
+        "why_they_feel_it": "Responsible for Gen-3 satellite payload upgrades. Legacy optical suppliers have 18-month lead times and require heritage certifications that don't fit BlackSky's 12-month refresh cycle."
+      },
+      "angle": "Your Gen-3 constellation timeline is constrained by payload supplier lead times — Peregrine delivers qualified optical payloads faster and on commercial terms, without blocking your manifest.",
+      "why_now_signal": {
+        "type": "program_announcement",
+        "description": "BlackSky announced Gen-3 satellite program with upgraded resolution and revisit rates. Payload procurement underway. Public roadmap references new optical capability.",
+        "source": "BlackSky investor relations / SpaceNews",
+        "date": "2024-02"
+      },
+      "product_fit": "Higher-resolution optical payload that fits BlackSky's existing bus platform, with qualification timeline matching their Gen-3 launch manifest.",
+      "heritage_risk": "Low — NYSE-listed commercial company, procurement on commercial terms",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "Satellogic",
+      "domain": "satellogic.com",
+      "icp_tier": 2,
+      "market": "NewSpace EO",
+      "segment": "Low-Cost Imaging Constellation",
+      "persona": {
+        "title": "Mission Architecture Lead / VP Engineering",
+        "why_they_feel_it": "Optimizing cost-per-image at scale for the next constellation tranche. Every payload dollar matters. Traditional optical suppliers price for custom programs, not commodity-scale production."
+      },
+      "angle": "If you're sourcing payloads for your next tranche at scale, a supplier with an active flight program and commodity-level pricing removes the cost ceiling that slows constellation expansion.",
+      "why_now_signal": {
+        "type": "contract_award",
+        "description": "Satellogic signed a new government analytics contract and publicly committed to constellation expansion. Next satellite tranche planning is underway.",
+        "source": "Satellogic press release / Crunchbase",
+        "date": "2023-11"
+      },
+      "product_fit": "Optical payloads priced for production-scale constellation builds, with Peregrine absorbing NRE and heritage certification costs.",
+      "heritage_risk": "Low — commercial constellation, volume procurement",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "Umbra",
+      "domain": "umbra.space",
+      "icp_tier": 1,
+      "market": "NewSpace / SAR Imaging",
+      "segment": "SAR Constellation",
+      "persona": {
+        "title": "CTO / VP Systems Engineering",
+        "why_they_feel_it": "Built the best SAR constellation in commercial space and is now being asked by customers for optical fusion. SAR alone is no longer the full answer. Adding optical without building a second constellation is the problem."
+      },
+      "angle": "SAR plus optical fusion is becoming the baseline for premium EO — Peregrine can add optical capability to your constellation without requiring you to build a separate program from scratch.",
+      "why_now_signal": {
+        "type": "funding",
+        "description": "Umbra closed a $35M Series C to expand constellation and add new sensing modalities. CTO has publicly discussed multi-modal sensing as a 2024-2025 priority.",
+        "source": "Crunchbase / Umbra blog",
+        "date": "2023-09"
+      },
+      "product_fit": "Optical payload that co-manifests with Umbra's SAR satellites on Rocket Lab or SpaceX rideshare. Same ground segment, different sensing modality.",
+      "heritage_risk": "Low — VC-backed commercial, fast-moving procurement",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "York Space Systems",
+      "domain": "yorkspacesystems.com",
+      "icp_tier": 1,
+      "market": "Defense Space / Satellite Manufacturing",
+      "segment": "Satellite Bus Manufacturers",
+      "persona": {
+        "title": "VP Business Development / Program Manager",
+        "why_they_feel_it": "Winning SDA and DoD bus contracts but getting blocked at payload integration because heritage-qualified optical suppliers can't hit SDA's 18-month cadence. The bus is ready. The payload is the constraint."
+      },
+      "angle": "SDA Tranche programs need payload partners who can certify on 18-month cycles — Peregrine qualifies to MIL-SPEC timelines and absorbs heritage risk so York's bus business doesn't get held up at payload integration.",
+      "why_now_signal": {
+        "type": "contract_award",
+        "description": "York Space awarded SDA Transport Layer contracts for satellite bus production. Active payload integration partner search underway for Tranche 2 delivery.",
+        "source": "SAM.gov / SDA press release",
+        "date": "2023-12"
+      },
+      "product_fit": "Payload supplier who integrates with York's S-class bus, meets SDA schedule requirements, and handles qualification certification — removing the integration bottleneck from York's program.",
+      "heritage_risk": "Medium — SDA has formal qualification requirements, but Peregrine's flight program addresses this",
+      "status": "active",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "General Atomics Electromagnetic Systems",
+      "domain": "ga-ems.com",
+      "icp_tier": 2,
+      "market": "Defense Space",
+      "segment": "Defense Prime Subcontractors / OPIR",
+      "persona": {
+        "title": "Chief Systems Engineer / Program Director",
+        "why_they_feel_it": "Running OPIR and SDA programs under DoD schedule pressure. Primary payload suppliers have 24+ month lead times and heritage requirements that add cost and schedule risk to every program."
+      },
+      "angle": "Your SDA and OPIR programs are constrained by payload suppliers with 24-month backlogs — Peregrine is building flight heritage now and can be on your approved vendor list before your next RFP drops.",
+      "why_now_signal": {
+        "type": "contract_award",
+        "description": "General Atomics EMS awarded SDA Tranche 2 tracking layer contract. Subcontractor solicitation for optical payload components active.",
+        "source": "SAM.gov / Defense Daily",
+        "date": "2024-01"
+      },
+      "product_fit": "Optical payload components qualifiable to MIL-SPEC with GA-EMS as integrating prime. Peregrine handles heritage certification pathway, GA-EMS handles system integration.",
+      "heritage_risk": "Medium-High — DoD program, formal qualification required. Mitigated by Peregrine's active flight program.",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "LeoStella",
+      "domain": "leostella.com",
+      "icp_tier": 2,
+      "market": "Defense / Commercial Space",
+      "segment": "Satellite Bus Manufacturers",
+      "persona": {
+        "title": "VP Engineering / Program Manager",
+        "why_they_feel_it": "Scaling satellite manufacturing for both commercial and government customers. Payload supplier qualification is a recurring bottleneck — approved vendor lists don't grow as fast as build rates."
+      },
+      "angle": "As your manufacturing rate increases, the approved payload vendor list becomes the ceiling — Peregrine's qualification path is designed to get onto that list faster than legacy suppliers.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "LeoStella posted multiple payload systems engineer and integration engineer roles, indicating active production scaling and new payload integration programs.",
+        "source": "LinkedIn",
+        "date": "2024-02"
+      },
+      "product_fit": "Optical payload with qualification documentation ready for LeoStella's vendor approval process. Built to integrate with their bus platform with standard ICD.",
+      "heritage_risk": "Medium — joint Boeing/Thales venture, some heritage expectations depending on program",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "Rocket Lab",
+      "domain": "rocketlabusa.com",
+      "icp_tier": 2,
+      "market": "NewSpace / Launch + Mission Systems",
+      "segment": "Vertical Integration / Mission Services",
+      "persona": {
+        "title": "VP Mission Systems / Director of Satellite Systems",
+        "why_they_feel_it": "Selling end-to-end mission solutions and getting asked for payload capabilities Rocket Lab doesn't build in-house. Preferred payload suppliers who can move on Electron/Neutron timelines are a competitive differentiator."
+      },
+      "angle": "If you're selling full mission solutions, Peregrine as a preferred optical payload partner gives you a capability that fits your satellite buses and your delivery timelines without adding a heritage bottleneck.",
+      "why_now_signal": {
+        "type": "program_announcement",
+        "description": "Rocket Lab announced Photon spacecraft expansion and HASTE hypersonic test vehicle program. Mission systems team is actively building preferred supplier network for payload integration.",
+        "source": "Rocket Lab investor relations / SpaceNews",
+        "date": "2024-01"
+      },
+      "product_fit": "Optical payload sized for Photon buses, qualified on timelines that match Rocket Lab's 6-9 month launch cadence.",
+      "heritage_risk": "Low-Medium — depends on end customer. Commercial missions are heritage-agnostic; government missions require qualification.",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "Naval Research Laboratory",
+      "domain": "nrl.navy.mil",
+      "icp_tier": 1,
+      "market": "Government Research",
+      "segment": "Defense Research Labs",
+      "persona": {
+        "title": "Principal Investigator / Senior Research Scientist",
+        "why_they_feel_it": "Running instrument development programs where the goal is building new sensing capability, not procuring commodity hardware. Heritage requirements don't exist in R&D — performance and schedule do."
+      },
+      "angle": "NRL programs building new optical sensing capabilities need hardware suppliers who can deliver research-grade qualification data on government timelines — Peregrine is currently building flight hardware, not paper studies.",
+      "why_now_signal": {
+        "type": "sbir_award",
+        "description": "NRL issued multiple SBIR solicitations for advanced optical sensing payloads and smallsat instrument components. Phase II awards active for optical systems.",
+        "source": "SBIR.gov / SAM.gov",
+        "date": "2024-01"
+      },
+      "product_fit": "Research-grade optical payload with full characterization data, available for integration with NRL smallsat programs. Peregrine can provide custom aperture configurations.",
+      "heritage_risk": "Low — R&D context, heritage requirements do not apply to instrument development programs",
+      "status": "active",
+      "notes": "Research programs often become the path to first flight heritage. High strategic value even if revenue is smaller.",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "MIT Lincoln Laboratory",
+      "domain": "ll.mit.edu",
+      "icp_tier": 2,
+      "market": "Government Research",
+      "segment": "University-Affiliated Defense Research",
+      "persona": {
+        "title": "Technical Staff Member / Program Manager",
+        "why_they_feel_it": "Developing advanced sensing systems for DARPA and AFRL programs. Needs hardware partners who can deliver prototype-quality components on research contract timelines — not defense prime subcontractors who take 12 months to respond to an RFI."
+      },
+      "angle": "MITLL instrument programs regularly work with early-heritage hardware suppliers who can move on research timelines — this is the path where Peregrine gets first-flight data and MITLL gets capability they can actually build with.",
+      "why_now_signal": {
+        "type": "program_announcement",
+        "description": "MIT Lincoln Laboratory is actively developing responsive space sensing systems under DARPA and AFRL programs. Component solicitations for optical subsystems visible in recent procurement activity.",
+        "source": "SAM.gov / DARPA BAA",
+        "date": "2024-02"
+      },
+      "product_fit": "Optical payload components with full characterization and environmental test data. Peregrine's manufacturing baseline and test documentation supports MITLL's system integration process.",
+      "heritage_risk": "Low — university-affiliated research, prototype-grade hardware is the expectation",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "Anduril Industries",
+      "domain": "anduril.com",
+      "icp_tier": 1,
+      "market": "Defense Tech",
+      "segment": "Non-Traditional Defense / Space Domain Awareness",
+      "persona": {
+        "title": "Space Systems Lead / VP Engineering",
+        "why_they_feel_it": "Building a space domain awareness constellation under OTA contracts where speed-to-orbit is the whole value proposition. Legacy payload suppliers with 18-month qualification cycles break the model entirely."
+      },
+      "angle": "You're building a space DA constellation on OTA timelines — the only payload suppliers who fit that model are the ones who can certify in 6 months, not 18, and Peregrine's active program is the proof point.",
+      "why_now_signal": {
+        "type": "hiring",
+        "description": "Anduril posted a wave of space systems engineering roles including payload integration engineers and mission architects for their space domain awareness program, Pulsar.",
+        "source": "LinkedIn / Anduril careers",
+        "date": "2024-02"
+      },
+      "product_fit": "Optical payload qualified on OTA-compatible timelines. Peregrine takes heritage risk; Anduril gets a sensor on orbit ahead of competitors using legacy suppliers.",
+      "heritage_risk": "Low — OTA procurement, Anduril builds their own qualification path",
+      "status": "active",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "True Anomaly",
+      "domain": "trueanomaly.space",
+      "icp_tier": 1,
+      "market": "Defense Tech",
+      "segment": "Space Operations / Proximity Operations",
+      "persona": {
+        "title": "Chief Technology Officer / Lead Systems Engineer",
+        "why_they_feel_it": "The Jackal spacecraft needs optical sensor payloads to complete its situational awareness mission. Every month spent waiting for a heritage-qualified optical supplier is a month the spacecraft can't do its job."
+      },
+      "angle": "Jackal needs eyes — optical payloads that integrate on your spacecraft development cadence and qualify under DARPA-speed timelines, not legacy defense procurement cycles.",
+      "why_now_signal": {
+        "type": "funding",
+        "description": "True Anomaly raised a $100M Series B to accelerate Jackal spacecraft development and proximity operations capability. Payload integration for the second-generation vehicle is underway.",
+        "source": "Crunchbase / SpaceNews",
+        "date": "2024-01"
+      },
+      "product_fit": "Compact optical payload matched to Jackal's form factor and power budget. Qualification documentation compatible with True Anomaly's government customer requirements.",
+      "heritage_risk": "Low — DARPA-speed development, OTA-style procurement, heritage is not a gate",
+      "status": "active",
+      "last_updated": "2026-04-22"
+    },
+    {
+      "company": "Slingshot Aerospace",
+      "domain": "slingshotaerospace.com",
+      "icp_tier": 2,
+      "market": "Defense Tech / Space Situational Awareness",
+      "segment": "SSA / Space Traffic Management",
+      "persona": {
+        "title": "Director of Space Systems / CTO",
+        "why_they_feel_it": "Running a ground-based SSA network and getting pushed by government customers to add space-based optical sensing. The path from ground to space-based is blocked by payload qualification timelines that don't fit their OTA contract structure."
+      },
+      "angle": "Moving your SSA network from ground-based to space-based requires optical payload suppliers who can work under OTA terms — Peregrine's commercial qualification path is built for exactly that transition.",
+      "why_now_signal": {
+        "type": "contract_award",
+        "description": "Slingshot Aerospace awarded DIU contract for commercial space situational awareness. Publicly exploring space-based optical sensing to complement their ground network.",
+        "source": "DIU award announcement / SpaceNews",
+        "date": "2023-12"
+      },
+      "product_fit": "Space-based optical payload for SSA missions. Peregrine provides the sensor; Slingshot provides the data pipeline. No heritage requirement under DIU OTA terms.",
+      "heritage_risk": "Low — DIU OTA contract, commercial procurement pathway",
+      "status": "monitor",
+      "last_updated": "2026-04-22"
+    }
+  ]
+}
