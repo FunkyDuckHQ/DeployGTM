@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deploygtm.local/schemas/icp_strategy.schema.json",
+  "title": "DeployGTM ICP Strategy",
+  "type": "object",
+  "required": ["schema_version", "client_slug", "generated_on", "inputs", "strategy"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+$" },
+    "client_slug": { "type": "string", "minLength": 2 },
+    "generated_on": { "type": "string", "format": "date" },
+    "inputs": {
+      "type": "object",
+      "required": ["context_pack_path", "principle_count"],
+      "additionalProperties": false,
+      "properties": {
+        "context_pack_path": { "type": "string", "minLength": 5 },
+        "principle_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "strategy": {
+      "type": "object",
+      "required": ["principles", "market_hypotheses", "segment_rules", "persona_rules", "angle_rules"],
+      "additionalProperties": false,
+      "properties": {
+        "principles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["principle_text", "confidence", "source_trace"],
+            "additionalProperties": false,
+            "properties": {
+              "principle_text": { "type": "string", "minLength": 5 },
+              "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+              "source_trace": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["source_type", "source_ref", "evidence_snippet"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "source_type": { "type": "string" },
+                    "source_ref": { "type": "string" },
+                    "evidence_snippet": { "type": "string", "minLength": 3 }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "market_hypotheses": { "type": "array", "items": { "type": "string", "minLength": 8 } },
+        "segment_rules": { "type": "array", "items": { "type": "string", "minLength": 8 } },
+        "persona_rules": { "type": "array", "items": { "type": "string", "minLength": 8 } },
+        "angle_rules": { "type": "array", "items": { "type": "string", "minLength": 8 } }
+      }
+    }
+  }
+}

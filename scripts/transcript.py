@@ -38,7 +38,7 @@ from __future__ import annotations
 import json
 import os
 import sys
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -246,6 +246,20 @@ def update_project_handoff(project: str, summary: dict, confirm: bool = True) ->
     return True
 
 
+def save_project_transcript_summary(project: str, summary: dict) -> Path:
+    """
+    Persist transcript extraction JSON under projects/<project>/transcripts/.
+    This provides durable machine-readable context for downstream strategy assembly.
+    """
+    transcript_dir = PROJECTS_DIR / project / "transcripts"
+    transcript_dir.mkdir(parents=True, exist_ok=True)
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    out_file = transcript_dir / f"{stamp}_summary.json"
+    out_file.write_text(json.dumps(summary, indent=2))
+    return out_file
+
+
 # ─── CLI ──────────────────────────────────────────────────────────────────────
 
 @click.group()
@@ -265,7 +279,9 @@ def cli():
               help="Write extracted open loops + session note to project files (confirms first)")
 @click.option("--output", "-o", default=None,
               help="Save full JSON output to file")
-def process(input_file, from_stdin, project, update_project, output):
+@click.option("--save-project-summary/--no-save-project-summary", default=True,
+              help="Save JSON summary to projects/<project>/transcripts when project is known")
+def process(input_file, from_stdin, project, update_project, output, save_project_summary):
     """Process a transcript and extract a structured session summary."""
 
     # Read transcript
@@ -289,9 +305,13 @@ def process(input_file, from_stdin, project, update_project, output):
         Path(output).write_text(json.dumps(summary, indent=2))
         click.echo(f"Full output saved to {output}")
 
+    target_project = project or summary.get("primary_project")
+    if save_project_summary and target_project and (PROJECTS_DIR / target_project).exists():
+        saved = save_project_transcript_summary(target_project, summary)
+        click.echo(f"Project transcript summary saved to {saved}")
+
     # Update project files
     if update_project:
-        target_project = project or summary.get("primary_project")
         if not target_project:
             click.echo("\nCould not determine project. Re-run with --project <name>")
             return

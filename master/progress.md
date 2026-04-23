@@ -1,7 +1,7 @@
 # DeployGTM — Build Log & Progress
 
 *Single source of truth for what's been built, what's activated, and what's next.*
-*Updated: 2026-04-21*
+*Updated: 2026-04-23*
 
 ---
 
@@ -92,6 +92,27 @@ The system is fully constructed. Zero accounts have run through it. Activation i
 - `master/local-api-testing-plan.md` — harness runbook
 - `logs/` directory — structured JSONL run logs
 - README — added local API harness section
+
+### April 23 — Platform vNext foundation + hardening (Codex/GPT)
+- `projects/deploygtm-own/artifacts/client-account-matrix/client_account_matrix.schema.json` — client-agnostic account matrix schema
+- `projects/deploygtm-own/artifacts/client-account-matrix/peregrine_accounts.json` — 14-account seed dataset for Peregrine
+- `projects/deploygtm-own/platform/schema/canonical.schema.json` — canonical platform payload contract
+- `projects/deploygtm-own/platform/schema/icp_strategy.schema.json` — ICP strategy output schema
+- `scripts/platform/adapters/base.py` — CRM adapter contract
+- `scripts/platform/adapters/types.py` — typed records (`CompanyRecord`, `ContactRecord`, `CRMContext`, `SyncResult`)
+- `scripts/platform/adapters/hubspot_adapter.py` — HubSpot-first adapter implementation
+- `scripts/platform/crm_sync.py` — provider-agnostic company/contact sync primitive
+- `scripts/platform/context_pack.py` — phase-2 context pack assembly from project context + transcripts + brain priors
+- `scripts/platform/bootstrap_client.py` — client workspace bootstrap helper
+- `scripts/platform/icp_strategy.py` — context-grounded ICP strategy generation
+- `scripts/platform/cli.py` — unified CLI for bootstrap/context-pack/strategy
+- `scripts/transcript.py` — now persists transcript summaries to `projects/<client>/transcripts/` by default when project is known
+- `Makefile` — new targets: `context-pack`, `platform-bootstrap`, `platform-strategy`
+- New tests:
+  - `tests/platform/test_platform_contracts.py`
+  - `tests/platform/test_context_pack.py`
+  - `tests/platform/test_bootstrap_and_strategy.py`
+  - `tests/platform/test_transcript_summary_persistence.py`
 
 ---
 

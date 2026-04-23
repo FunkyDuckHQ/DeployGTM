@@ -92,6 +92,15 @@ report:  ## Generate weekly signal report from output/
 report-hs:  ## Weekly report with live HubSpot stage data
 	$(PYTHON) scripts/report.py generate --include-hubspot
 
+context-pack:  ## Build phase-2 context pack (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.context_pack build --client $(CLIENT)
+
+platform-bootstrap:  ## Bootstrap a new client workspace (set CLIENT_NAME and DOMAIN, optional CLIENT)
+	$(PYTHON) -m scripts.platform.cli bootstrap --client-name "$(CLIENT_NAME)" --domain $(DOMAIN) $(if $(CLIENT),--client-slug $(CLIENT),)
+
+platform-strategy:  ## Generate ICP strategy from context pack (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli strategy --client $(CLIENT)
+
 # ─── Signals & BirdDog ────────────────────────────────────────────────────────
 
 signals:  ## Find signals from Apollo (hiring + funded) → signals_intake.csv

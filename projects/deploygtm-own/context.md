@@ -69,3 +69,4 @@ Lead with: "You just raised. You need pipeline. You probably don't have the infr
 | Date | Action | Result | Learning |
 |------|--------|--------|----------|
 | 2026-04-17 | Built full pipeline system | All scripts live on GitHub | System is complete — bottleneck is now API keys + account list |
+| 2026-04-23 | Built platform vNext primitives (schema + adapters + context pack + strategy + bootstrap) | Client-agnostic foundation in place for bootstrap → context → strategy → CRM sync | Next milestone is account discovery + scoring on top of these primitives |
