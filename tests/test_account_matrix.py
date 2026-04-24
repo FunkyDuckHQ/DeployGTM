@@ -372,5 +372,152 @@ class TestInitMatrix(MatrixTestBase):
         self.assertTrue(p.name == "new_client_accounts.json")
 
 
+# ─── verify_signals ───────────────────────────────────────────────────────────
+
+
+class VerifySignalsTestBase(MatrixTestBase):
+    def setUp(self):
+        super().setUp()
+        shutil.copy(SCRIPTS_DIR / "verify_signals.py",
+                    self.tmpdir / "scripts" / "verify_signals.py")
+        self.verify = _load(
+            "t_verify", self.tmpdir / "scripts" / "verify_signals.py"
+        )
+
+    def _ready_account(self, **overrides) -> dict:
+        base = {
+            "company": "Real Corp",
+            "domain": "real.com",
+            "icp_tier": 1,
+            "market": "B2B SaaS",
+            "segment": "Segment A",
+            "persona": {"title": "CEO", "why_they_feel_it": "Drowning."},
+            "angle": "Build before you hire.",
+            "why_now_signal": {
+                "type": "funding",
+                "description": "Real Corp raised $5M seed round.",
+                "source": "Crunchbase",
+                "date": "2026-03-15",
+            },
+            "product_fit": "Signal Audit.",
+            "heritage_risk": "Low",
+        }
+        base.update(overrides)
+        return base
+
+    def _blocked_account(self, **overrides) -> dict:
+        base = self._ready_account()
+        base["why_now_signal"]["description"] = "VERIFY — check Crunchbase"
+        base["why_now_signal"]["date"] = "VERIFY-2026"
+        base.update(overrides)
+        return base
+
+
+class TestVerifySignals(VerifySignalsTestBase):
+    def test_clean_account_has_no_issues(self):
+        issues = self.verify.audit_account(self._ready_account())
+        self.assertEqual(issues, [])
+
+    def test_verify_in_description_is_flagged(self):
+        acct = self._ready_account()
+        acct["why_now_signal"]["description"] = "VERIFY — check Crunchbase"
+        issues = self.verify.audit_account(acct)
+        self.assertTrue(any("description" in i for i in issues))
+
+    def test_verify_in_date_is_flagged(self):
+        acct = self._ready_account()
+        acct["why_now_signal"]["date"] = "VERIFY-2026"
+        issues = self.verify.audit_account(acct)
+        self.assertTrue(any("date" in i for i in issues))
+
+    def test_placeholder_company_is_flagged(self):
+        acct = self._ready_account(company="< FILL IN — Segment C >")
+        issues = self.verify.audit_account(acct)
+        self.assertTrue(any("company" in i for i in issues))
+
+    def test_placeholder_domain_is_flagged(self):
+        acct = self._ready_account(domain="FILL_IN.com")
+        issues = self.verify.audit_account(acct)
+        self.assertTrue(any("domain" in i for i in issues))
+
+    def test_missing_date_is_flagged(self):
+        acct = self._ready_account()
+        del acct["why_now_signal"]["date"]
+        issues = self.verify.audit_account(acct)
+        self.assertTrue(any("date" in i for i in issues))
+
+    def test_audit_matrix_splits_ready_and_blocked(self):
+        matrix = {
+            "client_name": "test",
+            "voice_notes": "Direct.",
+            "accounts": [self._ready_account(), self._blocked_account()],
+        }
+        ready, blocked = self.verify.audit_matrix(matrix)
+        self.assertEqual(len(ready), 1)
+        self.assertEqual(len(blocked), 1)
+        self.assertEqual(ready[0]["company"], "Real Corp")
+
+
+# ─── batch_outreach ───────────────────────────────────────────────────────────
+
+
+class TestBatchOutreach(VerifySignalsTestBase):
+    def setUp(self):
+        super().setUp()
+        shutil.copy(SCRIPTS_DIR / "batch_outreach.py",
+                    self.tmpdir / "scripts" / "batch_outreach.py")
+        self.batch = _load(
+            "t_batch", self.tmpdir / "scripts" / "batch_outreach.py"
+        )
+
+    def test_parse_tiers_single(self):
+        self.assertEqual(self.batch._parse_tiers("1"), {1})
+
+    def test_parse_tiers_multi(self):
+        self.assertEqual(self.batch._parse_tiers("1,2"), {1, 2})
+
+    def test_parse_tiers_rejects_invalid(self):
+        import click
+        with self.assertRaises(click.BadParameter):
+            self.batch._parse_tiers("4")
+
+    def test_parse_tiers_rejects_empty(self):
+        import click
+        with self.assertRaises(click.BadParameter):
+            self.batch._parse_tiers("")
+
+    def test_filter_accounts_by_tier(self):
+        accounts = [
+            {"icp_tier": 1, "company": "A"},
+            {"icp_tier": 2, "company": "B"},
+            {"icp_tier": 3, "company": "C"},
+        ]
+        matrix = {"accounts": accounts}
+        result = self.batch._filter_accounts(matrix, {1})
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["company"], "A")
+
+    def test_filter_accounts_multi_tier(self):
+        accounts = [
+            {"icp_tier": 1, "company": "A"},
+            {"icp_tier": 2, "company": "B"},
+            {"icp_tier": 3, "company": "C"},
+        ]
+        matrix = {"accounts": accounts}
+        result = self.batch._filter_accounts(matrix, {1, 2})
+        self.assertEqual(len(result), 2)
+
+    def test_blocked_accounts_excluded_by_audit(self):
+        ready = self._ready_account()
+        blocked = self._blocked_account(company="Blocked Corp", domain="blocked.com")
+        accounts = [ready, blocked]
+        from verify_signals import audit_account
+        skipped = [a for a in accounts if audit_account(a)]
+        self.assertEqual(len(skipped), 1)
+        self.assertEqual(skipped[0]["company"], "Blocked Corp")
+
+
+# ─── init_matrix ─────────────────────────────────────────────────────────────  (keep last)
+
 if __name__ == "__main__":
     unittest.main()
