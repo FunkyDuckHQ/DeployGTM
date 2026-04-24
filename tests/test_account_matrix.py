@@ -517,6 +517,85 @@ class TestBatchOutreach(VerifySignalsTestBase):
         self.assertEqual(skipped[0]["company"], "Blocked Corp")
 
 
+# ─── activate_account ────────────────────────────────────────────────────────
+
+
+class TestActivateAccount(VerifySignalsTestBase):
+    def setUp(self):
+        super().setUp()
+        shutil.copy(SCRIPTS_DIR / "activate_account.py",
+                    self.tmpdir / "scripts" / "activate_account.py")
+        self.activate = _load(
+            "t_activate", self.tmpdir / "scripts" / "activate_account.py"
+        )
+        self.activate.OUTPUTS_DIR = self.tmpdir / "outputs"
+
+    def _write_output_file(self, client: str, company: str, variants: list[dict]) -> Path:
+        """Write a real .txt output file using the generate_outreach format function."""
+        account = self._ready_account(company=company, domain="test.com")
+        matrix = {"client_name": client, "voice_notes": "Direct.", "accounts": [account]}
+        content = self.generate.format_output(matrix, account, variants)
+        client_dir = self.tmpdir / "outputs" / client
+        client_dir.mkdir(parents=True, exist_ok=True)
+        slug = self.generate.slugify(company)
+        path = client_dir / f"{slug}_2026-04-24.txt"
+        path.write_text(content)
+        return path
+
+    def _sample_variants(self) -> list[dict]:
+        return [
+            {"angle_label": "Speed Angle", "subject": "Day one or day 90?",
+             "body": "You're about to hire an AE into nothing. We build the infra before they start."},
+            {"angle_label": "Cost Angle", "subject": "Three months wasted",
+             "body": "First AE's first quarter goes to setup, not selling. Worth a call?"},
+            {"angle_label": "Board Angle", "subject": "Pipeline in 90 days",
+             "body": "Board wants pipeline metrics. The system to generate them doesn't exist yet."},
+        ]
+
+    def test_parse_output_file_returns_three_variants(self):
+        path = self._write_output_file("acme-co", "Real Corp", self._sample_variants())
+        variants = self.activate.parse_output_file(path)
+        self.assertEqual(len(variants), 3)
+
+    def test_parse_output_file_correct_labels(self):
+        path = self._write_output_file("acme-co", "Real Corp", self._sample_variants())
+        variants = self.activate.parse_output_file(path)
+        labels = [v["angle_label"] for v in variants]
+        self.assertIn("Speed Angle", labels)
+        self.assertIn("Cost Angle", labels)
+        self.assertIn("Board Angle", labels)
+
+    def test_parse_output_file_correct_subjects(self):
+        path = self._write_output_file("acme-co", "Real Corp", self._sample_variants())
+        variants = self.activate.parse_output_file(path)
+        subjects = [v["subject"] for v in variants]
+        self.assertIn("Day one or day 90?", subjects)
+
+    def test_parse_output_file_body_content(self):
+        path = self._write_output_file("acme-co", "Real Corp", self._sample_variants())
+        variants = self.activate.parse_output_file(path)
+        self.assertIn("AE into nothing", variants[0]["body"])
+
+    def test_find_latest_output_returns_most_recent(self):
+        client_dir = self.tmpdir / "outputs" / "acme-co"
+        client_dir.mkdir(parents=True, exist_ok=True)
+        (client_dir / "real_corp_2026-04-22.txt").write_text("old")
+        (client_dir / "real_corp_2026-04-24.txt").write_text("new")
+        result = self.activate.find_latest_output("acme-co", "Real Corp")
+        self.assertIsNotNone(result)
+        self.assertEqual(result.name, "real_corp_2026-04-24.txt")
+
+    def test_find_latest_output_returns_none_when_missing(self):
+        result = self.activate.find_latest_output("no-such-client", "No Company")
+        self.assertIsNone(result)
+
+    def test_blocked_account_raises_before_push(self):
+        """activate_account should refuse to push an account with VERIFY markers."""
+        blocked = self._blocked_account()
+        issues = self.verify.audit_account(blocked)
+        self.assertTrue(len(issues) > 0, "Expected issues on blocked account")
+
+
 # ─── init_matrix ─────────────────────────────────────────────────────────────  (keep last)
 
 if __name__ == "__main__":

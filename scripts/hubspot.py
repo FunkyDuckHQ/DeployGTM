@@ -355,6 +355,56 @@ def upsert_contact(
     return contact_id
 
 
+# ─── Notes / engagements ─────────────────────────────────────────────────────
+
+
+def create_engagement_note(
+    company_id: str,
+    body: str,
+    dry_run: bool = False,
+) -> Optional[str]:
+    """Create a plaintext note associated with a HubSpot company record.
+
+    Uses the v3 notes object with a HUBSPOT_DEFINED company association
+    (associationTypeId 190 = Note → Company). Returns the note ID or None.
+    """
+    import time as _time
+
+    if dry_run:
+        click.echo(f"  [dry-run] Would create note on company {company_id}")
+        return "dry_run_note_id"
+
+    resp = requests.post(
+        f"{HS_BASE}/crm/v3/objects/notes",
+        headers=_headers(),
+        json={
+            "properties": {
+                "hs_note_body": body,
+                "hs_timestamp": str(int(_time.time() * 1000)),
+            },
+            "associations": [
+                {
+                    "to": {"id": company_id},
+                    "types": [
+                        {
+                            "associationCategory": "HUBSPOT_DEFINED",
+                            "associationTypeId": 190,
+                        }
+                    ],
+                }
+            ],
+        },
+        timeout=15,
+    )
+    if resp.status_code in (200, 201):
+        return resp.json()["id"]
+    click.echo(
+        f"  ✗ Note creation failed: {resp.status_code} — {resp.text[:200]}",
+        err=True,
+    )
+    return None
+
+
 # ─── Main push function ───────────────────────────────────────────────────────
 
 def push_pipeline_output(pipeline_output: dict, dry_run: bool = False) -> dict:

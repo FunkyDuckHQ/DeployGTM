@@ -171,6 +171,9 @@ batch-outreach:  ## Generate variants across a tier filter (set CLIENT=slug [TIE
 verify-signals:  ## Audit which accounts are ready vs. blocked on signal gaps (set CLIENT=slug)
 	$(PYTHON) projects/deploygtm-own/scripts/verify_signals.py --client $(CLIENT)
 
+activate-account:  ## Push a chosen variant to HubSpot (set CLIENT=slug COMPANY="Name" [VARIANT=1] [DRY_RUN=1])
+	$(PYTHON) projects/deploygtm-own/scripts/activate_account.py --client $(CLIENT) --company "$(COMPANY)" $(if $(VARIANT),--variant $(VARIANT),) $(if $(DRY_RUN),--dry-run,)
+
 variant-respond:  ## Record a response to a tracked variant (set ID=n SENTIMENT=positive|neutral|negative)
 	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py respond --id $(ID) --sentiment $(SENTIMENT)
 

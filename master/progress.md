@@ -1,13 +1,15 @@
 # DeployGTM — Build Log & Progress
 
 *Single source of truth for what's been built, what's activated, and what's next.*
-*Updated: 2026-04-21*
+*Updated: 2026-04-24*
 
 ---
 
-## Status: BUILT / PRE-ACTIVATION
+## Status: ACTIVE — ACCOUNT MATRIX LIVE, SIGNALS UNVERIFIED
 
-The system is fully constructed. Zero accounts have run through it. Activation is blocked only by API key configuration.
+System is fully constructed. Account matrix operational for Peregrine (14/14 accounts ready) and DeployGTM own (12 accounts, 0 verified — signals need Crunchbase/LinkedIn update before batch outreach can run).
+
+Immediate blocker: verify signals for Loops, Orb, Mintlify, Plain, Campsite, Koala in `projects/deploygtm-own/data/deploygtm_accounts.json`, then run `make batch-outreach CLIENT=deploygtm`.
 
 ---
 
@@ -93,6 +95,30 @@ The system is fully constructed. Zero accounts have run through it. Activation i
 - `logs/` directory — structured JSONL run logs
 - README — added local API harness section
 
+### April 23–24 — Account matrix system + DeployGTM own outbound (Claude Code)
+**Schema and seed data:**
+- `projects/deploygtm-own/account_matrix_schema.json` — JSON Schema draft-07 for client-agnostic account intelligence; all required fields, valid enums for signal types, icp_tier 1–3
+- `projects/deploygtm-own/data/peregrine_accounts.json` — 14 accounts across 4 NewSpace segments, all signals verified, 14/14 ready
+- `projects/deploygtm-own/data/deploygtm_accounts.json` — 12 accounts across all 5 DeployGTM segments (A–E); tier-1: Loops, Orb, Plain, Campsite; tier-2: Mintlify, Koala + 6 archetype slots. Signals unverified — update VERIFY fields before outreach.
+
+**Scripts (client-agnostic, all parameterized by `--client <slug>`):**
+- `projects/deploygtm-own/scripts/init_matrix.py` — scaffold schema-valid stub for a new client
+- `projects/deploygtm-own/scripts/generate_outreach.py` — generate 3 angle variants for one account; prompt caching on system prompt; model `claude-sonnet-4-6`
+- `projects/deploygtm-own/scripts/batch_outreach.py` — run generate across all tier-filtered accounts; auto-skips accounts with unresolved VERIFY/FILL_IN markers; prints cache hit stats; `--force` to override
+- `projects/deploygtm-own/scripts/verify_signals.py` — audit matrix for blocked accounts (VERIFY/FILL_IN in signal description, date, company, or domain); `--strict` exits 1 if any blocked; imported by batch_outreach for auto-skip
+- `projects/deploygtm-own/scripts/variant_tracker.py` — SQLite tracker for variant performance; records angle, sentiment, date; aggregates response rate by angle_variant
+- `projects/deploygtm-own/scripts/weekly_signal_report.py` — markdown weekly report: signal changes, priority table, engagement threshold flags (≥12), variant activity; optional BirdDog integration
+
+**Supporting artifacts:**
+- `brain/segments.md` — 5 DeployGTM segments (A–E) with triggers, frames, angles, openers, objections, avoid-list
+- `master/playbooks/market-map.md` — 5-step method for constructing segment maps for any client
+- `master/playbooks/inbox-warmup.md` — dedicated outbound domain, SPF/DKIM/DMARC, volume ramp table, seed testing, daily reality checks
+- `master/matthew-working-conditions.md` — fully filled in: working hours, comms style, decision authority, things that waste time, standing rules, current focus, projects in flight
+
+**Makefile targets added:** `init-matrix`, `outreach-variants`, `batch-outreach`, `verify-signals`, `variant-respond`, `variant-list`, `variant-report`, `weekly-report`
+
+**Tests:** `tests/test_account_matrix.py` — 34 tests covering all 6 scripts; uses `importlib.util` + tempdir isolation so no real data is touched; classes: TestPeregrineSeedData, TestGenerateOutreach, TestVariantTracker, TestWeeklyReport, TestInitMatrix, TestVerifySignals, TestBatchOutreach
+
 ---
 
 ## Current system inventory
@@ -121,14 +147,31 @@ The system is fully constructed. Zero accounts have run through it. Activation i
 | `transcript.py` | Voice memo processing | ✅ Ready — needs `ANTHROPIC_API_KEY` |
 | `local_api_harness.py` | API connection tests | ✅ Ready — needs `HUBSPOT_ACCESS_TOKEN` |
 
-### Playbooks (6)
-- enrichment.md, signal-audit.md, outreach-ops.md, hubspot-setup.md, qualification.md, retainer-ops.md
+### Playbooks (8)
+- enrichment.md, signal-audit.md, outreach-ops.md, hubspot-setup.md, qualification.md, retainer-ops.md, market-map.md, inbox-warmup.md
+
+### Account matrix system (projects/deploygtm-own/)
+| Script | Purpose | Status |
+|--------|---------|--------|
+| `init_matrix.py` | Scaffold new client stub | ✅ Ready |
+| `generate_outreach.py` | Single-account variant gen (prompt cached) | ✅ Ready — needs `ANTHROPIC_API_KEY` |
+| `batch_outreach.py` | Batch run across tier filter; auto-skips blocked | ✅ Ready — needs `ANTHROPIC_API_KEY` |
+| `verify_signals.py` | Audit matrix for VERIFY/FILL_IN blockers | ✅ Ready (no API needed) |
+| `variant_tracker.py` | SQLite angle performance tracker | ✅ Ready (no API needed) |
+| `weekly_signal_report.py` | Markdown weekly report with priority scores | ✅ Ready — optional `BIRDDOG_API_KEY` |
+
+### Client matrices
+| Client | Accounts | Status |
+|--------|---------|--------|
+| peregrine-space | 14 | 14/14 ready — all signals verified |
+| deploygtm | 12 | 0/12 ready — VERIFY fields need Crunchbase/LinkedIn update |
 
 ### UI
 - `ui/app.py` — Streamlit dashboard with sample data fallback
 
-### Tests
-- `tests/test_local_api_harness.py` — unit tests for API harness
+### Tests (34 total)
+- `tests/test_local_api_harness.py` — 5 tests for API harness
+- `tests/test_account_matrix.py` — 29 tests: seed data conformance, generate_outreach, variant_tracker, weekly_signal_report, init_matrix, verify_signals, batch_outreach
 
 ---
 
