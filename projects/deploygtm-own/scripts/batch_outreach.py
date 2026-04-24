@@ -52,6 +52,7 @@ from generate_outreach import (  # noqa: E402
     word_count,
     write_output,
 )
+from verify_signals import audit_account  # noqa: E402
 
 
 def _parse_tiers(raw: str) -> set[int]:
@@ -99,8 +100,10 @@ def _call_once(client: anthropic.Anthropic, system: str, user: str):
 @click.option("--no-write", is_flag=True, help="Print outputs instead of writing to disk.")
 @click.option("--log-variant", type=click.IntRange(1, 3), default=None,
               help="Log variant N for every account to the tracker DB.")
+@click.option("--force", is_flag=True,
+              help="Run even on accounts with unresolved VERIFY/FILL IN markers.")
 def main(client: str, tier: str, limit: Optional[int], dry_run: bool,
-         no_write: bool, log_variant: Optional[int]):
+         no_write: bool, log_variant: Optional[int], force: bool):
     """Generate outreach variants across every account in a tier filter."""
     tiers = _parse_tiers(tier)
     matrix = load_client_matrix(client)
@@ -112,12 +115,34 @@ def main(client: str, tier: str, limit: Optional[int], dry_run: bool,
     if not accounts:
         raise click.ClickException(f"No accounts match tier filter {sorted(tiers)}.")
 
+    # Split ready vs. blocked. Skip blocked unless --force.
+    ready: list[dict] = []
+    skipped: list[tuple[dict, list[str]]] = []
+    for a in accounts:
+        issues = audit_account(a)
+        if issues and not force:
+            skipped.append((a, issues))
+        else:
+            ready.append(a)
+
     click.echo(f"Client:   {matrix.get('client_name')}")
     click.echo(f"Tiers:    {sorted(tiers)}")
-    click.echo(f"Accounts: {len(accounts)}")
-    for a in accounts:
+    click.echo(f"Accounts: {len(accounts)} ({len(ready)} ready, {len(skipped)} skipped)")
+    for a in ready:
         click.echo(f"  - [T{a.get('icp_tier')}] {a.get('company')} "
                    f"({a.get('why_now_signal', {}).get('type', '?')})")
+    if skipped:
+        click.echo("")
+        click.echo("SKIPPED (run `make verify-signals CLIENT=" + client +
+                   "` for details, or re-run with --force):")
+        for a, issues in skipped:
+            click.echo(f"  - {a.get('company')}: {', '.join(issues)}")
+
+    if not ready:
+        click.echo("\nNothing to generate. Resolve blockers or pass --force.")
+        return
+
+    accounts = ready  # only process ready accounts from here on
 
     if dry_run:
         click.echo("\n(dry-run — no API calls)")

@@ -168,6 +168,9 @@ outreach-variants:  ## Generate 3 outreach variants (set CLIENT=slug COMPANY="Na
 batch-outreach:  ## Generate variants across a tier filter (set CLIENT=slug [TIER=1 or 1,2] [LIMIT=n] [LOG=1|2|3])
 	$(PYTHON) projects/deploygtm-own/scripts/batch_outreach.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(LIMIT),--limit $(LIMIT),) $(if $(LOG),--log-variant $(LOG),)
 
+verify-signals:  ## Audit which accounts are ready vs. blocked on signal gaps (set CLIENT=slug)
+	$(PYTHON) projects/deploygtm-own/scripts/verify_signals.py --client $(CLIENT)
+
 variant-respond:  ## Record a response to a tracked variant (set ID=n SENTIMENT=positive|neutral|negative)
 	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py respond --id $(ID) --sentiment $(SENTIMENT)
 
