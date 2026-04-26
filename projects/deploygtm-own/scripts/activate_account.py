@@ -51,6 +51,7 @@ from generate_outreach import (  # noqa: E402
     slugify,
 )
 from verify_signals import audit_account  # noqa: E402
+from update_status import set_status  # noqa: E402
 
 
 # ─── Output file parsing ──────────────────────────────────────────────────────
@@ -283,12 +284,23 @@ def main(
     if rid:
         click.echo(f"Logged to tracker (id={rid}).")
 
+    # 5. Mark account status as outreach_sent in the matrix file
+    if not skip_hubspot:
+        try:
+            set_status(
+                client, company, "outreach_sent",
+                note=f"Activated variant {variant_num}: {chosen['angle_label']}",
+            )
+            click.echo(f"Matrix status → outreach_sent")
+        except Exception as e:
+            click.echo(f"  WARN: could not update matrix status: {e}", err=True)
+
     click.echo("")
     click.echo("Done. Next steps:")
     click.echo(f"  1. Send the email manually or enroll in a HubSpot sequence.")
-    click.echo(f"  2. Log the send: python scripts/follow_up.py log --file output/{account['domain']}.json "
-               f"--email <contact_email> --touch 1")
-    click.echo(f"  3. Record response: make variant-respond ID={rid or '?'} SENTIMENT=positive")
+    click.echo(f"  2. When the prospect replies: make set-status CLIENT={client} "
+               f"COMPANY=\"{company}\" STATUS=replied")
+    click.echo(f"  3. Record sentiment: make variant-respond ID={rid or '?'} SENTIMENT=positive")
 
 
 if __name__ == "__main__":

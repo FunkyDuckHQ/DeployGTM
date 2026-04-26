@@ -174,6 +174,9 @@ verify-signals:  ## Audit which accounts are ready vs. blocked on signal gaps (s
 activate-account:  ## Push a chosen variant to HubSpot (set CLIENT=slug COMPANY="Name" [VARIANT=1] [DRY_RUN=1])
 	$(PYTHON) projects/deploygtm-own/scripts/activate_account.py --client $(CLIENT) --company "$(COMPANY)" $(if $(VARIANT),--variant $(VARIANT),) $(if $(DRY_RUN),--dry-run,)
 
+set-status:  ## Update an account status in the matrix (set CLIENT=slug COMPANY="Name" STATUS=replied [NOTE="..."])
+	$(PYTHON) projects/deploygtm-own/scripts/update_status.py --client $(CLIENT) --company "$(COMPANY)" --status $(STATUS) $(if $(NOTE),--note "$(NOTE)",)
+
 variant-respond:  ## Record a response to a tracked variant (set ID=n SENTIMENT=positive|neutral|negative)
 	$(PYTHON) projects/deploygtm-own/scripts/variant_tracker.py respond --id $(ID) --sentiment $(SENTIMENT)
 

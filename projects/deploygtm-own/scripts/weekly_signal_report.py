@@ -278,6 +278,25 @@ def build_report(
         lines.append("_No accounts above threshold this week._")
     lines.append("")
 
+    # Status distribution — where each account sits in the lifecycle
+    lines.append("## Status distribution")
+    lines.append("")
+    status_order = ["monitor", "active", "outreach_sent", "replied",
+                    "meeting_booked", "no_fit", "paused"]
+    counts = {s: 0 for s in status_order}
+    for a in accounts:
+        s = a.get("status") or "monitor"
+        if s in counts:
+            counts[s] += 1
+        else:
+            counts.setdefault(s, 0)
+            counts[s] += 1
+    lines.append("| Status | Count |")
+    lines.append("|--------|------:|")
+    for s in status_order:
+        lines.append(f"| {s} | {counts.get(s, 0)} |")
+    lines.append("")
+
     # Variant activity
     lines.append(f"## Variant activity (last {days_back} days)")
     lines.append("")

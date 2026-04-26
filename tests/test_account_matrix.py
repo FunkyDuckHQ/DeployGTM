@@ -78,6 +78,14 @@ class MatrixTestBase(unittest.TestCase):
             if hasattr(mod, "SCHEMA_FILE"):
                 mod.SCHEMA_FILE = self.tmpdir / "account_matrix_schema.json"
 
+        # Register patched modules under their canonical names so cross-imports
+        # (e.g. update_status doing `from generate_outreach import ...`) find
+        # the patched DATA_DIR rather than reloading a fresh unpatched copy.
+        sys.modules["generate_outreach"] = self.generate
+        sys.modules["variant_tracker"] = self.tracker
+        sys.modules["weekly_signal_report"] = self.weekly
+        sys.modules["init_matrix"] = self.initm
+
     def tearDown(self):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
@@ -383,6 +391,7 @@ class VerifySignalsTestBase(MatrixTestBase):
         self.verify = _load(
             "t_verify", self.tmpdir / "scripts" / "verify_signals.py"
         )
+        sys.modules["verify_signals"] = self.verify
 
     def _ready_account(self, **overrides) -> dict:
         base = {
@@ -523,12 +532,21 @@ class TestBatchOutreach(VerifySignalsTestBase):
 class TestActivateAccount(VerifySignalsTestBase):
     def setUp(self):
         super().setUp()
+        # activate_account imports update_status — copy and register both
+        shutil.copy(SCRIPTS_DIR / "update_status.py",
+                    self.tmpdir / "scripts" / "update_status.py")
+        update_mod = _load(
+            "t_update_for_activate", self.tmpdir / "scripts" / "update_status.py"
+        )
+        sys.modules["update_status"] = update_mod
+
         shutil.copy(SCRIPTS_DIR / "activate_account.py",
                     self.tmpdir / "scripts" / "activate_account.py")
         self.activate = _load(
             "t_activate", self.tmpdir / "scripts" / "activate_account.py"
         )
         self.activate.OUTPUTS_DIR = self.tmpdir / "outputs"
+        sys.modules["activate_account"] = self.activate
 
     def _write_output_file(self, client: str, company: str, variants: list[dict]) -> Path:
         """Write a real .txt output file using the generate_outreach format function."""
@@ -594,6 +612,117 @@ class TestActivateAccount(VerifySignalsTestBase):
         blocked = self._blocked_account()
         issues = self.verify.audit_account(blocked)
         self.assertTrue(len(issues) > 0, "Expected issues on blocked account")
+
+
+# ─── update_status ───────────────────────────────────────────────────────────
+
+
+class TestUpdateStatus(VerifySignalsTestBase):
+    def setUp(self):
+        super().setUp()
+        shutil.copy(SCRIPTS_DIR / "update_status.py",
+                    self.tmpdir / "scripts" / "update_status.py")
+        self.update = _load(
+            "t_update", self.tmpdir / "scripts" / "update_status.py"
+        )
+        sys.modules["update_status"] = self.update
+
+    def _seed(self, client="acme-co"):
+        matrix = {
+            "client_name": client,
+            "voice_notes": "Direct.",
+            "accounts": [self._ready_account(company="Acme", domain="acme.com")],
+        }
+        normalized = client.replace("-", "_")
+        path = self.tmpdir / "data" / f"{normalized}_accounts.json"
+        path.write_text(json.dumps(matrix))
+        return path
+
+    def test_set_status_writes_back(self):
+        path = self._seed()
+        result = self.update.set_status("acme-co", "Acme", "outreach_sent")
+        self.assertEqual(result["status"], "outreach_sent")
+        self.assertEqual(result["last_updated"], date.today().isoformat())
+        data = json.loads(path.read_text())
+        self.assertEqual(data["accounts"][0]["status"], "outreach_sent")
+
+    def test_set_status_rejects_invalid(self):
+        self._seed()
+        with self.assertRaises(ValueError):
+            self.update.set_status("acme-co", "Acme", "shipped_to_mars")
+
+    def test_set_status_appends_note(self):
+        self._seed()
+        result = self.update.set_status(
+            "acme-co", "Acme", "replied", note="Tyler said yes to a call"
+        )
+        self.assertIn("replied", result["notes"])
+        self.assertIn("Tyler said yes", result["notes"])
+        self.assertIn(date.today().isoformat(), result["notes"])
+
+    def test_set_status_appends_multiple_notes(self):
+        self._seed()
+        self.update.set_status("acme-co", "Acme", "outreach_sent", note="First touch")
+        result = self.update.set_status("acme-co", "Acme", "replied", note="Reply came")
+        self.assertIn("First touch", result["notes"])
+        self.assertIn("Reply came", result["notes"])
+
+    def test_set_status_unknown_company_raises(self):
+        self._seed()
+        with self.assertRaises(ValueError):
+            self.update.set_status("acme-co", "Nonexistent Corp", "monitor")
+
+    def test_all_schema_statuses_accepted(self):
+        self._seed()
+        for s in ("monitor", "active", "outreach_sent", "replied",
+                  "meeting_booked", "no_fit", "paused"):
+            result = self.update.set_status("acme-co", "Acme", s)
+            self.assertEqual(result["status"], s)
+
+
+# ─── weekly_signal_report — status distribution ──────────────────────────────
+
+
+class TestWeeklyReportStatusSection(MatrixTestBase):
+    def _matrix_with_statuses(self):
+        def acct(company, status):
+            return {
+                "company": company, "domain": f"{company.lower()}.com",
+                "icp_tier": 2, "market": "M", "segment": "S",
+                "persona": {"title": "CEO", "why_they_feel_it": "x"},
+                "angle": "A",
+                "why_now_signal": {"type": "manual", "description": "x", "source": "y"},
+                "product_fit": "P", "heritage_risk": "Low", "status": status,
+            }
+        return {
+            "client_name": "acme-co", "voice_notes": "x",
+            "accounts": [
+                acct("Alpha", "monitor"),
+                acct("Bravo", "outreach_sent"),
+                acct("Charlie", "outreach_sent"),
+                acct("Delta", "replied"),
+            ],
+        }
+
+    def test_status_distribution_section_present(self):
+        report = self.weekly.build_report(
+            self._matrix_with_statuses(), birddog_by_domain={},
+            variant_stats={"sent": 0, "responded": 0, "by_angle": [], "recent": []},
+            days_back=7,
+        )
+        self.assertIn("## Status distribution", report)
+
+    def test_status_distribution_counts_correct(self):
+        report = self.weekly.build_report(
+            self._matrix_with_statuses(), birddog_by_domain={},
+            variant_stats={"sent": 0, "responded": 0, "by_angle": [], "recent": []},
+            days_back=7,
+        )
+        section = report.split("## Status distribution")[1].split("##")[0]
+        self.assertIn("| monitor | 1 |", section)
+        self.assertIn("| outreach_sent | 2 |", section)
+        self.assertIn("| replied | 1 |", section)
+        self.assertIn("| meeting_booked | 0 |", section)
 
 
 # ─── init_matrix ─────────────────────────────────────────────────────────────  (keep last)
