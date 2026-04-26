@@ -157,6 +157,20 @@ audit-deliverable:  ## Compile final deliverable package (set CLIENT=slug)
 audit-status:  ## Show Signal Audit engagement status (set CLIENT=slug)
 	$(PYTHON) scripts/signal_audit.py status --client $(CLIENT)
 
+# ─── Client Context & Drive Sync ─────────────────────────────────────────────
+
+sync-client:  ## Pull new Google Drive docs for a client into context.md (set CLIENT=slug)
+	$(PYTHON) scripts/sync_client_context.py --client $(CLIENT)
+
+sync-client-force:  ## Re-process all Drive docs for a client (set CLIENT=slug)
+	$(PYTHON) scripts/sync_client_context.py --client $(CLIENT) --force
+
+signals-to-matrix:  ## Bridge signals CSV into a client's account matrix (set CLIENT=slug [INPUT=path])
+	$(PYTHON) scripts/signals_to_matrix.py --client $(CLIENT) $(if $(INPUT),--input $(INPUT),)
+
+signals-to-matrix-no-score:  ## Bridge signals into matrix without Claude ICP scoring (set CLIENT=slug)
+	$(PYTHON) scripts/signals_to_matrix.py --client $(CLIENT) --no-score
+
 # ─── Account Matrix (client-agnostic artifacts) ──────────────────────────────
 
 init-matrix:  ## Scaffold a new client account matrix stub (set CLIENT=slug)

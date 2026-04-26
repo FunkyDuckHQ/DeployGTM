@@ -405,6 +405,79 @@ def create_engagement_note(
     return None
 
 
+# ─── Tasks ───────────────────────────────────────────────────────────────────
+
+
+def create_task(
+    subject: str,
+    body: str,
+    contact_id: Optional[str] = None,
+    company_id: Optional[str] = None,
+    due_date: Optional[str] = None,
+    dry_run: bool = False,
+) -> Optional[str]:
+    """Create a CRM task in HubSpot (v3 objects/tasks).
+
+    subject     — short task title shown in the task list
+    body        — full task notes, e.g. the pre-written email copy
+    contact_id  — HubSpot contact ID to associate (optional)
+    company_id  — HubSpot company ID to associate (optional)
+    due_date    — ISO date string YYYY-MM-DD (defaults to today)
+
+    Returns the task ID or None on failure.
+    """
+    import time as _time
+    from datetime import date as _date, datetime as _dt
+
+    if dry_run:
+        click.echo(f"  [dry-run] Would create task: {subject}")
+        return "dry_run_task_id"
+
+    if due_date:
+        due_ts = int(_dt.fromisoformat(due_date).timestamp() * 1000)
+    else:
+        due_ts = int(_date.today().strftime("%s")) * 1000 if hasattr(_date.today(), "strftime") else int(_time.time() * 1000)
+
+    associations = []
+    if contact_id:
+        associations.append({
+            "to": {"id": contact_id},
+            "types": [{"associationCategory": "HUBSPOT_DEFINED", "associationTypeId": 204}],
+        })
+    if company_id:
+        associations.append({
+            "to": {"id": company_id},
+            "types": [{"associationCategory": "HUBSPOT_DEFINED", "associationTypeId": 192}],
+        })
+
+    payload: dict = {
+        "properties": {
+            "hs_task_subject": subject,
+            "hs_task_body": body,
+            "hs_task_status": "NOT_STARTED",
+            "hs_task_type": "EMAIL",
+            "hs_timestamp": str(due_ts),
+        }
+    }
+    if associations:
+        payload["associations"] = associations
+
+    resp = requests.post(
+        f"{HS_BASE}/crm/v3/objects/tasks",
+        headers=_headers(),
+        json=payload,
+        timeout=15,
+    )
+    if resp.status_code in (200, 201):
+        return resp.json().get("id")
+
+    click.echo(
+        f"  ✗ Task creation failed: {resp.status_code} — {resp.text[:200]}",
+        err=True,
+    )
+    return None
+
+
 # ─── Main push function ───────────────────────────────────────────────────────
 
 def push_pipeline_output(pipeline_output: dict, dry_run: bool = False) -> dict:

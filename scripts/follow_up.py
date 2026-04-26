@@ -457,20 +457,28 @@ def status(file_path: str):
 
 @cli.command("create-tasks")
 @click.option("--output-dir", default="output", show_default=True)
+@click.option("--with-copy/--no-copy", default=True, show_default=True,
+              help="Generate pre-written email copy and embed it in each task body.")
+@click.option("--brain", "brain_path", default="brain", show_default=True)
 @click.option("--dry-run", is_flag=True, default=False)
-def create_tasks(output_dir: str, dry_run: bool):
-    """Create HubSpot tasks for all contacts with follow-ups due."""
+def create_tasks(output_dir: str, with_copy: bool, brain_path: str, dry_run: bool):
+    """Create HubSpot tasks for all contacts with follow-ups due.
+
+    By default generates the pre-written follow-up copy via Claude and embeds
+    it in the task body so reps can review and send without leaving HubSpot.
+    Use --no-copy for lightweight tasks without generated copy.
+    """
     try:
-        from hubspot import _get_headers
-        import requests
+        from hubspot import create_task as hs_create_task
     except ImportError:
-        click.echo("Error: hubspot module not found or requests not installed.", err=True)
+        click.echo("Error: hubspot module not found.", err=True)
         raise SystemExit(1)
 
+    brain_context = load_brain(brain_path) if with_copy else ""
     out_dir = Path(output_dir)
     files = sorted(out_dir.glob("*.json"))
-
     tasks_created = 0
+    files_modified = []
 
     for fpath in files:
         try:
@@ -481,8 +489,9 @@ def create_tasks(output_dir: str, dry_run: bool):
         log = data.get("follow_up_log", {})
         meta_date = data.get("meta", {}).get("run_date")
         company = data.get("company", "")
+        file_dirty = False
 
-        for email, outreach in data.get("outreach", {}).items():
+        for email in data.get("outreach", {}):
             entry = log.get(email)
             if not entry:
                 entry = init_contact_log({}, email, meta_date)
@@ -497,52 +506,66 @@ def create_tasks(output_dir: str, dry_run: bool):
                 {},
             )
             name = contact.get("name", email)
+            overdue_str = f" (+{overdue}d overdue)" if overdue > 0 else ""
 
-            due_ts = int(
-                datetime.combine(date.today(), datetime.min.time()).timestamp() * 1000
-            )
+            # Generate copy if requested
+            task_body_text = ""
+            msg: dict = {}
+            if with_copy:
+                click.echo(f"  Generating copy: {company} / {name} (touch #{touch})...")
+                try:
+                    msg = generate_follow_up_message(
+                        data=data,
+                        email=email,
+                        touch=touch,
+                        brain_context=brain_context,
+                    )
+                    task_body_text = (
+                        f"Subject: {msg.get('subject', '')}\n\n"
+                        f"{msg.get('body', '')}"
+                    )
+                    # Save copy back to output file
+                    followups = data.setdefault("generated_followups", {})
+                    followups.setdefault(email, {})[f"followup_{touch}"] = msg
+                    file_dirty = True
+                except Exception as exc:
+                    click.echo(f"  WARN: copy generation failed: {exc}", err=True)
+                    task_body_text = TOUCH_GUIDANCE[touch]
+            else:
+                task_body_text = TOUCH_GUIDANCE[touch]
 
-            task_body = {
-                "engagement": {
-                    "active": True,
-                    "type": "TASK",
-                    "timestamp": due_ts,
-                },
-                "metadata": {
-                    "body": (
-                        f"Send follow-up #{touch} to {name} at {company}. "
-                        f"Touch: {TOUCH_GUIDANCE[touch]}"
-                    ),
-                    "subject": f"Follow-up #{touch}: {name} ({company})",
-                    "status": "NOT_STARTED",
-                    "taskType": "EMAIL",
-                    "forObjectType": "CONTACT",
-                },
-            }
+            subject = f"Follow-up #{touch}: {name} ({company}){overdue_str}"
 
             if dry_run:
-                click.echo(f"  [dry-run] Would create task: Follow-up #{touch} → {name} ({company})")
+                click.echo(f"  [dry-run] Task: {subject}")
+                if msg:
+                    click.echo(f"    Subject: {msg.get('subject', '')}")
+                    preview = (msg.get("body") or "")[:120].replace("\n", " ")
+                    click.echo(f"    Body:    {preview}...")
+                continue
+
+            task_id = hs_create_task(
+                subject=subject,
+                body=task_body_text,
+                due_date=date.today().isoformat(),
+                dry_run=dry_run,
+            )
+            if task_id:
+                click.echo(f"  ✓ Task created: {subject}")
+                tasks_created += 1
             else:
-                try:
-                    headers = _get_headers()
-                    resp = requests.post(
-                        "https://api.hubapi.com/engagements/v1/engagements",
-                        headers=headers,
-                        json=task_body,
-                        timeout=15,
-                    )
-                    if resp.status_code in (200, 201):
-                        click.echo(f"  ✓ Task created: Follow-up #{touch} → {name} ({company})")
-                        tasks_created += 1
-                    else:
-                        click.echo(f"  ✗ Task failed ({resp.status_code}): {resp.text[:200]}")
-                except Exception as e:
-                    click.echo(f"  ✗ Task error: {e}")
+                click.echo(f"  ✗ Task failed for {name} ({company})", err=True)
+
+        if file_dirty and not dry_run:
+            save_output_file(fpath, data)
+            files_modified.append(fpath.name)
 
     if dry_run:
         click.echo("\n  Dry run complete. No tasks created.")
     else:
         click.echo(f"\n  {tasks_created} task(s) created in HubSpot.")
+        if files_modified:
+            click.echo(f"  Copy saved to: {', '.join(files_modified)}")
 
 
 @cli.command()

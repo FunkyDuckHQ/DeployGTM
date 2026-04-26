@@ -101,6 +101,48 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 | Outreach | HubSpot Sequences / Apollo | Email sequences, follow-up automation |
 | Data Providers | Apollo, web search, niche APIs | Contact finding, email verification, firmographic data |
 
+## Client Session Protocol
+
+When Matthew mentions a client by name (e.g. "I'm working with Peregrine" or "let's look at the Peregrine engagement"), do the following automatically — do not wait to be asked:
+
+1. **Load client context** — Read `projects/<client-slug>/context.md` in full.
+2. **Check for unsynced Drive docs** — Run `make sync-client CLIENT=<slug>` (or call the script directly) to pull any new files from Google Drive. If `GDRIVE_INTAKE_FOLDER_ID` is not set, skip and note it.
+3. **State what you know** — Briefly summarize the client's current status: engagement type, week, last action, and what's next. One paragraph max.
+4. **Ask what to do next** — Unless Matthew has already stated the objective.
+
+Known client slugs and their project directories:
+
+| Client slug | Directory | Engagement |
+|---|---|---|
+| deploygtm-own | projects/deploygtm-own/ | Client zero — DeployGTM's own outbound |
+| peregrine-space | projects/peregrine-space/ | NewSpace outbound — 14 accounts |
+| mindra | projects/mindra/ | TBD |
+| fibinaci | projects/fibinaci/ | TBD |
+| sybill | projects/sybill/ | TBD |
+| rex | projects/rex/ | TBD |
+| terzo | projects/terzo/ | TBD |
+
+When a new client is mentioned that has no project directory yet:
+1. Run `python scripts/pipeline.py new-client --client <slug> --domain <domain>`
+2. Run `make sync-client CLIENT=<slug>` to pull any existing Drive docs
+3. Populate `projects/<slug>/context.md` from whatever Drive docs and conversation context exist
+
+## Meeting Transcript Protocol
+
+When a meeting transcript lands (from Fireflies, Otter, Fathom, or any recorder writing to Drive):
+
+1. Run `make sync-client CLIENT=<slug>` — the transcript is processed by `sync_client_context.py`, synthesized, and written to context.md automatically.
+2. After sync, read the updated context.md.
+3. Surface immediately:
+   - Which company this meeting was about
+   - Key people mentioned (name, title, company)
+   - Pain points or buying signals revealed
+   - Decisions made
+   - Action items (who, what, when)
+   - If new client: begin scaffolding context.md — company overview, ICP notes, initial signal map
+   - If existing client: check pipeline stats and surface: deal stage, last touch, next scheduled follow-up
+4. Send Matthew a brief (Slack or terminal output) — do not wait for him to ask.
+
 ## Rules for Claude Code
 
 - Never hard-code API keys. Always use .env files.
@@ -110,6 +152,7 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 - Keep messaging conversational and direct. No AI-sounding language. No "I hope this email finds you well." No "leveraging synergies."
 - When in doubt about ICP fit, disqualify. We'd rather work with 5 right clients than 20 wrong ones.
 - Every workflow should answer: what signal triggers this, what action does it take, what data does it write back, and how do we know it worked.
+- When new signals come in (from Apollo, BirdDog, or manual entry), run `make signals-to-matrix CLIENT=<slug>` to bridge them into the client's account matrix before any outreach decisions.
 
 ## About Matthew Stegenga
 
