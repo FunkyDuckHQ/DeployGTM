@@ -168,7 +168,8 @@ class TestEngage(unittest.TestCase):
         mock_ai.messages.create.return_value = mock_response
 
         with patch.object(self.engage, "_build_context", return_value="# Context\ncrm: none\n"), \
-             patch.object(self.engage, "_try_drive_sync", return_value="Drive sync skipped"):
+             patch.object(self.engage, "_try_drive_sync", return_value="Drive sync skipped"), \
+             patch.object(self.engage, "_scaffold_matrix", return_value=None):
             result = self.engage.run_engage(
                 client="new-client-xyz",
                 domain="xyz.com",
@@ -184,7 +185,8 @@ class TestEngage(unittest.TestCase):
         (client_dir / "context.md").write_text("# Old context")
 
         with patch.object(self.engage, "_build_context", return_value="# New context\ncrm: none\n"), \
-             patch.object(self.engage, "_try_drive_sync", return_value="skipped"):
+             patch.object(self.engage, "_try_drive_sync", return_value="skipped"), \
+             patch.object(self.engage, "_scaffold_matrix", return_value=None):
             self.engage.run_engage(
                 client="force-client",
                 domain="force.com",
