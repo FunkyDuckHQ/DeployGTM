@@ -114,21 +114,23 @@ def parse_output_file(path: Path) -> list[dict]:
     return variants
 
 
-# ─── HubSpot push ─────────────────────────────────────────────────────────────
+# ─── CRM push (adapter-routed) ────────────────────────────────────────────────
 
 
-def _push_to_hubspot(
+def _push_to_crm(
+    client: str,
     account: dict,
     variant: dict,
     dry_run: bool = False,
 ) -> dict:
-    """Push company + deal + note to HubSpot. Returns result dict."""
+    """Push company + deal + note via the client's CRM adapter. Returns result dict."""
     try:
-        from hubspot import upsert_company, create_or_update_deal, create_engagement_note
-    except ImportError as e:
+        from crm_adapter import get_adapter_for_client  # noqa: E402
+        adapter = get_adapter_for_client(client)
+    except ImportError as exc:
         raise click.ClickException(
-            f"Could not import hubspot module: {e}. "
-            "Ensure you are running from the repo root or scripts/ is on PYTHONPATH."
+            f"Could not import crm_adapter: {exc}. "
+            "Ensure scripts/ is on PYTHONPATH."
         )
 
     signal = account.get("why_now_signal", {})
@@ -136,7 +138,7 @@ def _push_to_hubspot(
 
     # 1. Company
     click.echo("  Upserting company...")
-    company_id = upsert_company(
+    company_id = adapter.upsert_company(
         {
             "name": account["company"],
             "company": account["company"],
@@ -151,7 +153,7 @@ def _push_to_hubspot(
     # 2. Deal
     click.echo("  Creating deal...")
     try:
-        deal_id = create_or_update_deal(
+        deal_id = adapter.create_deal(
             company_name=account["company"],
             stage="outreach_sent",
             company_id=company_id,
@@ -173,7 +175,7 @@ def _push_to_hubspot(
             f"Subject: {variant['subject']}\n\n"
             f"{variant['body']}"
         )
-        note_id = create_engagement_note(company_id, note_body, dry_run=dry_run)
+        note_id = adapter.create_note(company_id, note_body, dry_run=dry_run)
         results["note_id"] = note_id
         if note_id:
             click.echo(f"  Note     → {note_id}")
@@ -266,7 +268,7 @@ def main(
 
     if dry_run:
         click.echo("(dry-run) HubSpot push skipped.")
-        _push_to_hubspot(account, chosen, dry_run=True)
+        _push_to_crm(client, account, chosen, dry_run=True)
         return
 
     # 3. Require explicit confirmation for live push
@@ -277,7 +279,7 @@ def main(
             click.echo("Aborted.")
             return
 
-        _push_to_hubspot(account, chosen, dry_run=False)
+        _push_to_crm(client, account, chosen, dry_run=False)
 
     # 4. Log to variant tracker
     rid = _log_to_tracker(client, company, chosen)

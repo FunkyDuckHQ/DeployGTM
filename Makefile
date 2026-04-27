@@ -157,6 +157,20 @@ audit-deliverable:  ## Compile final deliverable package (set CLIENT=slug)
 audit-status:  ## Show Signal Audit engagement status (set CLIENT=slug)
 	$(PYTHON) scripts/signal_audit.py status --client $(CLIENT)
 
+# ─── Engagement Intake ───────────────────────────────────────────────────────
+
+engage:  ## Start a new engagement (set CLIENT=slug DOMAIN=domain.com OBJECTIVE="..." [CRM=hubspot] [FETCH=1])
+	$(PYTHON) scripts/engage.py --client $(CLIENT) --domain $(DOMAIN) --objective "$(OBJECTIVE)" $(if $(CRM),--crm $(CRM),) $(if $(FETCH),--fetch,)
+
+engage-force:  ## Rebuild context.md for an existing engagement (set CLIENT DOMAIN OBJECTIVE)
+	$(PYTHON) scripts/engage.py --client $(CLIENT) --domain $(DOMAIN) --objective "$(OBJECTIVE)" --force $(if $(FETCH),--fetch,)
+
+score-refresh:  ## Recompute dynamic ICP scores for all accounts (set CLIENT=slug)
+	$(PYTHON) projects/deploygtm-own/scripts/score_engine.py refresh --client $(CLIENT)
+
+score-list:  ## List accounts ranked by current score (set CLIENT=slug [MIN_SCORE=8])
+	$(PYTHON) projects/deploygtm-own/scripts/score_engine.py list --client $(CLIENT) $(if $(MIN_SCORE),--min-score $(MIN_SCORE),)
+
 # ─── Client Context & Drive Sync ─────────────────────────────────────────────
 
 sync-client:  ## Pull new Google Drive docs for a client into context.md (set CLIENT=slug)
