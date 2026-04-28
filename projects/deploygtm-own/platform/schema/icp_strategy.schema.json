@@ -15,6 +15,7 @@
       "additionalProperties": false,
       "properties": {
         "context_pack_path": { "type": "string", "minLength": 5 },
+        "intake_path": { "type": "string", "minLength": 5 },
         "principle_count": { "type": "integer", "minimum": 0 }
       }
     },
@@ -23,6 +24,17 @@
       "required": ["principles", "market_hypotheses", "segment_rules", "persona_rules", "angle_rules"],
       "additionalProperties": false,
       "properties": {
+        "icps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "scoring_matrix": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
         "principles": {
           "type": "array",
           "items": {

@@ -38,8 +38,18 @@ python scripts/pipeline.py run \
 Platform vNext (client bootstrap + context + strategy):
 ```bash
 make platform-bootstrap CLIENT_NAME="Acme Space" DOMAIN=acme.space CLIENT=acme-space
+make platform-intake CLIENT_NAME="Acme Space" DOMAIN=acme.space CLIENT=acme-space OUTCOME="create qualified pipeline" OFFER="workflow automation platform"
 make context-pack CLIENT=acme-space
 make platform-strategy CLIENT=acme-space
+make platform-signals CLIENT=acme-space
+make platform-matrix CLIENT=acme-space
+make platform-crm-plan CLIENT=acme-space
+make platform-deliverable CLIENT=acme-space
+```
+
+No-write Signal Audit smoke test:
+```bash
+make signal-audit-dry-run
 ```
 
 ---
@@ -74,7 +84,7 @@ scripts/pipeline.py run      ← single account
 scripts/batch.py run         ← list of accounts from CSV
     │
     ├─ research.py            Claude: company research + pain hypothesis
-    ├─ score.py               ICP Fit (1–5) × Signal Strength (1–3) = Priority
+    ├─ score.py               ICP Fit + Urgency + Engagement + Confidence = Activation Priority
     ├─ apollo.py              Contact enrichment (titles, emails, LinkedIn)
     └─ outreach.py            Claude: signal-led message + follow-up variants
           │
@@ -253,16 +263,25 @@ make audit-status CLIENT=acme                   # Show enrichment progress
 
 ## Scoring system
 
-Priority = ICP Fit (1–5) × Signal Strength (1–3)
+Legacy pipeline outputs still include `icp_fit`, `signal_strength`, and `priority` for backwards compatibility.
 
-| Priority | Action |
-|----------|--------|
-| ≥ 12 | Reach out immediately |
-| 8–11 | Reach out this week |
-| 5–7 | Nurture / monitor |
-| < 5 | Skip |
+Signal Audit vNext keeps the scores separate:
 
-Thresholds configurable in `config.yaml`.
+| Score | Meaning |
+|-------|---------|
+| `icp_fit_score` | How well the account matches the customer-specific ICP |
+| `urgency_score` | How timely the account is right now, including BirdDog/manual signal decay |
+| `engagement_score` | Email/CRM engagement once tests begin; defaults to 0 during audit |
+| `confidence_score` | Source quality and completeness of enrichment |
+| `activation_priority` | Weighted action ordering score |
+
+Default activation priority formula:
+
+```text
+45% ICP fit + 35% urgency + 10% engagement + 10% confidence
+```
+
+CRM writes stay behind `crm_push_plan.json` and explicit approval.
 
 ---
 

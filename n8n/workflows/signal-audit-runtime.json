@@ -1,0 +1,76 @@
+{
+  "name": "DeployGTM Signal Audit Runtime Spec",
+  "status": "spec_only",
+  "version": "v1.0",
+  "activation_gate": {
+    "required_checks": [
+      "python -m pytest tests -q",
+      "make daily",
+      "make signal-audit-dry-run"
+    ],
+    "crm_writes": "manual_approval_required",
+    "email_sending": "deferred_until_deliverability_controls_exist"
+  },
+  "workflows": [
+    {
+      "id": "customer_outcome_intake",
+      "trigger": "form_or_webhook",
+      "command": "python -m scripts.platform.cli intake --client-name \"$CLIENT_NAME\" --domain \"$DOMAIN\" --target-outcome \"$OUTCOME\" --offer \"$OFFER\" --client-slug \"$CLIENT\"",
+      "outputs": [
+        "projects/<client>/platform/intake.json",
+        "projects/<client>/context.md"
+      ]
+    },
+    {
+      "id": "strategy_compile",
+      "trigger": "manual_after_intake",
+      "commands": [
+        "python -m scripts.platform.cli context-pack --client \"$CLIENT\"",
+        "python -m scripts.platform.cli strategy --client \"$CLIENT\"",
+        "python -m scripts.platform.cli signal-strategy --client \"$CLIENT\""
+      ],
+      "outputs": [
+        "context_pack.json",
+        "icp_strategy.json",
+        "signal_strategy.json",
+        "birddog_signal_manifest.json"
+      ]
+    },
+    {
+      "id": "account_matrix_score",
+      "trigger": "manual_or_birddog_signal_file",
+      "command": "python -m scripts.platform.cli account-matrix --client \"$CLIENT\"",
+      "outputs": [
+        "projects/<client>/platform/accounts.json"
+      ]
+    },
+    {
+      "id": "crm_push_plan",
+      "trigger": "manual_review",
+      "command": "python -m scripts.platform.cli crm-plan --client \"$CLIENT\"",
+      "approval_required": true,
+      "outputs": [
+        "projects/<client>/platform/crm_push_plan.json"
+      ]
+    },
+    {
+      "id": "email_engagement_sync",
+      "trigger": "supersend_webhook",
+      "command": "python scripts/email_sync.py ingest --client \"$CLIENT\" --payload \"$PAYLOAD\" --dry-run",
+      "default_mode": "dry_run",
+      "outputs": [
+        "projects/<client>/platform/accounts.json",
+        "logs/email_sync_<client>.jsonl"
+      ]
+    },
+    {
+      "id": "weekly_deliverable",
+      "trigger": "schedule_weekly",
+      "command": "python -m scripts.platform.cli deliverable --client \"$CLIENT\"",
+      "outputs": [
+        "projects/<client>/deliverable/signal_audit_summary.md",
+        "projects/<client>/deliverable/target_accounts.csv"
+      ]
+    }
+  ]
+}

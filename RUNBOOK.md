@@ -21,7 +21,7 @@ Run from a fresh clone, GitHub Codespace, or other GitHub-backed dev environment
 ```bash
 git clone https://github.com/FunkyDuckHQ/DeployGTM.git
 cd DeployGTM
-git switch recovery/full-audit-cleanup
+git switch recovery/signal-audit-build
 ```
 
 ### 1. Inspect Repo State
@@ -33,7 +33,7 @@ git branch --all --verbose --no-abbrev
 
 Expected:
 
-- On `recovery/full-audit-cleanup`.
+- On `recovery/signal-audit-build`.
 - No unexpected tracked-file changes.
 
 ### 2. Install Dependencies
@@ -102,6 +102,54 @@ python scripts/pipeline.py score \
 ```
 
 If `pipeline.py score` is not the correct CLI shape, document the actual no-write equivalent and update this runbook. The goal is one deterministic workflow that does not require live enrichment APIs or CRM writes.
+
+### 7. Run Signal Audit Dry-Run
+
+```bash
+make signal-audit-dry-run
+```
+
+Expected artifacts:
+
+- `projects/sample-signal-audit/platform/intake.json`
+- `projects/sample-signal-audit/platform/context_pack.json`
+- `projects/sample-signal-audit/platform/icp_strategy.json`
+- `projects/sample-signal-audit/platform/signal_strategy.json`
+- `projects/sample-signal-audit/platform/birddog_signal_manifest.json`
+- `projects/sample-signal-audit/platform/accounts.json`
+- `projects/sample-signal-audit/platform/crm_push_plan.json`
+- `projects/sample-signal-audit/deliverable/signal_audit_summary.md`
+- `projects/sample-signal-audit/deliverable/target_accounts.csv`
+
+Safety checks:
+
+- CRM plan has `dry_run: true`.
+- CRM plan has `writes_enabled: false`.
+- Email sequencing remains `draft_only`.
+- No production CRM write or email send occurs.
+
+### 8. Run Email Engagement Dry-Run
+
+Create a local sample payload:
+
+```json
+{"events":[{"event":"opened","email":"buyer@acmeanalytics.example"},{"event":"replied","email":"buyer@acmeanalytics.example"}]}
+```
+
+Then run:
+
+```bash
+python scripts/email_sync.py ingest \
+  --client sample-signal-audit \
+  --payload /path/to/sample_payload.json \
+  --dry-run
+```
+
+Expected:
+
+- Events are matched by email domain.
+- Engagement and activation scores are recomputed in memory.
+- Matrix is not written when `--dry-run` is present.
 
 ## Claude Master Files Check
 
@@ -178,5 +226,7 @@ The recovery phase is complete when:
 - DeployGTM offline tests pass from declared dependencies.
 - `make daily` passes.
 - One no-write workflow passes.
+- `make signal-audit-dry-run` passes.
+- `scripts/email_sync.py ingest --dry-run` accepts a sample SuperSend payload.
 - PR #6 has a clear merge/close decision.
 - Stale branches have documented archive/delete recommendations.
