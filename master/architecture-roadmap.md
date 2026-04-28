@@ -1,6 +1,6 @@
 # DeployGTM — Architecture Roadmap
 
-*Last updated: 2026-04-27*
+*Last updated: 2026-04-28*
 
 ---
 
@@ -27,6 +27,7 @@
 | `scripts/research.py` | Claude + web enrichment | ✅ Built |
 | `scripts/score.py` | Static ICP × signal priority score | ✅ Built |
 | `scripts/transcript.py` | Voice memo → CRM note | ✅ Built |
+| `scripts/email_sync.py` | Email engagement → matrix score events (Supersend + generic) | ✅ Built |
 
 ### Account Matrix System
 | Script | Purpose | Status |
@@ -137,7 +138,7 @@ After enough data accumulates in `variants.db` and account score histories:
 - Analyze which signal types (funding, hiring, etc.) actually led to replies and meetings
 - Adjust `SIGNAL_WEIGHT` in `score_engine.py` based on observed conversion rates
 - Minimum threshold: 30+ activated accounts with reply data before adjusting
-**Current state:** `score_engine.py` uses static weights. The feedback loop isn't closed yet.
+**Current state:** Feedback loop is now partially closed. `email_sync.py` writes reply/bounce/click events from Supersend back into the matrix as sentiment + status events — scores update on the next `make score-refresh`. The re-derivation step (re-running `derive_icp.py` with conversion history) is still future work, pending 30+ activated accounts with reply data.
 
 ---
 

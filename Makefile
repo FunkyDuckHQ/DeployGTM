@@ -226,6 +226,11 @@ variant-report:  ## Weekly variant performance by angle (set CLIENT=slug)
 weekly-report:  ## Weekly signal report for a client (set CLIENT=slug)
 	$(PYTHON) projects/deploygtm-own/scripts/weekly_signal_report.py --client $(CLIENT)
 
+# ─── Email Engagement Sync (Supersend etc.) ──────────────────────────────────
+
+email-sync:  ## Pull email engagement events into the matrix (set CLIENT=slug [SINCE=7] [PROVIDER=supersend|generic] [EVENTS_FILE=path] [DRY_RUN=1] [VERBOSE=1])
+	$(PYTHON) scripts/email_sync.py --client $(CLIENT) $(if $(PROVIDER),--provider $(PROVIDER),) $(if $(SINCE),--since $(SINCE),) $(if $(EVENTS_FILE),--events-file $(EVENTS_FILE),) $(if $(DRY_RUN),--dry-run,) $(if $(VERBOSE),--verbose,)
+
 # ─── Git ──────────────────────────────────────────────────────────────────────
 
 push:  ## Commit staged changes and push to current branch
