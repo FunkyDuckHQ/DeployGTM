@@ -1,8 +1,9 @@
 # Duplicate Work And Conflict Analysis
 
 Date: 2026-04-28
+Scope: `FunkyDuckHQ/DeployGTM` only.
 
-This document groups overlapping work by subsystem. It is intentionally behavior-first rather than branch-first, because the same concept appears in multiple Claude/Codex branches.
+This document groups overlapping work by subsystem. It is intentionally behavior-first rather than branch-first, because the same concept appears in multiple Claude/Codex DeployGTM branches.
 
 ## Summary Table
 
@@ -14,8 +15,7 @@ This document groups overlapping work by subsystem. It is intentionally behavior
 | Account matrix/scoring | `main` has platform schemas and seed artifacts | Claude branch has `projects/deploygtm-own/scripts/*`, `score_engine.py`, `variant_tracker.py`, `verify_signals.py`, many tests | Hybrid, not wholesale | Promote concepts after tests; avoid nested per-project script sprawl unless justified. |
 | Research/enrichment | `main` has `research.py`, `apollo.py`, `signals.py`, `score.py` | Claude branch adds `derive_icp.py`, `signals_to_matrix.py`, `sync_client_context.py`; Mitchell repos add validated research/enrichment tooling | Main code + Mitchell patterns | Keep main as base; adopt Mitchell processes before expanding custom scripts. |
 | CRM/HubSpot | `main` has `hubspot.py`, local API harness, provider switch concepts | Claude branch adds `crm_adapter.py`; PR #6 adds platform CRM adapter contract | PR #6 adapter direction | Favor provider-agnostic adapter contract; avoid duplicate CRM wrappers. |
-| Docs/playbooks | `main` has extensive playbooks and progress docs | Claude branch adds architecture roadmap, market-map, inbox-warmup, segments | Main + selected docs | Salvage docs only if they reflect tested workflows. |
-| yourfinancialguru frontend flows | Default branch is current source | Claude/Codex branches all touch quiz/home/connect/memory/navigation | Separate product audit | Do not pull into DeployGTM. Audit in that repo separately. |
+| Docs/playbooks | `main` has extensive playbooks and progress docs | Claude branch adds architecture roadmap, market-map, inbox-warmup, segments | Main + Claude master files | Include Claude master files intentionally; reconcile readiness claims against tests. |
 
 ## Detailed Notes
 
@@ -53,13 +53,26 @@ Recommendation:
 
 ### Account Matrix And Scoring
 
-This is the largest overlap. `main` contains schemas and seed artifacts; the Claude branch contains a full account-matrix operating layer under `projects/deploygtm-own/scripts/`.
+This is the largest runtime overlap. `main` contains schemas and seed artifacts; the Claude branch contains a full account-matrix operating layer under `projects/deploygtm-own/scripts/`.
 
 Recommendation:
 
 - Do not accept nested per-client scripts as the default pattern yet.
 - Promote reusable logic to `scripts/platform/` only when it serves all clients.
 - Keep client-specific data under `projects/<client>/`, not client-specific code unless absolutely necessary.
+
+### Claude Master Files
+
+The Claude master files are strategically useful and should be included. They are not the risky part of the Claude branch.
+
+Priority include list:
+
+- `master/architecture-roadmap.md`
+- `master/playbooks/market-map.md`
+- `master/playbooks/inbox-warmup.md`
+- `brain/segments.md`
+
+The only caution is that readiness language must be made honest. If a doc says a workflow is built, that workflow must either pass the runbook or be labeled as planned/pre-activation.
 
 ### Research And Enrichment
 
@@ -69,7 +82,7 @@ Recommendation:
 
 - Use `research-process-builder` to standardize company research steps before adding more custom web research code.
 - Use `ai-ark-cli` as an evaluated Apollo complement/replacement, starting with dry-run review URLs to avoid spend.
-- Evaluate `discolike-cli` and `techsight-cli` as Phase 2 sources after the local loop is green.
+- Evaluate `discolike-cli` and `techsight-cli` as Phase 2 sources after the trusted loop is green.
 
 ### CRM And HubSpot
 
@@ -84,7 +97,8 @@ Recommendation:
 ## Merge Rules From This Analysis
 
 1. Never merge a divergent branch wholesale.
-2. Prefer smaller, tested implementations over larger generated systems.
-3. Promote reusable logic to shared platform modules.
-4. Keep docs honest: document only workflows that have a passing command.
-5. Treat Mitchell repos as pattern sources first, dependencies second.
+2. Include Claude master files deliberately.
+3. Prefer smaller, tested implementations over larger generated systems.
+4. Promote reusable logic to shared platform modules.
+5. Keep docs honest: document only workflows that have a passing command or clearly label them pre-activation.
+6. Treat Mitchell repos as pattern sources first, dependencies second.
