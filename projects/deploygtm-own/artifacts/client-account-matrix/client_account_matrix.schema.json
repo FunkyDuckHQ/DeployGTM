@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deploygtm.local/schemas/client_account_matrix.schema.json",
+  "title": "DeployGTM Client Account Matrix",
+  "description": "Client-agnostic account matrix used across DeployGTM engagements.",
+  "type": "object",
+  "required": ["schema_version", "accounts"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+$"
+    },
+    "accounts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/account" }
+    }
+  },
+  "$defs": {
+    "persona": {
+      "type": "object",
+      "required": ["title", "problem_ownership_reason"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 2 },
+        "problem_ownership_reason": { "type": "string", "minLength": 5 }
+      }
+    },
+    "account": {
+      "type": "object",
+      "required": [
+        "client_name",
+        "company",
+        "icp_tier",
+        "market",
+        "segment",
+        "persona",
+        "angle",
+        "why_now_signal",
+        "product_fit",
+        "heritage_risk",
+        "voice_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "client_name": { "type": "string", "minLength": 2 },
+        "company": { "type": "string", "minLength": 2 },
+        "icp_tier": { "type": "integer", "enum": [1, 2, 3] },
+        "market": { "type": "string", "minLength": 2 },
+        "segment": { "type": "string", "minLength": 2 },
+        "persona": { "$ref": "#/$defs/persona" },
+        "angle": { "type": "string", "minLength": 10 },
+        "why_now_signal": {
+          "type": "string",
+          "description": "Single verifiable, public signal used to ground outreach.",
+          "minLength": 10
+        },
+        "product_fit": { "type": "string", "minLength": 10 },
+        "heritage_risk": {
+          "type": "string",
+          "description": "Use Low/Medium/High by default, or a client-specific equivalent label.",
+          "minLength": 2
+        },
+        "voice_notes": {
+          "type": "string",
+          "description": "Client-specific voice constraints for outreach generation.",
+          "minLength": 5
+        }
+      }
+    }
+  }
+}

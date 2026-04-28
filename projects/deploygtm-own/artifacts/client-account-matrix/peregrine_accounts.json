@@ -1,0 +1,229 @@
+{
+  "schema_version": "v1.0",
+  "accounts": [
+    {
+      "client_name": "Peregrine Space",
+      "company": "Xona Space Systems",
+      "icp_tier": 1,
+      "market": "NewSpace",
+      "segment": "PNT constellation operators",
+      "persona": {
+        "title": "VP Mission Systems",
+        "problem_ownership_reason": "Owns payload architecture and schedule risk for satellites entering build and integration windows."
+      },
+      "angle": "As Xona scales its satellite roadmap, an optical payload partner with fast-turn integration can reduce schedule slip risk before procurement hardens.",
+      "why_now_signal": "Xona publicly announced strategic funding to scale commercial PNT infrastructure.",
+      "product_fit": "Peregrine can deliver compact optical payload options aligned to SWaP and program cadence constraints.",
+      "heritage_risk": "Medium",
+      "voice_notes": "Direct, technical, low-hype. Lead with mission timing and execution risk, then ask one short question."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "Umbra",
+      "icp_tier": 1,
+      "market": "NewSpace",
+      "segment": "SAR imaging operators",
+      "persona": {
+        "title": "Director of Payload Engineering",
+        "problem_ownership_reason": "Responsible for integrating and validating payload subsystems under tight launch timelines."
+      },
+      "angle": "As Umbra grows constellation capacity, adding flexible optical payload options can unlock new collection products without extending schedule risk.",
+      "why_now_signal": "Umbra has publicly announced new financing and satellite expansion milestones.",
+      "product_fit": "Peregrine offers payload configurations optimized for rapid integration cycles.",
+      "heritage_risk": "Medium",
+      "voice_notes": "Plain language, no fluff, avoid overpromising."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "HawkEye 360",
+      "icp_tier": 1,
+      "market": "NewSpace",
+      "segment": "RF intelligence operators",
+      "persona": {
+        "title": "Chief Engineer",
+        "problem_ownership_reason": "Balances performance tradeoffs across sensor payload roadmaps and satellite bus constraints."
+      },
+      "angle": "Mission operators expanding RF intelligence capabilities can benefit from complementary optical payload paths that fit existing deployment cadences.",
+      "why_now_signal": "HawkEye 360 has publicly announced growth funding and ongoing constellation deployment activity.",
+      "product_fit": "Peregrine can support optical payload integration planning for parallel sensor strategy.",
+      "heritage_risk": "Medium",
+      "voice_notes": "Confident but not aggressive; use uncertainty language."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "BlackSky",
+      "icp_tier": 2,
+      "market": "NewSpace",
+      "segment": "EO constellation operators",
+      "persona": {
+        "title": "Senior Program Manager, Space Systems",
+        "problem_ownership_reason": "Owns subcontractor timing and supplier readiness for near-term deployment cycles."
+      },
+      "angle": "When EO operators run rapid revisit roadmaps, a payload supplier that can move fast is often more valuable than legacy heritage labels alone.",
+      "why_now_signal": "BlackSky continues to announce Gen-3 growth and service expansion initiatives publicly.",
+      "product_fit": "Peregrine can support fast-turn procurement windows with compact payload builds.",
+      "heritage_risk": "High",
+      "voice_notes": "Keep it short and factual; one claim tied to one signal."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "Satellogic",
+      "icp_tier": 2,
+      "market": "NewSpace",
+      "segment": "EO imagery operators",
+      "persona": {
+        "title": "Head of Space Programs",
+        "problem_ownership_reason": "Owns vendor decisions affecting timeline, cost, and payload performance outcomes."
+      },
+      "angle": "For operators under pressure to expand imagery capacity efficiently, an agile payload partner can lower integration friction.",
+      "why_now_signal": "Satellogic has publicly communicated commercial contract momentum and constellation operations updates.",
+      "product_fit": "Peregrine provides configurable payload options for practical deployment windows.",
+      "heritage_risk": "High",
+      "voice_notes": "Neutral, consultative tone."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "ICEYE US",
+      "icp_tier": 2,
+      "market": "SAR Imaging",
+      "segment": "Defense-aligned SAR providers",
+      "persona": {
+        "title": "Director, Mission Payloads",
+        "problem_ownership_reason": "Owns mission payload roadmap and tradeoffs between speed, capability, and supplier risk."
+      },
+      "angle": "Defense-focused SAR providers can benefit from optical payload options that complement existing missions without forcing long supplier onboarding.",
+      "why_now_signal": "ICEYE continues to publish defense partnership announcements and program expansion updates.",
+      "product_fit": "Peregrine can serve as a fast-moving payload supplier for hybrid mission concepts.",
+      "heritage_risk": "High",
+      "voice_notes": "Professional and concise."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "Terran Orbital",
+      "icp_tier": 1,
+      "market": "Space Systems",
+      "segment": "Satellite prime and bus manufacturers",
+      "persona": {
+        "title": "VP Supplier Programs",
+        "problem_ownership_reason": "Owns subsystem supplier pipeline and schedule certainty for multi-customer satellite programs."
+      },
+      "angle": "Bus manufacturers under delivery pressure need payload suppliers that can align to integration windows with fewer handoff delays.",
+      "why_now_signal": "Terran Orbital has public backlog and program execution announcements tied to ongoing satellite production.",
+      "product_fit": "Peregrine offers payload hardware paths designed for faster supplier coordination.",
+      "heritage_risk": "Medium",
+      "voice_notes": "Operational tone; no marketing adjectives."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "York Space Systems",
+      "icp_tier": 1,
+      "market": "Defense Space",
+      "segment": "Constellation bus integrators",
+      "persona": {
+        "title": "Director of Program Engineering",
+        "problem_ownership_reason": "Owns subsystem integration risk and timeline for defense and commercial customer missions."
+      },
+      "angle": "As York expands mission cadence, payload partners that reduce integration churn can protect delivery timelines.",
+      "why_now_signal": "York has publicly announced new mission awards and growth in production programs.",
+      "product_fit": "Peregrine can provide payload support compatible with schedule-driven bus programs.",
+      "heritage_risk": "Medium",
+      "voice_notes": "Sound like a peer operator, not a seller."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "L3Harris",
+      "icp_tier": 2,
+      "market": "Defense Primes",
+      "segment": "ISR payload integrators",
+      "persona": {
+        "title": "Senior Capture Manager, Space ISR",
+        "problem_ownership_reason": "Needs qualified payload partners to strengthen bids and reduce execution uncertainty."
+      },
+      "angle": "Capture teams pursuing fast-turn ISR programs need payload suppliers that can support proposal timelines and technical confidence.",
+      "why_now_signal": "L3Harris has public contract announcements tied to space ISR and mission systems delivery.",
+      "product_fit": "Peregrine can support subcontract payload needs for schedule-sensitive opportunities.",
+      "heritage_risk": "High",
+      "voice_notes": "Respect procurement context; be concise and evidence-led."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "General Atomics Electromagnetic Systems",
+      "icp_tier": 2,
+      "market": "Defense Primes",
+      "segment": "Space mission subcontractors",
+      "persona": {
+        "title": "Program Director, Space Systems",
+        "problem_ownership_reason": "Owns delivery commitments and partner performance for mission payload programs."
+      },
+      "angle": "For subcontractors in active mission awards, a payload partner with shorter coordination cycles can reduce program risk.",
+      "why_now_signal": "General Atomics EMS has public announcements on awarded space and defense mission programs.",
+      "product_fit": "Peregrine can align payload delivery planning to subcontractor milestone schedules.",
+      "heritage_risk": "High",
+      "voice_notes": "Short, practical, no speculation."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "Sierra Space",
+      "icp_tier": 2,
+      "market": "Commercial Space",
+      "segment": "Space platform and mission integrators",
+      "persona": {
+        "title": "Director, Mission Architecture",
+        "problem_ownership_reason": "Defines mission payload stack and de-risks supplier dependencies before commitment."
+      },
+      "angle": "Mission teams scaling commercial space programs can use flexible payload suppliers to preserve timeline options.",
+      "why_now_signal": "Sierra Space has publicly announced new mission partnerships and space platform growth programs.",
+      "product_fit": "Peregrine can provide payload options that support iterative mission planning.",
+      "heritage_risk": "Medium",
+      "voice_notes": "Measured tone; avoid hard claims beyond signal."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "AFRL Space Vehicles Directorate",
+      "icp_tier": 1,
+      "market": "US Government R&D",
+      "segment": "Heritage-agnostic research programs",
+      "persona": {
+        "title": "Program Manager, Space Sensors",
+        "problem_ownership_reason": "Controls transition from study phases into funded hardware execution."
+      },
+      "angle": "R&D programs moving from concept to hardware need payload suppliers who can execute without enterprise procurement drag.",
+      "why_now_signal": "AFRL programs regularly publish SBIR/STTR and BAAs that indicate active sensor development demand.",
+      "product_fit": "Peregrine can support prototype and transition-stage payload needs.",
+      "heritage_risk": "Low",
+      "voice_notes": "Government-safe wording; no hype."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "MIT Lincoln Laboratory",
+      "icp_tier": 1,
+      "market": "US Government R&D",
+      "segment": "Advanced mission research labs",
+      "persona": {
+        "title": "Group Leader, Space Systems",
+        "problem_ownership_reason": "Leads mission experiments requiring specialized payload capability under research timelines."
+      },
+      "angle": "Research labs shipping mission experiments need responsive payload suppliers that can support demonstration windows.",
+      "why_now_signal": "MIT Lincoln Laboratory publicly shares ongoing space mission research and transition activities.",
+      "product_fit": "Peregrine can provide payload support for prototype-to-demonstration cycles.",
+      "heritage_risk": "Low",
+      "voice_notes": "Technical and calm; ask one simple fit question."
+    },
+    {
+      "client_name": "Peregrine Space",
+      "company": "Johns Hopkins APL",
+      "icp_tier": 1,
+      "market": "US Government R&D",
+      "segment": "Applied mission development labs",
+      "persona": {
+        "title": "Program Area Manager, Space",
+        "problem_ownership_reason": "Owns mission-level execution and payload partner selection for applied programs."
+      },
+      "angle": "Applied mission programs with tight demonstration timelines benefit from payload suppliers that can move faster than traditional primes.",
+      "why_now_signal": "APL publicly documents active space mission development and defense-supported payload programs.",
+      "product_fit": "Peregrine can support mission teams needing rapid payload collaboration.",
+      "heritage_risk": "Low",
+      "voice_notes": "Respectful, clear, and brief."
+    }
+  ]
+}

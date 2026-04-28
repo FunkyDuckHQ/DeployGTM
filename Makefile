@@ -92,6 +92,24 @@ report:  ## Generate weekly signal report from output/
 report-hs:  ## Weekly report with live HubSpot stage data
 	$(PYTHON) scripts/report.py generate --include-hubspot
 
+context-pack:  ## Build phase-2 context pack (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.context_pack build --client $(CLIENT)
+
+platform-bootstrap:  ## Bootstrap a new client workspace (set CLIENT_NAME and DOMAIN, optional CLIENT)
+	$(PYTHON) -m scripts.platform.cli bootstrap --client-name "$(CLIENT_NAME)" --domain $(DOMAIN) $(if $(CLIENT),--client-slug $(CLIENT),)
+
+platform-strategy:  ## Generate ICP strategy from context pack (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli strategy --client $(CLIENT)
+
+email-sync:  ## Poll SuperSend events and apply to client matrix (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.email_sync poll --client $(CLIENT)
+
+email-sync-dry-run:  ## Dry-run SuperSend sync without writing matrix (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.email_sync poll --client $(CLIENT) --dry-run
+
+email-sync-ingest:  ## Ingest SuperSend webhook payload file (set CLIENT and PAYLOAD=path.json)
+	$(PYTHON) -m scripts.email_sync ingest --client $(CLIENT) --payload $(PAYLOAD)
+
 # ─── Signals & BirdDog ────────────────────────────────────────────────────────
 
 signals:  ## Find signals from Apollo (hiring + funded) → signals_intake.csv
