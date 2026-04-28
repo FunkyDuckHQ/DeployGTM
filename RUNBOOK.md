@@ -1,6 +1,7 @@
 # Recovery Runbook
 
 Date: 2026-04-28
+Scope: `FunkyDuckHQ/DeployGTM` only.
 
 Purpose: establish a trusted, repeatable, no-write test loop before additional feature work or branch merges.
 
@@ -15,7 +16,7 @@ Purpose: establish a trusted, repeatable, no-write test loop before additional f
 
 ## DeployGTM Trusted Loop
 
-Run from a fresh clone or GitHub Codespace/dev environment.
+Run from a fresh clone, GitHub Codespace, or other GitHub-backed dev environment.
 
 ```bash
 git clone https://github.com/FunkyDuckHQ/DeployGTM.git
@@ -102,45 +103,22 @@ python scripts/pipeline.py score \
 
 If `pipeline.py score` is not the correct CLI shape, document the actual no-write equivalent and update this runbook. The goal is one deterministic workflow that does not require live enrichment APIs or CRM writes.
 
-## yourfinancialguru Trusted Loop
+## Claude Master Files Check
 
-Run separately in the `yourfinancialguru` repo.
-
-```bash
-git clone https://github.com/FunkyDuckHQ/yourfinancialguru.git
-cd yourfinancialguru
-```
-
-### 1. Install
+After porting Claude master files, verify they are present and scoped honestly:
 
 ```bash
-npm install
+ls master/architecture-roadmap.md
+ls master/playbooks/market-map.md
+ls master/playbooks/inbox-warmup.md
+ls brain/segments.md
 ```
 
-### 2. Verify Static Quality
+Check:
 
-```bash
-npm run lint
-npm run build
-```
-
-Expected:
-
-- No TypeScript/build failures.
-- If lint/build scripts are insufficient, add explicit typecheck or test script before merging UI branches.
-
-### 3. Smoke Test App
-
-```bash
-npm run dev
-```
-
-Manual smoke paths:
-
-- Home page loads.
-- Quiz/pulse flow runs.
-- Connect flow persists localStorage as expected.
-- Results page handles both pulse-only and full profile states.
+- No doc claims a workflow is production-ready unless it passes this runbook.
+- Planned nodes are labeled planned/pre-activation.
+- Segment guidance aligns with `brain/icp.md`, `brain/personas.md`, and `brain/messaging.md`.
 
 ## External Tooling Smoke Checks
 
@@ -195,7 +173,8 @@ Do not copy template files blindly into DeployGTM.
 
 The recovery phase is complete when:
 
-- `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `RUNBOOK.md`, and `EXTERNAL_REPOS.md` are present in GitHub Cloud.
+- `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `RUNBOOK.md`, `EXTERNAL_REPOS.md`, `CLEANUP_PLAN.md`, and `CLAUDE_MASTER_FILES.md` are present in GitHub Cloud.
+- Claude master files are ported or have an explicit reason for deferral.
 - DeployGTM offline tests pass from declared dependencies.
 - `make daily` passes.
 - One no-write workflow passes.
