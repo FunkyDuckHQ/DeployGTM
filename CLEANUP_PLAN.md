@@ -1,10 +1,32 @@
 # Cleanup Execution Plan
 
 Date: 2026-04-28
+Scope: `FunkyDuckHQ/DeployGTM` only.
 
 This is the execution sequence after the audit pack is reviewed.
 
-## Phase 1: Prove The Base Repo
+## Phase 1: Port Claude Master Files
+
+Goal: preserve the useful Claude strategic/master files before touching runtime code.
+
+Source branch: `claude/read-master-files-wWR6f`
+
+Include first:
+
+- `master/playbooks/market-map.md`
+- `master/playbooks/inbox-warmup.md`
+- `brain/segments.md`
+- `master/architecture-roadmap.md`, edited so readiness claims match verified commands
+
+Include carefully:
+
+- selected `CLAUDE.md` sections
+- selected `master/matthew-working-conditions.md` sections
+- selected `master/progress.md` sections only after reconciling with actual test results
+
+Rule: include the Claude master files; do not import unverified duplicate runtime systems just because they live on the same branch.
+
+## Phase 2: Prove The Base Repo
 
 Goal: make `main`/recovery branch testable before merging feature branches.
 
@@ -29,7 +51,7 @@ Exit criteria:
 
 - Fresh cloud/dev clone can run the trusted loop from `RUNBOOK.md`.
 
-## Phase 2: Decide PR #6
+## Phase 3: Decide PR #6
 
 Goal: resolve the open DeployGTM PR without blending unrelated branch work.
 
@@ -44,7 +66,7 @@ Exit criteria:
 
 - PR #6 is merged or closed with a written reason.
 
-## Phase 3: Salvage Claude Branch Work
+## Phase 4: Salvage Claude Runtime Work
 
 Target branch: `claude/read-master-files-wWR6f`
 
@@ -64,11 +86,12 @@ Do not merge wholesale. Review in this order:
    - derived ICP
    - engagement scoring
 
-3. Docs/playbooks:
-   - `master/architecture-roadmap.md`
-   - `master/playbooks/market-map.md`
-   - `master/playbooks/inbox-warmup.md`
-   - `brain/segments.md`
+3. Runtime modules:
+   - `scripts/derive_icp.py`
+   - `scripts/engage.py`
+   - `scripts/signals_to_matrix.py`
+   - `scripts/sync_client_context.py`
+   - `scripts/crm_adapter.py`
 
 Rules:
 
@@ -76,29 +99,9 @@ Rules:
 - Prefer shared `scripts/platform/` modules over per-project scripts.
 - Reject generated code that cannot be exercised by a command.
 
-## Phase 4: yourfinancialguru Separate Audit
-
-Do not mix this with DeployGTM recovery.
-
-Tasks:
-
-1. Create a separate recovery branch in `FunkyDuckHQ/yourfinancialguru`.
-2. Verify default branch build.
-3. Review branches by product flow:
-   - quiz/pulse
-   - connect/mock memory
-   - home/dashboard
-   - navigation/layout
-   - account pages
-4. Decide whether the product should remain on the Claude default branch or be renamed to `main` later.
-
-Exit criteria:
-
-- One buildable branch and one chosen product direction.
-
 ## Phase 5: External Repo Adoption
 
-Do after Phases 1-2.
+Do after Phases 1-3.
 
 Tasks:
 
