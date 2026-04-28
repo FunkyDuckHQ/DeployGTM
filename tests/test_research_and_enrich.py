@@ -100,12 +100,13 @@ class TestResearchAccounts(unittest.TestCase):
 
     def test_research_account_dry_run_skips_claude(self):
         account = self._account()
+        profile = {"fit_dimensions": [], "fit_max_score": 10.0}
 
         with patch.object(self.research, "_fetch_web_snapshot", return_value="fake web content"):
             mock_enrich = MagicMock(return_value={"name": "TestCo", "industry": "SaaS"})
             with patch.dict(sys.modules, {"apollo": MagicMock(enrich_company=mock_enrich)}):
                 result = self.research.research_account(
-                    account, client_context="", dry_run=True
+                    account, profile, dry_run=True
                 )
         # dry-run: no fit_score written, no Claude call
         self.assertEqual(result, {})
@@ -136,11 +137,14 @@ class TestResearchAccounts(unittest.TestCase):
         mock_client = MagicMock()
         mock_client.messages.create.return_value = mock_msg
 
+        profile = {"fit_dimensions": [], "fit_max_score": 10.0,
+                   "client_product_summary": "test product"}
+
         with patch.object(self.research, "_fetch_web_snapshot", return_value=""):
             with patch.dict(sys.modules, {"apollo": MagicMock(enrich_company=MagicMock(return_value={}))}):
                 with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-key"}):
                     with patch("anthropic.Anthropic", return_value=mock_client):
-                        self.research.research_account(account, client_context="test ICP")
+                        self.research.research_account(account, profile)
 
         self.assertEqual(account["fit_score"], 8.5)
         self.assertIn("pain_hypothesis", account)
@@ -150,6 +154,7 @@ class TestResearchAccounts(unittest.TestCase):
 
     def test_research_account_handles_bad_json(self):
         account = self._account()
+        profile = {"fit_dimensions": [], "fit_max_score": 10.0}
 
         mock_msg = MagicMock()
         mock_msg.content = [MagicMock(text="not json at all")]
@@ -158,8 +163,9 @@ class TestResearchAccounts(unittest.TestCase):
 
         with patch.object(self.research, "_fetch_web_snapshot", return_value=""):
             with patch.dict(sys.modules, {"apollo": MagicMock(enrich_company=MagicMock(return_value={}))}):
-                with patch("anthropic.Anthropic", return_value=mock_client):
-                    result = self.research.research_account(account, client_context="")
+                with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-key"}):
+                    with patch("anthropic.Anthropic", return_value=mock_client):
+                        result = self.research.research_account(account, profile)
 
         self.assertEqual(result, {})
         self.assertNotIn("fit_score", account)
@@ -195,7 +201,7 @@ class TestResearchAccounts(unittest.TestCase):
 
         called_with = []
 
-        def fake_research(acc, ctx, **kw):
+        def fake_research(acc, prof, **kw):
             called_with.append(acc["company"])
             return {}
 

@@ -196,6 +196,9 @@ outreach-variants:  ## Generate 3 outreach variants (set CLIENT=slug COMPANY="Na
 batch-outreach:  ## Generate variants across a tier filter (set CLIENT=slug [TIER=1 or 1,2] [LIMIT=n] [LOG=1|2|3])
 	$(PYTHON) projects/deploygtm-own/scripts/batch_outreach.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(LIMIT),--limit $(LIMIT),) $(if $(LOG),--log-variant $(LOG),)
 
+derive-icp:  ## Generate the client's ICP scoring profile from context.md (set CLIENT=slug [FORCE=1] [DRY_RUN=1])
+	$(PYTHON) scripts/derive_icp.py --client $(CLIENT) $(if $(FORCE),--force,) $(if $(DRY_RUN),--dry-run,)
+
 research-accounts:  ## Research accounts via Apollo + web + Claude, set fit_score (set CLIENT=slug [TIER=1,2] [COMPANY="Name"] [FORCE=1] [DRY_RUN=1])
 	$(PYTHON) projects/deploygtm-own/scripts/research_accounts.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(COMPANY),--company "$(COMPANY)",) $(if $(FORCE),--force,) $(if $(DRY_RUN),--dry-run,)
 

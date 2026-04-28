@@ -355,9 +355,10 @@ def main(
     )
 
     click.echo(f"\nEngagement ready.")
-    click.echo(f"  Review:  {context_path}")
-    click.echo(f"  Next:    make signals-to-matrix CLIENT={client}")
-    click.echo(f"  Or:      make verify-signals CLIENT={client}")
+    click.echo(f"  Review:    {context_path}")
+    click.echo(f"  Next:      make derive-icp CLIENT={client}    # generate scoring profile")
+    click.echo(f"  Then:      make research-accounts CLIENT={client}")
+    click.echo(f"  And:       make enrich-contacts CLIENT={client}")
 
 
 if __name__ == "__main__":

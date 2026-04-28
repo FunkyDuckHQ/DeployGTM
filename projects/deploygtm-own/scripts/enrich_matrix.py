@@ -53,28 +53,43 @@ except ImportError:
     pass
 
 from generate_outreach import _matrix_path, load_client_matrix  # noqa: E402
+from derive_icp import load_profile  # noqa: E402
 
 
-# ─── Persona → title mapping ──────────────────────────────────────────────────
+# ─── Persona → title mapping (loaded from client's ICP profile) ──────────────
 
-PERSONA_TITLES: dict[str, list[str]] = {
+# Used as a fallback when the client has no ICP profile yet.
+_FALLBACK_PERSONA_TITLES: dict[str, list[str]] = {
     "founder_seller":     ["CEO", "Co-Founder", "Founder", "CTO"],
     "first_sales_leader": ["VP Sales", "Head of Sales", "Founding AE", "VP Revenue", "Chief Revenue Officer"],
     "revops_growth":      ["RevOps", "Head of Revenue Operations", "Head of Growth", "Head of Operations", "Growth"],
 }
 
-# Default: cast wide to catch the most relevant person
-_DEFAULT_TITLES = (
-    PERSONA_TITLES["founder_seller"]
-    + PERSONA_TITLES["first_sales_leader"]
-    + PERSONA_TITLES["revops_growth"]
-)
+# Re-export for back-compat with tests / callers that imported PERSONA_TITLES
+PERSONA_TITLES = _FALLBACK_PERSONA_TITLES
 
 
-def _titles_for_account(account: dict) -> list[str]:
-    """Return ordered title list based on account's target_persona field."""
+def _titles_for_account(account: dict, profile: Optional[dict] = None) -> list[str]:
+    """Return ordered title list based on account's target_persona field.
+
+    Pulls personas from the client's ICP profile when available; falls back
+    to a generic founder/sales/revops mapping otherwise.
+    """
+    personas: dict[str, list[str]] = (
+        (profile or {}).get("personas") or _FALLBACK_PERSONA_TITLES
+    )
     persona = account.get("target_persona", "")
-    return PERSONA_TITLES.get(persona, _DEFAULT_TITLES)
+    if persona in personas:
+        return personas[persona]
+    # Default: union of all persona titles in the profile
+    seen: set = set()
+    union: list[str] = []
+    for titles in personas.values():
+        for t in titles:
+            if t not in seen:
+                union.append(t)
+                seen.add(t)
+    return union
 
 
 # ─── Claude contact profiling ──────────────────────────────────────────────────
@@ -190,6 +205,7 @@ def enrich_account(
     dry_run: bool = False,
     verbose: bool = False,
     contact_delay: float = 0.5,
+    profile: Optional[dict] = None,
 ) -> list[dict]:
     """Find contacts + build profiles for one account. Mutates account in place."""
     from apollo import find_contacts
@@ -197,7 +213,7 @@ def enrich_account(
     domain = account.get("domain", "")
     company = account.get("company", "")
 
-    titles = _titles_for_account(account)
+    titles = _titles_for_account(account, profile=profile)
     click.echo(f"  Enriching {company} ({domain})...")
 
     # 1. Find contacts via Apollo
@@ -261,6 +277,7 @@ def enrich_matrix(
     """Enrich all matching accounts. Returns list of enriched company names."""
     matrix = load_client_matrix(client)
     client_context = _load_context(client)
+    profile = load_profile(client)
     enriched_companies: list[str] = []
 
     for account in matrix.get("accounts", []):
@@ -280,6 +297,7 @@ def enrich_matrix(
             dry_run=dry_run,
             verbose=verbose,
             contact_delay=0.5,
+            profile=profile,
         )
         enriched_companies.append(account["company"])
 
