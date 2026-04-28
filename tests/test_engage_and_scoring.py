@@ -295,16 +295,40 @@ class TestScoreEngine(unittest.TestCase):
         self.assertGreater(after, before)
 
     def test_threshold_labels(self):
-        self.assertEqual(self.score.threshold_label(16), "HOT")
-        self.assertEqual(self.score.threshold_label(12), "ENGAGE")
-        self.assertEqual(self.score.threshold_label(8), "WATCH")
+        self.assertEqual(self.score.threshold_label(13), "HOT")
+        self.assertEqual(self.score.threshold_label(9), "ENGAGE")
+        self.assertEqual(self.score.threshold_label(5), "WATCH")
         self.assertEqual(self.score.threshold_label(2), "COLD")
 
     def test_hot_threshold_constant(self):
-        self.assertEqual(self.score.HOT_THRESHOLD, 15)
+        self.assertEqual(self.score.HOT_THRESHOLD, 12)
 
     def test_engagement_threshold_constant(self):
-        self.assertEqual(self.score.ENGAGEMENT_THRESHOLD, 12)
+        self.assertEqual(self.score.ENGAGEMENT_THRESHOLD, 8)
+
+    def test_set_fit_score_updates_account(self):
+        account = self._account(tier=3)
+        # Before: no fit_score, uses fallback
+        before = self.score.compute_score(account)
+        # After: explicit fit_score raises it
+        self.score.set_fit_score(account, 9.0, rationale="manual test")
+        self.assertEqual(account["fit_score"], 9.0)
+        after = account["current_score"]
+        self.assertGreater(after, before)
+
+    def test_fit_score_fallback_used_when_not_set(self):
+        account = self._account(tier=1)
+        # No fit_score set — should use TIER_FIT_FALLBACK[1] = 7.0
+        score = self.score.compute_score(account)
+        # Score should be >= 7.0 (fit_score floor for tier 1)
+        self.assertGreaterEqual(score, 7.0)
+
+    def test_stale_signal_no_bonus(self):
+        # A very old signal should contribute ~0 bonus (recency → 0)
+        account = self._account(tier=1, signal="funding", signal_date="2020-01-01")
+        score = self.score.compute_score(account)
+        # Score should equal approximately fit_score only (7.0 for tier 1)
+        self.assertAlmostEqual(score, 7.0, delta=0.5)
 
     def test_get_prioritized_sorts_descending(self):
         # Seed a matrix with two accounts

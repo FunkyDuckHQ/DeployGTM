@@ -196,6 +196,12 @@ outreach-variants:  ## Generate 3 outreach variants (set CLIENT=slug COMPANY="Na
 batch-outreach:  ## Generate variants across a tier filter (set CLIENT=slug [TIER=1 or 1,2] [LIMIT=n] [LOG=1|2|3])
 	$(PYTHON) projects/deploygtm-own/scripts/batch_outreach.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(LIMIT),--limit $(LIMIT),) $(if $(LOG),--log-variant $(LOG),)
 
+research-accounts:  ## Research accounts via Apollo + web + Claude, set fit_score (set CLIENT=slug [TIER=1,2] [COMPANY="Name"] [FORCE=1] [DRY_RUN=1])
+	$(PYTHON) projects/deploygtm-own/scripts/research_accounts.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(COMPANY),--company "$(COMPANY)",) $(if $(FORCE),--force,) $(if $(DRY_RUN),--dry-run,)
+
+enrich-contacts:  ## Find contacts + build individual profiles for matrix accounts (set CLIENT=slug [TIER=1,2] [COMPANY="Name"] [FORCE=1] [DRY_RUN=1])
+	$(PYTHON) projects/deploygtm-own/scripts/enrich_matrix.py --client $(CLIENT) $(if $(TIER),--tier $(TIER),) $(if $(COMPANY),--company "$(COMPANY)",) $(if $(FORCE),--force,) $(if $(DRY_RUN),--dry-run,)
+
 verify-signals:  ## Audit which accounts are ready vs. blocked on signal gaps (set CLIENT=slug)
 	$(PYTHON) projects/deploygtm-own/scripts/verify_signals.py --client $(CLIENT)
 

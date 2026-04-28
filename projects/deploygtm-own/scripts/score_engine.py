@@ -1,34 +1,39 @@
 """
 DeployGTM — Dynamic ICP Score Engine
 
-Computes a live account score that evolves based on three factors:
+Score = fit_score + signal_bonus + status_mod + sentiment_mod
 
-  base_score        = tier_weight × signal_weight
-  interaction_delta = Σ events × event_weight  (status transitions, reply sentiment)
-  freshness_penalty = signal_age_days / DECAY_HALF_LIFE × base_score × DECAY_RATE
+  fit_score     : 0–10 set by research_accounts.py.  Never decays.
+                  Falls back to a tier estimate if research hasn't run yet.
+  signal_bonus  : SIGNAL_WEIGHT × 3 × recency_factor.  Decays to 0 over
+                  2 × DECAY_HALF_LIFE_DAYS.  0 when no verified signal date.
+  status_mod    : lifecycle stage contribution (replied/meeting_booked push
+                  scores up regardless of signal age)
+  sentiment_mod : most-recent variant response sentiment
 
-  current_score = base_score + interaction_delta - freshness_penalty
-
-The score is stored back into the account dict as `current_score` (float).
-A `score_history` list records every change with timestamp and reason.
-
-Used by:
-  - weekly_signal_report.py  (surface priority changes)
-  - verify_signals.py        (flag accounts that crossed the engagement threshold)
-  - batch_outreach.py        (order accounts by score when filtering)
+Separation of concerns
+  fit_score    answers "is this a good ICP fit?" — set once by AI research
+  signal_bonus answers "is now the right time?" — decays as the signal ages
+  status_mod   answers "how engaged are they?" — lifts score as deals progress
 
 Score thresholds:
-  >= 15  → hot lead, activate immediately
-  >= 12  → engagement threshold (batch outreach)
-  >= 8   → active monitoring
-  < 8    → watch list only
+  >= 12  → HOT — activate immediately
+  >= 8   → ENGAGE — batch outreach
+  >= 4   → WATCH — monitor, not ready
+  < 4    → COLD — deprioritise
+
+Used by:
+  - research_accounts.py  (sets fit_score after company research)
+  - weekly_signal_report.py
+  - verify_signals.py
+  - batch_outreach.py
 """
 
 from __future__ import annotations
 
 import json
 import sys
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
 from typing import Optional
 
@@ -43,7 +48,8 @@ from generate_outreach import _matrix_path, load_client_matrix  # noqa: E402
 
 # ─── Weights ──────────────────────────────────────────────────────────────────
 
-TIER_WEIGHT = {1: 5, 2: 3, 3: 1}
+# Fallback fit_score estimate when research hasn't run yet
+TIER_FIT_FALLBACK = {1: 7.0, 2: 4.5, 3: 2.0}
 
 SIGNAL_WEIGHT = {
     "funding": 3,
@@ -57,46 +63,56 @@ SIGNAL_WEIGHT = {
     "conference_signal": 1,
     "manual": 1,
 }
+SIGNAL_MULTIPLIER = 3  # max bonus = SIGNAL_WEIGHT × SIGNAL_MULTIPLIER
 
-# Status transitions that modify score
+# Status transitions — reflect engagement progress, not signal strength
 STATUS_DELTA = {
-    "active": 2,
-    "outreach_sent": 3,
-    "replied": 8,
-    "meeting_booked": 15,
-    "no_fit": -20,
-    "paused": -5,
+    "active": 1,
+    "outreach_sent": 2,
+    "replied": 6,
+    "meeting_booked": 12,
+    "no_fit": -15,
+    "paused": -3,
     "monitor": 0,
 }
 
-# Variant response sentiment (from variant_tracker)
 SENTIMENT_DELTA = {
-    "positive": 6,
-    "neutral": 2,
+    "positive": 4,
+    "neutral": 1,
     "negative": -2,
 }
 
-# Freshness decay: score decays 20% per half-life period
-DECAY_RATE = 0.20
+# Signal bonus decays to 0 over 2 × DECAY_HALF_LIFE_DAYS
 DECAY_HALF_LIFE_DAYS = 60
 
-HOT_THRESHOLD = 15
-ENGAGEMENT_THRESHOLD = 12
-WATCH_THRESHOLD = 8
+HOT_THRESHOLD = 12
+ENGAGEMENT_THRESHOLD = 8
+WATCH_THRESHOLD = 4
 
 
-# ─── Core scoring ─────────────────────────────────────────────────────────────
+# ─── Helpers ──────────────────────────────────────────────────────────────────
 
 
-def _signal_age_days(signal_date_str: str) -> int:
-    """Return days since the signal date, or 0 if unparseable."""
+def _signal_age_days(signal_date_str: str) -> Optional[int]:
+    """Return days since the signal date, or None if absent / VERIFY marker."""
     if not signal_date_str or "VERIFY" in signal_date_str.upper():
-        return 0
+        return None
     try:
         d = date.fromisoformat(signal_date_str[:10])
         return max(0, (date.today() - d).days)
     except ValueError:
-        return 0
+        return None
+
+
+def _recency_factor(age_days: Optional[int]) -> float:
+    """Linear decay from 1.0 (fresh) to 0.0 at 2 × half-life. 0 if no date."""
+    if age_days is None:
+        return 0.0
+    max_age = DECAY_HALF_LIFE_DAYS * 2
+    return max(0.0, 1.0 - age_days / max_age)
+
+
+# ─── Core scoring ─────────────────────────────────────────────────────────────
 
 
 def compute_score(account: dict) -> float:
@@ -105,29 +121,30 @@ def compute_score(account: dict) -> float:
     Does NOT modify the account dict — call apply_score() to persist.
     """
     tier = account.get("icp_tier", 3)
-    signal_type = account.get("why_now_signal", {}).get("type", "manual")
-    signal_date = account.get("why_now_signal", {}).get("date", "")
+    signal = account.get("why_now_signal", {})
+    signal_type = signal.get("type", "manual")
+    signal_date = signal.get("date", "")
     status = account.get("status", "monitor")
 
-    # Base
-    base = TIER_WEIGHT.get(tier, 1) * SIGNAL_WEIGHT.get(signal_type, 1)
+    # Base: research-derived fit score (never decays)
+    fit_score: float = account.get("fit_score") or TIER_FIT_FALLBACK.get(tier, 2.0)
+
+    # Signal bonus: decays with signal age; 0 if no verified date
+    age_days = _signal_age_days(signal_date)
+    recency = _recency_factor(age_days)
+    signal_bonus = SIGNAL_WEIGHT.get(signal_type, 1) * SIGNAL_MULTIPLIER * recency
 
     # Status modifier
     status_mod = STATUS_DELTA.get(status, 0)
 
-    # Freshness decay
-    age_days = _signal_age_days(signal_date)
-    decay_periods = age_days / DECAY_HALF_LIFE_DAYS
-    freshness_penalty = base * DECAY_RATE * decay_periods
-
-    # Variant response modifier (most recent sentiment in score_history)
+    # Variant sentiment modifier (most recent in history)
     sentiment_mod = 0.0
     for event in reversed(account.get("score_history", [])):
         if event.get("type") == "sentiment":
             sentiment_mod = SENTIMENT_DELTA.get(event.get("value", ""), 0)
             break
 
-    raw = base + status_mod + sentiment_mod - freshness_penalty
+    raw = fit_score + signal_bonus + status_mod + sentiment_mod
     return round(max(0.0, raw), 2)
 
 
@@ -174,13 +191,27 @@ def record_event(
     return apply_score(account, reason=reason or f"{event_type}={value}")
 
 
+def set_fit_score(account: dict, fit_score: float, rationale: str = "") -> dict:
+    """Set the research-derived fit_score and recompute. Returns account."""
+    account["fit_score"] = round(min(10.0, max(0.0, fit_score)), 2)
+    history = account.setdefault("score_history", [])
+    history.append({
+        "date": date.today().isoformat(),
+        "type": "fit_score_set",
+        "value": account["fit_score"],
+        "reason": rationale or "research",
+        "score": account.get("current_score"),
+    })
+    return apply_score(account, reason=f"fit_score={account['fit_score']}")
+
+
 # ─── Matrix-level operations ──────────────────────────────────────────────────
 
 
 def score_matrix(client: str, save: bool = True) -> list[dict]:
     """Recompute scores for all accounts in a client matrix.
 
-    Returns list of (account, old_score, new_score) tuples for changed accounts.
+    Returns list of change dicts for accounts whose score shifted > 0.1.
     If save=True, writes the updated matrix back to disk.
     """
     matrix = load_client_matrix(client)
@@ -197,6 +228,7 @@ def score_matrix(client: str, save: bool = True) -> list[dict]:
                 "old_score": old,
                 "new_score": new,
                 "status": account.get("status", "monitor"),
+                "fit_score": account.get("fit_score"),
             })
 
     if save:
@@ -254,15 +286,17 @@ def refresh(client: str, min_delta: float):
         return
 
     click.echo(f"\n  Score changes for {client}:")
-    click.echo(f"  {'Company':<25} {'Old':>6} {'New':>6} {'Delta':>7} {'Status':<15} Label")
-    click.echo(f"  {'-'*25} {'-'*6} {'-'*6} {'-'*7} {'-'*15} {'-'*8}")
+    click.echo(f"  {'Company':<25} {'Fit':>5} {'Old':>6} {'New':>6} {'Delta':>7} {'Status':<15} Label")
+    click.echo(f"  {'-'*25} {'-'*5} {'-'*6} {'-'*6} {'-'*7} {'-'*15} {'-'*8}")
     for c in sorted(significant, key=lambda x: x["new_score"] or 0, reverse=True):
         old = c["old_score"] or 0
         new = c["new_score"] or 0
         delta = new - old
+        fit = c.get("fit_score") or "—"
+        fit_str = f"{fit:.1f}" if isinstance(fit, float) else fit
         label = threshold_label(new)
         click.echo(
-            f"  {c['company']:<25} {old:>6.1f} {new:>6.1f} "
+            f"  {c['company']:<25} {fit_str:>5} {old:>6.1f} {new:>6.1f} "
             f"{'▲' if delta > 0 else '▼'}{abs(delta):>5.1f}  "
             f"{c['status']:<15} {label}"
         )
@@ -278,12 +312,14 @@ def list_scores(client: str, min_score: float):
         click.echo("  No accounts found.")
         return
 
-    click.echo(f"\n  {'#':<4} {'Company':<25} {'Score':>6} {'Tier':<6} {'Status':<16} {'Signal':<14} Label")
-    click.echo(f"  {'-'*4} {'-'*25} {'-'*6} {'-'*6} {'-'*16} {'-'*14} {'-'*6}")
+    click.echo(f"\n  {'#':<4} {'Company':<25} {'Fit':>5} {'Score':>6} {'Tier':<6} {'Status':<16} {'Signal':<14} Label")
+    click.echo(f"  {'-'*4} {'-'*25} {'-'*5} {'-'*6} {'-'*6} {'-'*16} {'-'*14} {'-'*6}")
     for i, a in enumerate(accounts, 1):
         score = a["current_score"]
+        fit = a.get("fit_score")
+        fit_str = f"{fit:.1f}" if fit is not None else "—"
         click.echo(
-            f"  {i:<4} {a['company']:<25} {score:>6.1f} "
+            f"  {i:<4} {a['company']:<25} {fit_str:>5} {score:>6.1f} "
             f"T{a.get('icp_tier', '?'):<5} {a.get('status', '?'):<16} "
             f"{a.get('why_now_signal', {}).get('type', '?'):<14} "
             f"{threshold_label(score)}"

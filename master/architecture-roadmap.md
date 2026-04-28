@@ -37,7 +37,9 @@
 | `projects/*/scripts/update_status.py` | Account status lifecycle | ✅ Built |
 | `projects/*/scripts/variant_tracker.py` | SQLite variant performance tracker | ✅ Built |
 | `projects/*/scripts/weekly_signal_report.py` | Signal + status + variant report | ✅ Built |
-| `projects/*/scripts/score_engine.py` | Dynamic ICP scoring with interaction decay | ✅ Built |
+| `projects/*/scripts/score_engine.py` | Fit-first dynamic scoring (fit_score + signal_bonus decay + interaction delta) | ✅ Built |
+| `projects/*/scripts/research_accounts.py` | Apollo + web + Claude company research → sets fit_score | ✅ Built |
+| `projects/*/scripts/enrich_matrix.py` | Apollo contact find + Claude individual profiling | ✅ Built |
 | `projects/*/scripts/init_matrix.py` | New client matrix scaffold | ✅ Built |
 
 ### CRM Adapters
@@ -53,19 +55,6 @@
 ---
 
 ## Near-Term Nodes (Next 3–5 Builds)
-
-### Node: Contact Enrichment for Matrix
-**File:** `projects/*/scripts/enrich_matrix.py`
-**Trigger:** After `verify_signals` passes, before `batch_outreach`
-**What it does:**
-- For each ready account in accounts.json, hit Apollo `/people/search` by domain + title filter
-- Store 2–4 verified contacts per account in `account["contacts"]`
-- Contacts need: name, title, email (verified), LinkedIn URL
-- Only enrich accounts not already enriched (idempotent)
-**Why this unblocks:** `batch_outreach` can't personalize without a contact name. Currently generates generic "Hi there" copy.
-**Make target:** `make enrich-contacts CLIENT=slug [TIER=1,2]`
-
----
 
 ### Node: ICP-Driven Signal Search
 **File:** `scripts/signals.py` (update existing)
