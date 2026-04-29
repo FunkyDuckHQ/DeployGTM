@@ -1,0 +1,76 @@
+{
+  "client_id": "peregrine_space",
+  "generated_at": "2026-04-29",
+  "source_notes": [
+    "Peregrine Space working brief in Drive.",
+    "Example sandbox data for local scoring; not production account research."
+  ],
+  "score_snapshots": [
+    {
+      "account_id": "acc_xona",
+      "company_name": "Xona Space Systems",
+      "icp_score": 92.0,
+      "urgency_score": 55.4,
+      "recommended_route": "enrich_and_campaign_test",
+      "evidence": [
+        {
+          "signal_id": "sig_xona_active_build",
+          "signal_type": "active_build_cycle",
+          "summary": "Active NewSpace build cycle likely creates demand for precision payload and timing/navigation components.",
+          "source_url": "https://docs.google.com/document/d/1zz47YzPlD7Mz_BQOutgwNDWkgujtRgE609xICAag2Ws",
+          "observed_at": "2026-04-20",
+          "original_strength": 86,
+          "current_strength": 74.87,
+          "confidence": 0.74,
+          "urgency_contribution": 13.85,
+          "ability_to_act_evidence": "Funded NewSpace company building mission-critical infrastructure.",
+          "willingness_to_act_evidence": "Founder attention was triggered by Xona as a live account in prior Peregrine work."
+        }
+      ]
+    },
+    {
+      "account_id": "acc_kepler",
+      "company_name": "Kepler Communications",
+      "icp_score": 80.0,
+      "urgency_score": 19.34,
+      "recommended_route": "enrich_selectively_or_monitor",
+      "evidence": [
+        {
+          "signal_id": "sig_kepler_comms_fit",
+          "signal_type": "product_fit",
+          "summary": "Satellite communications focus may align with optical communications components.",
+          "source_url": "https://kepler.space",
+          "observed_at": "2026-04-15",
+          "original_strength": 70,
+          "current_strength": 59.55,
+          "confidence": 0.58,
+          "urgency_contribution": 4.84,
+          "ability_to_act_evidence": "Growth-stage satellite communications company.",
+          "willingness_to_act_evidence": "Product fit is plausible, but no direct timing event is confirmed in sandbox data."
+        }
+      ]
+    },
+    {
+      "account_id": "acc_generic_prime",
+      "company_name": "Generic Aerospace Prime",
+      "icp_score": 43.0,
+      "urgency_score": 0,
+      "recommended_route": "exclude",
+      "evidence": [
+        {
+          "signal_id": "sig_prime_procurement_risk",
+          "signal_type": "procurement_risk",
+          "summary": "Large prime likely has high flight-heritage barrier and slower vendor approval.",
+          "source_url": "https://docs.google.com/document/d/1zz47YzPlD7Mz_BQOutgwNDWkgujtRgE609xICAag2Ws",
+          "observed_at": "2026-04-20",
+          "original_strength": 25,
+          "current_strength": 23.33,
+          "confidence": 0.65,
+          "urgency_contribution": -1.52,
+          "ability_to_act_evidence": "Budget exists, but procurement friction is high.",
+          "willingness_to_act_evidence": "No current willingness signal in sandbox data."
+        }
+      ]
+    }
+  ]
+}
