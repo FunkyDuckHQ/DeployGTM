@@ -1,0 +1,115 @@
+{
+  "client_id": "peregrine_space",
+  "generated_at": "2026-04-29",
+  "source_notes": [
+    "Peregrine Space working brief in Drive.",
+    "Example sandbox data for local scoring; not production account research."
+  ],
+  "accounts": [
+    {
+      "account_id": "acc_xona",
+      "company_name": "Xona Space Systems",
+      "domain": "xona.space",
+      "industry": "aerospace",
+      "subindustry": "satellite navigation",
+      "employee_count": 80,
+      "funding_stage": "series_a",
+      "headquarters": "Burlingame, CA",
+      "segment": "funded_newspace_builder",
+      "description": "Building satellite navigation services and related space infrastructure.",
+      "firmographic_fit": 18,
+      "segment_fit": 20,
+      "pain_hypothesis": 15,
+      "ability_to_buy": 14,
+      "strategic_value": 9,
+      "evidence_confidence": 17,
+      "negative_adjustment": -1,
+      "signals": [
+        {
+          "signal_id": "sig_xona_active_build",
+          "signal_definition_id": "mission_build_cycle",
+          "signal_type": "active_build_cycle",
+          "summary": "Active NewSpace build cycle likely creates demand for precision payload and timing/navigation components.",
+          "source_system": "working_brief",
+          "source_url": "https://docs.google.com/document/d/1zz47YzPlD7Mz_BQOutgwNDWkgujtRgE609xICAag2Ws",
+          "observed_at": "2026-04-20",
+          "original_strength": 86,
+          "decay_half_life_days": 45,
+          "confidence": 0.74,
+          "ability_to_act_evidence": "Funded NewSpace company building mission-critical infrastructure.",
+          "willingness_to_act_evidence": "Founder attention was triggered by Xona as a live account in prior Peregrine work."
+        }
+      ]
+    },
+    {
+      "account_id": "acc_kepler",
+      "company_name": "Kepler Communications",
+      "domain": "kepler.space",
+      "industry": "aerospace",
+      "subindustry": "satellite communications",
+      "employee_count": 180,
+      "funding_stage": "growth",
+      "headquarters": "Toronto, Canada",
+      "segment": "funded_newspace_builder",
+      "description": "Satellite communications company building space-based data relay infrastructure.",
+      "firmographic_fit": 17,
+      "segment_fit": 18,
+      "pain_hypothesis": 13,
+      "ability_to_buy": 15,
+      "strategic_value": 8,
+      "evidence_confidence": 12,
+      "negative_adjustment": -3,
+      "signals": [
+        {
+          "signal_id": "sig_kepler_comms_fit",
+          "signal_definition_id": "optical_comms_fit",
+          "signal_type": "product_fit",
+          "summary": "Satellite communications focus may align with optical communications components.",
+          "source_system": "example_research",
+          "source_url": "https://kepler.space",
+          "observed_at": "2026-04-15",
+          "original_strength": 70,
+          "decay_half_life_days": 60,
+          "confidence": 0.58,
+          "ability_to_act_evidence": "Growth-stage satellite communications company.",
+          "willingness_to_act_evidence": "Product fit is plausible, but no direct timing event is confirmed in sandbox data."
+        }
+      ]
+    },
+    {
+      "account_id": "acc_generic_prime",
+      "company_name": "Generic Aerospace Prime",
+      "domain": "example-prime.invalid",
+      "industry": "aerospace",
+      "subindustry": "defense prime",
+      "employee_count": 10000,
+      "funding_stage": "public",
+      "headquarters": "United States",
+      "segment": "large_prime",
+      "description": "Large aerospace prime with strict procurement and heritage expectations.",
+      "firmographic_fit": 10,
+      "segment_fit": 7,
+      "pain_hypothesis": 8,
+      "ability_to_buy": 18,
+      "strategic_value": 10,
+      "evidence_confidence": 8,
+      "negative_adjustment": -15,
+      "signals": [
+        {
+          "signal_id": "sig_prime_procurement_risk",
+          "signal_definition_id": "heritage_blocker",
+          "signal_type": "procurement_risk",
+          "summary": "Large prime likely has high flight-heritage barrier and slower vendor approval.",
+          "source_system": "working_brief",
+          "source_url": "https://docs.google.com/document/d/1zz47YzPlD7Mz_BQOutgwNDWkgujtRgE609xICAag2Ws",
+          "observed_at": "2026-04-20",
+          "original_strength": 25,
+          "decay_half_life_days": 90,
+          "confidence": 0.65,
+          "ability_to_act_evidence": "Budget exists, but procurement friction is high.",
+          "willingness_to_act_evidence": "No current willingness signal in sandbox data."
+        }
+      ]
+    }
+  ]
+}
