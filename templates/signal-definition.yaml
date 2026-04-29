@@ -1,0 +1,57 @@
+type: signal_definition
+signal_definition_id: ___
+client_id: ___
+name: ___
+description: ___
+signal_category: custom
+alpha_signal_type: timing
+
+# What makes this specific to the client?
+client_specific_insight: ___
+
+# Why this signal matters commercially.
+why_it_matters: ___
+
+# Evidence that the account can act.
+ability_to_act_indicator: ___
+
+# Evidence that the account may want to act.
+willingness_to_act_indicator: ___
+
+# Where this should be detected.
+data_sources:
+  - web
+  - BirdDog
+  - LinkedIn
+  - CRM
+  - client_docs
+
+detection_method: ___
+
+# Scoring impact.
+fit_component: ___
+urgency_component: ___
+default_weight: 0
+expected_frequency: low
+expected_conversion_potential: unknown
+
+# Decay.
+default_decay_days: 30
+decay_half_life_days: 14
+
+# Routing.
+recommended_action: ___
+bird_dog_setup_notes: ___
+manual_review_required: false
+
+# Validation.
+known_positive_examples:
+  - ___
+known_negative_examples:
+  - ___
+kill_patterns:
+  - ___
+
+confidence: 0.0
+source_refs:
+  - ___
