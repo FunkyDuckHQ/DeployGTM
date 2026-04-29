@@ -1,13 +1,26 @@
 # DeployGTM — Build Log & Progress
 
 *Single source of truth for what's been built, what's activated, and what's next.*
-*Updated: 2026-04-23*
+*Updated: 2026-04-29*
 
 ---
 
-## Status: BUILT / PRE-ACTIVATION
+## Status: RECOVERY MERGED / SIGNAL AUDIT SPINE READY
 
-The system is fully constructed. Zero accounts have run through it. Activation is blocked only by API key configuration.
+PR #7, `Recover DeployGTM Signal Audit system`, has been merged into `main`.
+
+The system now has a trusted recovery baseline and a no-write Signal Audit artifact loop. It is not yet production-activated. Next work should prove one real no-write Signal Audit before CRM writes, email sending, branch cleanup, or n8n automation.
+
+Read first:
+
+- `master/agent-handoff.md`
+- `RUNBOOK.md`
+- `AUDIT.md`
+- `BRANCH_DISPOSITION.md`
+- `DUPLICATE_WORK.md`
+- `EXTERNAL_REPOS.md`
+- `CLAUDE_MASTER_FILES.md`
+- `CLEANUP_PLAN.md`
 
 ---
 
@@ -113,6 +126,44 @@ The system is fully constructed. Zero accounts have run through it. Activation i
   - `tests/platform/test_context_pack.py`
   - `tests/platform/test_bootstrap_and_strategy.py`
   - `tests/platform/test_transcript_summary_persistence.py`
+
+### April 29 — Recovery audit + Signal Audit spine merged (Codex)
+- PR #7 merged into `main`: `Recover DeployGTM Signal Audit system`
+- Added cloud recovery audit docs:
+  - `AUDIT.md`
+  - `BRANCH_DISPOSITION.md`
+  - `DUPLICATE_WORK.md`
+  - `RUNBOOK.md`
+  - `EXTERNAL_REPOS.md`
+  - `CLEANUP_PLAN.md`
+  - `CLAUDE_MASTER_FILES.md`
+- Added `master/agent-handoff.md` so future Claude/Codex sessions know the current task state.
+- Added Customer Outcome Intake:
+  - `scripts/platform/intake.py`
+  - `make platform-intake`
+- Expanded platform artifact flow:
+  - context pack
+  - ICP strategy
+  - signal strategy
+  - BirdDog signal manifest
+  - account matrix
+  - CRM push plan
+  - Signal Audit deliverable compiler
+- Added separate score model:
+  - `icp_fit_score`
+  - `urgency_score`
+  - `engagement_score`
+  - `confidence_score`
+  - `activation_priority`
+- Added `scripts/email_sync.py` to ingest SuperSend/email events into account scoring without sending email or writing CRM.
+- Added n8n runtime specs under `n8n/`; n8n remains orchestration only after scripts are green.
+- Added/updated tests:
+  - `tests/platform/test_signal_audit_flow.py`
+  - `tests/test_email_sync.py`
+- Verification before merge:
+  - `python3 -m pytest tests -q` -> 12 passed
+  - `make daily` -> passed
+  - `make signal-audit-dry-run` -> passed
 
 ---
 

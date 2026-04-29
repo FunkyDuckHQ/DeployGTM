@@ -1,5 +1,19 @@
 # DeployGTM — Master Context
 
+## Current Recovery State — Read First
+
+As of 2026-04-29, PR #7 (`Recover DeployGTM Signal Audit system`) has been merged into `main`.
+
+The repo has been re-centered around Signal Audit as the entry offer and DeployGTM as the end-to-end operated GTM system. Future Claude/Codex sessions should read `master/agent-handoff.md`, `RUNBOOK.md`, `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `EXTERNAL_REPOS.md`, `CLAUDE_MASTER_FILES.md`, and `CLEANUP_PLAN.md` before making architectural changes.
+
+Important operating constraints:
+- GitHub Cloud `FunkyDuckHQ/DeployGTM` is the source of truth.
+- Do not work from local-only clones as the final artifact.
+- Do not touch `yourfinancialguru` for this recovery work.
+- Do not delete old branches, force push, write to production CRM, or send email during recovery.
+- Use `make signal-audit-dry-run`, `python3 -m pytest tests -q`, and `make daily` as the first trust loop.
+- n8n is the workflow runtime after scripts are proven; Python remains the business logic layer.
+
 ## Who We Are
 
 DeployGTM is a GTM engineering practice run by Matthew Stegenga. We build outbound pipeline infrastructure for early-stage B2B SaaS companies. We don't advise — we build. The client walks away with a working revenue system, not a strategy deck.
