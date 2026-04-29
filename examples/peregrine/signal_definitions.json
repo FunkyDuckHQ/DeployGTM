@@ -1,0 +1,48 @@
+{
+  "client_id": "peregrine_space",
+  "generated_at": "2026-04-29",
+  "signal_definitions": [
+    {
+      "signal_definition_id": "mission_build_cycle",
+      "name": "Active mission build cycle",
+      "signal_category": "custom",
+      "alpha_signal_type": "timing",
+      "client_specific_insight": "Peregrine needs buyers who can act before traditional flight heritage exists.",
+      "why_it_matters": "Active mission builders may need components before heritage objections freeze vendor choice.",
+      "urgency_weight": 25,
+      "fit_weight": 10,
+      "default_decay_days": 90,
+      "decay_half_life_days": 45,
+      "recommended_action": "Enrich account, identify technical and commercial buyers, prepare founder-reviewed outreach.",
+      "bird_dog_setup_notes": "Monitor funded NewSpace accounts for mission announcements, payload milestones, launch windows, and hiring tied to payload, comms, timing, or navigation."
+    },
+    {
+      "signal_definition_id": "optical_comms_fit",
+      "name": "Optical communications relevance",
+      "signal_category": "custom",
+      "alpha_signal_type": "strategic_fit",
+      "client_specific_insight": "Peregrine has potential optical communications relevance beyond a single payload wedge.",
+      "why_it_matters": "Comms-focused satellite builders may create expansion paths if timing or payload constraints are active.",
+      "urgency_weight": 14,
+      "fit_weight": 15,
+      "default_decay_days": 120,
+      "decay_half_life_days": 60,
+      "recommended_action": "Monitor and research before full enrichment unless another urgency signal appears.",
+      "bird_dog_setup_notes": "Monitor comms payload announcements, optical terminal partnerships, constellation milestones, and supply chain constraints."
+    },
+    {
+      "signal_definition_id": "heritage_blocker",
+      "name": "Flight heritage blocker",
+      "signal_category": "custom",
+      "alpha_signal_type": "risk",
+      "client_specific_insight": "Flight heritage is often a risk-transfer objection, not only a technical objection.",
+      "why_it_matters": "Accounts with high heritage barriers may need different routing, proof, and objection handling.",
+      "urgency_weight": -10,
+      "fit_weight": -15,
+      "default_decay_days": 180,
+      "decay_half_life_days": 90,
+      "recommended_action": "Route to manual review or hold unless a strong internal champion or urgent mission need exists.",
+      "bird_dog_setup_notes": "Watch for procurement language, heritage requirements, prime contractor status, and mission-critical vendor qualification constraints."
+    }
+  ]
+}
