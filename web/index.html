@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DeployGTM Sandbox</title>
+    <link rel="stylesheet" href="dashboard.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">DeployGTM Sandbox</p>
+          <h1>Signal-to-route cockpit</h1>
+        </div>
+        <div class="status-pill">
+          <span class="dot"></span>
+          Peregrine demo data
+        </div>
+      </header>
+
+      <section class="summary-grid" aria-label="Score summary">
+        <article class="metric"><span class="metric-label">Accounts scored</span><strong id="accountsScored">0</strong></article>
+        <article class="metric"><span class="metric-label">Avg ICP</span><strong id="avgIcp">0</strong></article>
+        <article class="metric"><span class="metric-label">Avg urgency</span><strong id="avgUrgency">0</strong></article>
+        <article class="metric"><span class="metric-label">Actionable routes</span><strong id="actionableRoutes">0</strong></article>
+      </section>
+
+      <section class="workspace">
+        <aside class="route-panel" aria-label="Route filters">
+          <div class="panel-heading"><h2>Routes</h2><button id="resetFilters" type="button" title="Show all routes">All</button></div>
+          <div id="routeFilters" class="route-list"></div>
+        </aside>
+
+        <section class="accounts-panel" aria-label="Scored accounts">
+          <div class="panel-heading">
+            <div><h2>Scored accounts</h2><p id="generatedAt" class="subtle"></p></div>
+            <a class="text-link" href="data/peregrine_score_snapshots.json">JSON data</a>
+          </div>
+          <div id="accountList" class="account-list"></div>
+        </section>
+      </section>
+    </main>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
