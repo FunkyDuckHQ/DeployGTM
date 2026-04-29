@@ -187,6 +187,23 @@ audit-deliverable:  ## Compile final deliverable package (set CLIENT=slug)
 audit-status:  ## Show Signal Audit engagement status (set CLIENT=slug)
 	$(PYTHON) scripts/signal_audit.py status --client $(CLIENT)
 
+# ─── Engagement Intake ────────────────────────────────────────────────────────
+
+engage:  ## Research + build context.md for a new engagement (set CLIENT DOMAIN OBJECTIVE [CRM] [FETCH=1])
+	$(PYTHON) scripts/engage.py --client $(CLIENT) --domain $(DOMAIN) --objective "$(OBJECTIVE)" $(if $(CRM),--crm $(CRM),) $(if $(FETCH),--fetch,)
+
+engage-force:  ## Rebuild context.md for an existing engagement
+	$(PYTHON) scripts/engage.py --client $(CLIENT) --domain $(DOMAIN) --objective "$(OBJECTIVE)" --force $(if $(FETCH),--fetch,)
+
+derive-icp:  ## Generate client ICP scoring profile from context.md (set CLIENT [FORCE=1] [DRY_RUN=1])
+	$(PYTHON) scripts/derive_icp.py --client $(CLIENT) $(if $(FORCE),--force,) $(if $(DRY_RUN),--dry-run,)
+
+sync-client:  ## Pull Google Drive docs for a client into context.md (set CLIENT)
+	$(PYTHON) scripts/sync_client_context.py --client $(CLIENT)
+
+signals-to-matrix:  ## Bridge signals CSV into a client's account matrix (set CLIENT [INPUT=path])
+	$(PYTHON) scripts/signals_to_matrix.py --client $(CLIENT) $(if $(INPUT),--input $(INPUT),)
+
 # ─── Git ──────────────────────────────────────────────────────────────────────
 
 push:  ## Commit staged changes and push to current branch

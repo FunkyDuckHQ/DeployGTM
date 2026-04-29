@@ -27,6 +27,9 @@ PROJECTS_DIR = Path("projects")
 LOGS_DIR = Path("logs")
 DEFAULT_EVENTS_URL = "https://api.supersend.io/v2/events"
 
+# Unique opens before we count it as genuine engagement (filters bot prefetch)
+OPEN_ENGAGEMENT_THRESHOLD = 3
+
 
 def _extract_domain(email: str | None) -> str:
     if not email or "@" not in email:
@@ -37,13 +40,44 @@ def _extract_domain(email: str | None) -> str:
 def _normalize_event_type(raw_type: str | None) -> str:
     event_type = (raw_type or "").lower().strip()
     aliases = {
+        # dot-notation (Supersend webhook shape)
+        "email.sent": "sent",
+        "email.delivered": "sent",
+        "email.opened": "open",
+        "email.clicked": "click",
+        "email.replied": "reply",
+        "email.bounced": "bounce",
+        "email.unsubscribed": "unsubscribe",
+        "email.complained": "unsubscribe",
+        # flat aliases
         "email_sent": "sent",
         "opened": "open",
         "clicked": "click",
         "replied": "reply",
         "bounced": "bounce",
+        "unsubscribed": "unsubscribe",
     }
     return aliases.get(event_type, event_type)
+
+
+def _classify_reply_sentiment(body: str) -> str:
+    """Crude keyword classifier — positive/neutral/negative."""
+    text = (body or "").lower()
+    negative_phrases = (
+        "unsubscribe", "stop emailing", "remove me", "not interested",
+        "wrong person", "no thanks", "no thank you", "don't email",
+        "do not email", "leave me alone",
+    )
+    positive_phrases = (
+        "let's chat", "lets chat", "happy to talk", "send a calendar",
+        "book a time", "interested", "tell me more", "sounds good",
+        "20 minutes", "worth a call", "send a link",
+    )
+    if any(p in text for p in negative_phrases):
+        return "negative"
+    if any(p in text for p in positive_phrases):
+        return "positive"
+    return "neutral"
 
 
 def _ensure_engagement(account: dict[str, Any]) -> dict[str, Any]:
@@ -55,6 +89,7 @@ def _ensure_engagement(account: dict[str, Any]) -> dict[str, Any]:
     engagement.setdefault("bounce_count", 0)
     engagement.setdefault("unsubscribe_count", 0)
     engagement.setdefault("events", [])
+    engagement.setdefault("applied_event_ids", [])
     return engagement
 
 
@@ -80,9 +115,23 @@ def recompute_activation(account: dict[str, Any]) -> None:
     )
 
 
-def record_event(account: dict[str, Any], event_type: str, payload: dict[str, Any]) -> None:
+def _event_id(event: dict[str, Any]) -> str | None:
+    """Extract a stable dedup ID from a provider event, or None if absent."""
+    return event.get("id") or event.get("event_id") or None
+
+
+def record_event(account: dict[str, Any], event_type: str, payload: dict[str, Any]) -> bool:
+    """Apply one event to an account. Returns False if already applied (idempotent)."""
     event_type = _normalize_event_type(event_type)
     engagement = _ensure_engagement(account)
+
+    # Idempotent dedupe by event ID when present
+    eid = _event_id(payload)
+    if eid:
+        if eid in engagement["applied_event_ids"]:
+            return False
+        engagement["applied_event_ids"].append(eid)
+        engagement["applied_event_ids"] = engagement["applied_event_ids"][-500:]
 
     if event_type == "open":
         engagement["open_count"] += 1
@@ -91,6 +140,12 @@ def record_event(account: dict[str, Any], event_type: str, payload: dict[str, An
     elif event_type == "reply":
         engagement["reply_count"] += 1
         engagement["status"] = "replied"
+        # Classify sentiment from reply body when available
+        body = payload.get("body") or payload.get("reply_body") or ""
+        if body:
+            engagement["last_reply_sentiment"] = _classify_reply_sentiment(body)
+            if engagement["last_reply_sentiment"] == "negative":
+                engagement["status"] = "disqualified"
     elif event_type == "bounce":
         engagement["bounce_count"] += 1
         engagement["status"] = "delivery_issue"
@@ -98,7 +153,8 @@ def record_event(account: dict[str, Any], event_type: str, payload: dict[str, An
         engagement["unsubscribe_count"] += 1
         engagement["status"] = "disqualified"
     elif event_type == "sent":
-        pass
+        if engagement["status"] == "active":
+            engagement["status"] = "outreach_sent"
 
     engagement["events"].append(
         {
@@ -108,6 +164,7 @@ def record_event(account: dict[str, Any], event_type: str, payload: dict[str, An
     )
     engagement["events"] = engagement["events"][-100:]
     recompute_activation(account)
+    return True
 
 
 def load_matrix(client_slug: str) -> tuple[Path, dict[str, Any]]:
@@ -146,32 +203,43 @@ def _event_contact_email(event: dict[str, Any]) -> str:
 
 
 def apply_events(matrix: dict[str, Any], events: list[dict[str, Any]]) -> dict[str, int]:
-    by_domain = {
-        (account.get("domain") or "").strip().lower(): account
-        for account in matrix.get("accounts", [])
-        if account.get("domain")
-    }
-    counters = defaultdict(int)
+    # Primary index: contact email → account (exact match)
+    by_email: dict[str, Any] = {}
+    # Fallback index: domain → account
+    by_domain: dict[str, Any] = {}
+    for account in matrix.get("accounts", []):
+        domain = (account.get("domain") or "").strip().lower()
+        if domain and domain not in by_domain:
+            by_domain[domain] = account
+        for contact in account.get("contacts", []) or []:
+            email = (contact.get("email") or "").lower().strip()
+            if email:
+                by_email[email] = account
+
+    counters: dict[str, int] = defaultdict(int)
 
     for event in events:
         event_type = _normalize_event_type(event.get("type") or event.get("event"))
-        if not event_type:
+        if not event_type or event_type not in (
+            "sent", "open", "click", "reply", "bounce", "unsubscribe"
+        ):
             counters["skipped_unknown_type"] += 1
             continue
 
-        domain = _extract_domain(_event_contact_email(event))
-        if not domain:
-            counters["skipped_no_domain"] += 1
-            continue
+        recipient = _event_contact_email(event).lower().strip()
+        domain = _extract_domain(recipient)
 
-        account = by_domain.get(domain)
+        account = by_email.get(recipient) or (by_domain.get(domain) if domain else None)
         if not account:
             counters["skipped_no_match"] += 1
             continue
 
-        record_event(account, event_type, event)
-        counters["applied"] += 1
-        counters[f"event_{event_type}"] += 1
+        applied = record_event(account, event_type, event)
+        if applied:
+            counters["applied"] += 1
+            counters[f"event_{event_type}"] += 1
+        else:
+            counters["skipped_duplicate"] += 1
 
     return dict(counters)
 
