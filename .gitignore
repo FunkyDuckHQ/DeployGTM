@@ -39,3 +39,6 @@ env/
 # Google credentials (never commit)
 *-credentials.json
 credentials.json
+
+# SQLite databases (runtime artifacts — variant tracker, etc.)
+*.db
