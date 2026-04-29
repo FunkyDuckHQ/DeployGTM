@@ -1,0 +1,60 @@
+type: vendor_evaluation
+vendor_name: ___
+vendor_url: ___
+evaluation_date: YYYY-MM-DD
+owner: ___
+
+category:
+  - research_adapter
+  - company_data_adapter
+  - people_data_adapter
+  - intent_data_adapter
+  - technographic_adapter
+  - contextual_audience_adapter
+  - first_party_data_adapter
+  - vertical_intelligence_adapter
+  - workflow_execution_adapter
+
+proposed_use_case: ___
+client_or_segment_fit: ___
+
+advantage_hypothesis: ___
+
+scores:
+  data_uniqueness: 0
+  client_specificity: 0
+  api_access: 0
+  provenance: 0
+  freshness: 0
+  compliance_fit: 0
+  cost_per_useful_signal: 0
+  workflow_fit: 0
+  lock_in_risk_inverse: 0
+  human_leverage: 0
+
+test_plan:
+  sample_accounts: []
+  known_positive_examples: []
+  known_negative_examples: []
+  success_metric: ___
+  useful_signal_threshold: ___
+
+sample_results:
+  accounts_tested: 0
+  useful_signals_found: 0
+  false_positives: 0
+  false_negatives: 0
+  cost_estimate: ___
+  latency_notes: ___
+  provenance_notes: ___
+
+integration_decision:
+  status: evaluate # evaluate | pilot | integrate | reject | hold
+  adapter_category: ___
+  access_mode: read_only # read_only | draft_write | production_write
+  env_vars_needed: []
+  implementation_notes: ___
+  rejection_reason: null
+
+source_refs:
+  - ___
