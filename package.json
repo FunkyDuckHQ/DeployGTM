@@ -1,0 +1,9 @@
+{
+  "name": "deploygtm-sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-static.js",
+    "start": "node scripts/serve-static.js"
+  }
+}
