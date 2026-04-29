@@ -13,14 +13,16 @@ This folder defines the durable operating architecture for DeployGTM: a headless
 - [scoring-model.md](scoring-model.md): ICP score, urgency score, decay, routing thresholds, and engagement feedback.
 - [client-workflow.md](client-workflow.md): practical workflow from intake command through prep, customer docs, account scoring, enrichment, copy, testing, manual routing, and success tracking.
 - [growth-engine-integration.md](growth-engine-integration.md): integration of the Ascend-style Growth Engine pattern: ICP research, data-driven brand/message alignment, acquisition execution, CRM attribution, nurture, SLA, and operations.
+- [vendor-strategy.md](vendor-strategy.md): vendor evaluation strategy for Mantis-style providers, uncommon data access, adapter fit, and cost per useful signal.
 
-Related contract:
+Related contracts and templates:
 
 - [../docs/content-adapter-contract.md](../docs/content-adapter-contract.md): deeper standalone contract for messaging adapters such as ClaudeMarkdownContentAdapter or OctaveContentAdapter.
+- [../templates/vendor-evaluation.yaml](../templates/vendor-evaluation.yaml): reusable template for deciding whether a vendor should be piloted, integrated, rejected, or held.
 
 ## Build Priorities
 
-1. Add Growth Engine objects and adapter contracts into `canonical-schema.md` and `adapter-contracts.md`.
+1. Add Growth Engine and vendor objects/contracts into `canonical-schema.md` and `adapter-contracts.md`.
 2. Convert the canonical schema into machine-readable YAML or JSON schema.
 3. Create example client fixtures for Peregrine Space.
 4. Create an ICP scoring worksheet or script using the scoring model.
@@ -28,6 +30,7 @@ Related contract:
 6. Create a SignalDefinition template that can be translated into BirdDog monitoring setup.
 7. Create a MessageMatrix template for Claude/Octave-backed content generation.
 8. Create a weekly growth report template that reads from canonical scoring and execution objects.
+9. Run vendor evaluations for MANTIS Group, Mantis Solutions, Firecrawl, People Data Labs, Apollo, Clay, Bombora, Demandbase, and any niche vertical data sources relevant to the client.
 
 ## Source Spine
 
@@ -39,9 +42,11 @@ Primary internal sources:
 - DeployGTM Drive Context Engine Spec
 - Peregrine Space Working Brief
 - User-provided Growth Engine idea file based on the Ascend/FlyFlat growth system
+- User guidance: data is context, context is everything
 
 External concept sources:
 
 - Josh Whitfield / GTM Engineer School E4 for creativity over prompts, institutional knowledge, alpha signals, demo-quality builds, and agency positioning.
 - Clay GTM alpha and custom signal materials for signal-based GTM, custom signal design, enrichment, and action routing.
 - Mitchell Keller's research-process-builder for validated web research processes, ground-truth testing, quality/consistency scoring, kill lists, extraction specs, and stop conditions.
+- Mantis and other vendor categories for uncommon data, contextual targeting, owned-data activation, vertical intelligence, and differentiated context access.
