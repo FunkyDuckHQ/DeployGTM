@@ -13,4 +13,12 @@ Deploy the dashboard from the isolated `web/` folder instead.
 
 ## Why
 
-The `web/` folder has its own `package.json`, `vercel.json`, static assets, and copied demo data. It does not include the repo's Python scripts, so Vercel should not look for `app.py`, `main.py`, or other Python entrypoints.
+The `web/` folder has its own `package.json`, `vercel.json`, static assets, and copied demo data. It does not include the repo's Python scripts, so Vercel should not need the root Python entrypoints.
+
+If the platform still insists on Python detection at repo root, use the root deployment instead. The repo now includes dependency-free Python entrypoints:
+
+- `app.py`
+- `main.py`
+- `server.py`
+
+Those serve the same static dashboard.
