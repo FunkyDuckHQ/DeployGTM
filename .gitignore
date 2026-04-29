@@ -19,6 +19,7 @@ venv/
 # Sensitive client data
 projects/*/prospects_enriched.csv
 projects/*/client-data/
+projects/sample-signal-audit/
 
 # IDE
 .vscode/

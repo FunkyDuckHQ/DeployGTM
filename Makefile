@@ -27,6 +27,9 @@ setup-hubspot:  ## Create DeployGTM custom properties in HubSpot (run once)
 generate-sequences:  ## Generate HubSpot sequence step templates → master/hubspot_sequences.md
 	$(PYTHON) scripts/sequence_builder.py generate
 
+email-sync-dry-run:  ## Ingest sample/SuperSend payload without writing (set CLIENT and PAYLOAD)
+	$(PYTHON) scripts/email_sync.py ingest --client $(CLIENT) --payload $(PAYLOAD) --dry-run
+
 setup: install env  ## Full setup: install deps + create .env
 	@echo "\nSetup complete. Fill in .env, then run: make run-one"
 
@@ -100,6 +103,24 @@ platform-bootstrap:  ## Bootstrap a new client workspace (set CLIENT_NAME and DO
 
 platform-strategy:  ## Generate ICP strategy from context pack (set CLIENT=project-slug)
 	$(PYTHON) -m scripts.platform.cli strategy --client $(CLIENT)
+
+platform-intake:  ## Capture Customer Outcome Intake (set CLIENT_NAME DOMAIN OUTCOME OFFER, optional CLIENT)
+	$(PYTHON) -m scripts.platform.cli intake --client-name "$(CLIENT_NAME)" --domain $(DOMAIN) --target-outcome "$(OUTCOME)" --offer "$(OFFER)" $(if $(CLIENT),--client-slug $(CLIENT),)
+
+platform-signals:  ## Generate 20 BirdDog-ready signal definitions (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli signal-strategy --client $(CLIENT)
+
+platform-matrix:  ## Build account matrix from projects/<client>/targets.csv (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli account-matrix --client $(CLIENT)
+
+platform-crm-plan:  ## Build dry-run CRM push plan (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli crm-plan --client $(CLIENT)
+
+platform-deliverable:  ## Compile vNext Signal Audit deliverable artifacts (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli deliverable --client $(CLIENT)
+
+signal-audit-dry-run:  ## Run no-write sample Signal Audit artifact flow
+	$(PYTHON) -m scripts.platform.cli signal-audit-dry-run
 
 # ─── Signals & BirdDog ────────────────────────────────────────────────────────
 

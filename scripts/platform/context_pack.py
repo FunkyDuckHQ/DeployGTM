@@ -89,9 +89,30 @@ def _load_transcript_summaries(client_slug: str, limit: int = 3) -> list[Evidenc
     return summaries
 
 
+def _load_intake_evidence(client_slug: str) -> list[Evidence]:
+    intake_path = PROJECTS_DIR / client_slug / "platform" / "intake.json"
+    if not intake_path.exists():
+        return []
+
+    try:
+        intake = json.loads(intake_path.read_text())
+    except json.JSONDecodeError:
+        return []
+
+    evidence = []
+    if intake.get("target_outcome"):
+        evidence.append(Evidence("customer_outcome_intake", str(intake_path), str(intake["target_outcome"])))
+    if intake.get("offer"):
+        evidence.append(Evidence("customer_outcome_intake", str(intake_path), str(intake["offer"])))
+    for item in intake.get("constraints", [])[:2]:
+        evidence.append(Evidence("customer_outcome_intake", str(intake_path), str(item)))
+    return evidence
+
+
 def build_context_pack(client_slug: str) -> dict:
     client_dir = PROJECTS_DIR / client_slug
 
+    intake_context = _load_intake_evidence(client_slug)
     client_context = _chunk_md_evidence(client_dir / "context.md", "client_context")
     client_handoff = _chunk_md_evidence(client_dir / "handoff.md", "client_context")
     client_loops = _chunk_md_evidence(client_dir / "open-loops.md", "client_context")
@@ -102,6 +123,15 @@ def build_context_pack(client_slug: str) -> dict:
     priors_messaging = _chunk_md_evidence(BRAIN_DIR / "messaging.md", "master_brain")
 
     principles: list[Principle] = []
+
+    if intake_context:
+        principles.append(
+            Principle(
+                principle_text="Start every Signal Audit from the customer's stated outcome, offer, constraints, and CRM scope.",
+                confidence="high",
+                source_trace=intake_context[:3],
+            )
+        )
 
     if client_context:
         principles.append(
@@ -160,6 +190,7 @@ def build_context_pack(client_slug: str) -> dict:
         ],
         "sources_scanned": {
             "client_files": [
+                str(client_dir / "platform" / "intake.json"),
                 str(client_dir / "context.md"),
                 str(client_dir / "handoff.md"),
                 str(client_dir / "open-loops.md"),

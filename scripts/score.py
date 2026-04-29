@@ -113,6 +113,16 @@ SIGNAL_WEIGHTS = {
 }
 
 
+def _signal_age_days(signal_date: Optional[str]) -> int | None:
+    if signal_date is None:
+        return None
+    try:
+        sig_date = datetime.strptime(signal_date, "%Y-%m-%d").date()
+    except ValueError:
+        return None
+    return max(0, (date.today() - sig_date).days)
+
+
 def score_signal_strength(signal_type: str, signal_date: Optional[str]) -> tuple[int, str]:
     """
     Score signal strength 1–3.
@@ -127,12 +137,9 @@ def score_signal_strength(signal_type: str, signal_date: Optional[str]) -> tuple
     if signal_date is None:
         return 1, f"Signal type '{signal_type}' but no date — treated as background signal"
 
-    try:
-        sig_date = datetime.strptime(signal_date, "%Y-%m-%d").date()
-    except ValueError:
+    days_ago = _signal_age_days(signal_date)
+    if days_ago is None:
         return 1, f"Could not parse signal_date '{signal_date}'"
-
-    days_ago = (date.today() - sig_date).days
 
     if days_ago <= 30:
         recency_mult = 1.0
@@ -149,6 +156,70 @@ def score_signal_strength(signal_type: str, signal_date: Optional[str]) -> tuple
 
     rationale = f"{signal_type} signal, {recency_label} → strength {score}/3"
     return score, rationale
+
+
+def score_urgency(signal_type: str, signal_date: Optional[str], birddog_score: Optional[int] = None) -> tuple[int, dict]:
+    """Score current urgency on a 0-100 scale with explicit recency decay."""
+    base_weight = SIGNAL_WEIGHTS.get(signal_type, 1)
+    base = {1: 35, 2: 60, 3: 80}.get(base_weight, 35)
+    if birddog_score is not None:
+        base = max(base, min(100, int(birddog_score)))
+
+    days_ago = _signal_age_days(signal_date)
+    if days_ago is None:
+        decay_multiplier = 0.45
+        label = "undated"
+    elif days_ago <= 14:
+        decay_multiplier = 1.0
+        label = f"hot ({days_ago}d old)"
+    elif days_ago <= 30:
+        decay_multiplier = 0.85
+        label = f"active ({days_ago}d old)"
+    elif days_ago <= 90:
+        decay_multiplier = 0.60
+        label = f"recent ({days_ago}d old)"
+    else:
+        decay_multiplier = 0.30
+        label = f"stale ({days_ago}d old)"
+
+    score = max(0, min(100, round(base * decay_multiplier)))
+    return score, {
+        "signal_type": signal_type,
+        "signal_date": signal_date,
+        "days_ago": days_ago,
+        "decay_multiplier": decay_multiplier,
+        "label": label,
+        "rationale": f"{signal_type} urgency is {label}",
+    }
+
+
+def score_confidence(account: dict) -> tuple[int, str]:
+    confidence = str(account.get("confidence") or account.get("enrichment_confidence") or "").lower()
+    if confidence == "high":
+        return 90, "high source confidence"
+    if confidence == "medium":
+        return 65, "medium source confidence"
+    if confidence == "low":
+        return 40, "low source confidence"
+    if account:
+        return 55, "partial account evidence present"
+    return 25, "little account evidence present"
+
+
+def calculate_activation_priority(
+    *,
+    icp_fit_score: int,
+    urgency_score: int,
+    engagement_score: int,
+    confidence_score: int,
+) -> int:
+    """Blend scores while preserving ICP fit and urgency as separate fields."""
+    return round(
+        (icp_fit_score * 0.45)
+        + (urgency_score * 0.35)
+        + (engagement_score * 0.10)
+        + (confidence_score * 0.10)
+    )
 
 
 # ─── Priority ─────────────────────────────────────────────────────────────────
@@ -198,14 +269,43 @@ def score_account(account: dict, signal_type: str, signal_date: Optional[str], c
     icp_fit, icp_rationale = score_icp_fit(account)
     signal_strength, signal_rationale = score_signal_strength(signal_type, signal_date)
     priority, action = calculate_priority(icp_fit, signal_strength, config)
+    urgency_score, decay = score_urgency(
+        signal_type,
+        signal_date,
+        birddog_score=account.get("birddog_score"),
+    )
+    confidence_score, confidence_rationale = score_confidence(account)
+    engagement_score = int(account.get("engagement_score") or 0)
+    icp_fit_score = icp_fit * 20
+    activation_priority = calculate_activation_priority(
+        icp_fit_score=icp_fit_score,
+        urgency_score=urgency_score,
+        engagement_score=engagement_score,
+        confidence_score=confidence_score,
+    )
 
     return {
+        # Legacy fields retained for existing pipeline commands.
         "icp_fit": icp_fit,
         "signal_strength": signal_strength,
         "priority": priority,
         "action": action,
         "icp_rationale": icp_rationale,
         "signal_rationale": signal_rationale,
+        # Signal Audit vNext scoring fields.
+        "icp_fit_score": icp_fit_score,
+        "urgency_score": urgency_score,
+        "engagement_score": engagement_score,
+        "confidence_score": confidence_score,
+        "activation_priority": activation_priority,
+        "decay": decay,
+        "confidence_rationale": confidence_rationale,
+        "activation_rationale": [
+            f"ICP fit contributes {icp_fit_score}/100",
+            f"Urgency contributes {urgency_score}/100 from current signal timing",
+            f"Engagement contributes {engagement_score}/100 until outbound tests run",
+            f"Confidence contributes {confidence_score}/100 from research evidence",
+        ],
     }
 
 
@@ -232,6 +332,8 @@ def cli(account_json: str, signal_type: str, signal_date: Optional[str], config_
     click.echo(f"  ICP Fit:        {result['icp_fit']}/5")
     click.echo(f"  Signal Strength:{result['signal_strength']}/3")
     click.echo(f"  Priority:       {result['priority']}/15")
+    click.echo(f"  Urgency:        {result['urgency_score']}/100")
+    click.echo(f"  Activation:     {result['activation_priority']}/100")
     click.echo(f"  Action:         {result['action']}")
     click.echo(f"{'─'*50}")
     click.echo("\nICP criteria:")

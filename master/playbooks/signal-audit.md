@@ -12,25 +12,30 @@ The Signal Audit is DeployGTM's entry engagement. $3,500, 2-week delivery. It's 
 
 ### Week 1: Discovery + Signal Mapping
 1. **Intake interview** (60 min) — deep dive on ICP, personas, value props, competitive landscape, current tools, what's working, what's not
-2. **Configure Octave brain** — feed it their product context, ICP, personas, messaging
-3. **Build target account list** — 50-100 companies matching their ICP using Clay + Claude
-4. **Signal mapping** — identify which signals indicate buying intent for their specific product (hiring, funding, tech stack changes, competitor displacement, etc.)
-5. **Set up BirdDog** — begin monitoring target accounts for active signals
+2. **Capture Customer Outcome Intake** — `projects/<client>/platform/intake.json`
+3. **Build context pack** — repo, Drive/transcript context when available, client notes, open loops
+4. **Generate ICP strategy** — primary ICP, adjacent tests, personas, disqualifiers, scoring matrix
+5. **Signal mapping** — generate about 20 BirdDog-ready signals for their specific product and outcome
+6. **Set up BirdDog** — begin monitoring target accounts or export manifest while API writes are unverified
 
 ### Week 2: Enrichment + Deliverable
 1. **Enrich accounts** — firmographic data, key contacts, tech stack, recent signals
-2. **Build pain hypotheses** — for each account, what's their likely problem and why would they buy?
-3. **Generate outreach templates** — 3-5 messaging angles calibrated through Octave
-4. **Architecture recommendation** — what their full pipeline system should look like (BirdDog → Enrichment → CRM → Sequences)
-5. **Compile deliverable** — signal report, enriched account list, outreach templates, system architecture diagram
+2. **Score accounts** — separate ICP fit, urgency, engagement, confidence, and activation priority
+3. **Build buyer profiles and pain hypotheses** — for each account, what's their likely problem and why would they buy?
+4. **Generate outreach copy and sequence-ready drafts** — reps approve/send; managed sending is not part of v1
+5. **Build CRM push plan** — DeployGTM-found leads/tasks/deals only, dry-run by default
+6. **Compile deliverable** — signal report, enriched account list, profiles, copy, system architecture
 
 ### Deliverable package
 - Enriched target account list (CSV + HubSpot import ready)
 - Signal report showing which accounts have active buying signals and why
+- ICP, urgency, engagement, confidence, and activation scores with rationale
+- Buyer profiles and rep-ready copy
 - 3-5 outreach message templates by persona
 - System architecture recommendation
 - BirdDog account list (already monitoring)
-- Octave brain (already configured with their context)
+- Signal strategy / BirdDog manifest
+- CRM push plan for DeployGTM-found leads and tasks only
 
 ### Handoff + Conversion
 - Walk through deliverable in a 60-min call

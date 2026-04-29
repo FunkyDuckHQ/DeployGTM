@@ -17,6 +17,6 @@ def test_context_pack_has_source_trace_for_deploygtm_own():
         assert principle["confidence"] in {"high", "medium", "low"}
         assert principle["source_trace"], "each principle must have source evidence"
         for ev in principle["source_trace"]:
-            assert ev["source_type"] in {"client_context", "transcript_summary", "master_brain"}
+            assert ev["source_type"] in {"client_context", "transcript_summary", "master_brain", "customer_outcome_intake"}
             assert ev["source_ref"]
             assert ev["evidence_snippet"]

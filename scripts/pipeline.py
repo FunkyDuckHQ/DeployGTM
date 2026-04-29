@@ -276,10 +276,12 @@ def push(input_file, dry_run, config_path):
 
 @cli.command("score")
 @click.option("--company", "-c", required=True)
+@click.option("--domain", "-d", default="", help="Optional domain for no-write score smoke tests")
 @click.option("--signal", "-s", required=True,
               type=click.Choice(["funding", "hiring", "gtm_struggle", "agency_churn",
                                   "tool_adoption", "manual"]))
 @click.option("--signal-date", default=None)
+@click.option("--signal-summary", default="", help="Optional signal summary for no-write score smoke tests")
 @click.option("--b2b-saas/--no-b2b-saas", default=False)
 @click.option("--seed-to-series-a/--no-seed-to-series-a", default=False)
 @click.option("--employees", default=None, type=int, help="Headcount (auto-maps to employees_5_30)")
@@ -288,7 +290,7 @@ def push(input_file, dry_run, config_path):
 @click.option("--needs-pipeline/--no-needs-pipeline", default=False)
 @click.option("--hubspot-or-open/--no-hubspot-or-open", default=False)
 @click.option("--config", "config_path", default="config.yaml")
-def score_cmd(company, signal, signal_date, b2b_saas, seed_to_series_a,
+def score_cmd(company, domain, signal, signal_date, signal_summary, b2b_saas, seed_to_series_a,
               employees, technical_buyer, us_based, needs_pipeline,
               hubspot_or_open, config_path):
     """Quick score for an account without running the full pipeline."""
@@ -302,11 +304,13 @@ def score_cmd(company, signal, signal_date, b2b_saas, seed_to_series_a,
         "us_based": us_based,
         "needs_pipeline": needs_pipeline,
         "hubspot_or_open": hubspot_or_open,
+        "signal_summary": signal_summary,
     }
 
     result = score_account(account, signal, signal_date, config)
 
-    click.echo(f"\n  {company}")
+    label = f"{company} ({domain})" if domain else company
+    click.echo(f"\n  {label}")
     click.echo(f"  ICP Fit:         {result['icp_fit']}/5")
     click.echo(f"  Signal Strength: {result['signal_strength']}/3")
     click.echo(f"  Priority:        {result['priority']}/15")
