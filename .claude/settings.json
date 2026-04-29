@@ -1,0 +1,36 @@
+{
+  "deploygtm_guardrails": {
+    "mode": "drafts_not_sends",
+    "production_writes_require_human_approval": true,
+    "bulk_updates_require_preview": true,
+    "never_delete_by_default": true,
+    "required_evidence_for_claims": true,
+    "default_api_write_mode": "dry_run"
+  },
+  "blocked_without_approval": [
+    "CRM contact/company bulk updates",
+    "HubSpot workflow activation",
+    "ad platform campaign activation",
+    "ad budget increases",
+    "outbound sequence launch",
+    "Slack/SMS alerts to live teams",
+    "delete/archive operations in production systems"
+  ],
+  "required_before_campaign_spec_write": [
+    "objective",
+    "budget_or_volume_ceiling",
+    "graduation_criteria",
+    "pause_criteria",
+    "source_refs",
+    "approval_status"
+  ],
+  "required_before_message_approval": [
+    "persona",
+    "signal_basis",
+    "pain_hypothesis",
+    "proof_point",
+    "claims_used",
+    "claims_blocked",
+    "human_review_status"
+  ]
+}
