@@ -9,7 +9,7 @@ This repo now includes a static dashboard at the root.
 3. Build command: `npm run build`.
 4. Output directory: `dist`.
 
-The repo includes `package.json`, so Vercel should treat this as a static Node build instead of trying to deploy the Python scoring scripts as an app.
+If your host still auto-detects Python, the repo root also includes `app.py`, `main.py`, and `server.py` as dependency-free Python entrypoints that serve the same static dashboard.
 
 ## Entry Point
 
