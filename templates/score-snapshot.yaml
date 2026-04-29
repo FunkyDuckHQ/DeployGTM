@@ -1,0 +1,41 @@
+type: score_snapshot
+score_snapshot_id: ___
+object_type: account
+object_id: ___
+score_type: icp
+score: 0
+tier: hold
+
+component_scores:
+  firmographic_fit: 0
+  segment_fit: 0
+  pain_hypothesis: 0
+  ability_to_buy: 0
+  strategic_value: 0
+  negative_adjustment: 0
+  evidence_confidence: 0
+
+weights:
+  firmographic_fit: 20
+  segment_fit: 20
+  pain_hypothesis: 15
+  ability_to_buy: 15
+  strategic_value: 10
+  negative_adjustment: -20
+  evidence_confidence: 20
+
+evidence:
+  - source: ___
+    note: ___
+    confidence: 0.0
+
+confidence: 0.0
+decay_applied: false
+decay_notes: ___
+recommended_route: hold
+human_override: false
+override_reason: null
+calculated_at: YYYY-MM-DD
+expires_at: YYYY-MM-DD
+source_refs:
+  - ___
