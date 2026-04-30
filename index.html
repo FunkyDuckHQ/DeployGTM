@@ -3,63 +3,69 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DeployGTM Sandbox</title>
+    <title>DeployGTM</title>
     <link rel="stylesheet" href="dashboard.css">
   </head>
   <body>
-    <main class="shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">DeployGTM Sandbox</p>
-          <h1>Signal-to-route cockpit</h1>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">DeployGTM</p>
+          <h1>More tools won't fix a messy GTM motion. A better system will.</h1>
+          <p class="lede">DeployGTM helps B2B teams connect strategy, systems, data, and execution into a clearer operating system for sales.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#sandbox">View sandbox</a>
+            <a class="button" href="#engagements">Engagements</a>
+          </div>
         </div>
-        <div class="status-pill">
-          <span class="dot"></span>
-          Peregrine demo data
+        <div class="desk" aria-label="DeployGTM operating sketch">
+          <div class="paper large"><span>ingest</span><span>normalize</span><span>score</span><span>activate</span><span>learn</span></div>
+          <div class="paper note">Signals only matter when they change the next action.</div>
+          <div class="paper card"><strong>Operator rule</strong><span>Diagnose before automating.</span></div>
         </div>
-      </header>
-
-      <section class="summary-grid" aria-label="Score summary">
-        <article class="metric">
-          <span class="metric-label">Accounts scored</span>
-          <strong id="accountsScored">0</strong>
-        </article>
-        <article class="metric">
-          <span class="metric-label">Avg ICP</span>
-          <strong id="avgIcp">0</strong>
-        </article>
-        <article class="metric">
-          <span class="metric-label">Avg urgency</span>
-          <strong id="avgUrgency">0</strong>
-        </article>
-        <article class="metric">
-          <span class="metric-label">Actionable routes</span>
-          <strong id="actionableRoutes">0</strong>
-        </article>
       </section>
-
-      <section class="workspace">
-        <aside class="route-panel" aria-label="Route filters">
-          <div class="panel-heading">
-            <h2>Routes</h2>
-            <button id="resetFilters" type="button" title="Show all routes">All</button>
-          </div>
-          <div id="routeFilters" class="route-list"></div>
-        </aside>
-
-        <section class="accounts-panel" aria-label="Scored accounts">
-          <div class="panel-heading">
-            <div>
-              <h2>Scored accounts</h2>
-              <p id="generatedAt" class="subtle"></p>
-            </div>
-            <a class="text-link" href="3_operations/outputs/peregrine_route_report.md">Markdown report</a>
-          </div>
-          <div id="accountList" class="account-list"></div>
+      <section class="section problem">
+        <div><p class="eyebrow">The Problem</p><h2>Revenue teams have data, tools, and activity. They often do not have a motion.</h2></div>
+        <div class="copy-block"><p>CRM records, enrichment vendors, outbound tools, call recordings, spreadsheets, and AI experiments pile up quickly. DeployGTM turns that context into reusable operating artifacts: ICP logic, signal maps, account scores, playbooks, alerts, message tests, and weekly learning loops.</p></div>
+      </section>
+      <section class="section">
+        <p class="eyebrow">What I Do</p>
+        <div class="module-grid">
+          <article class="module"><h3>Diagnose</h3><p>Map the GTM motion, systems, data sources, workflow gaps, and ICP assumptions before building.</p></article>
+          <article class="module"><h3>Design</h3><p>Define account logic, signal categories, scoring rules, CRM writebacks, and approval gates.</p></article>
+          <article class="module"><h3>Activate</h3><p>Build workflows that enrich the right accounts, route urgent opportunities, and launch controlled message tests.</p></article>
+        </div>
+      </section>
+      <section class="section blueprint">
+        <p class="eyebrow">How It Works</p>
+        <div class="flow"><span>ingest</span><span>normalize</span><span>score</span><span>explain</span><span>activate</span><span>learn</span></div>
+        <p>The system stays API and function-first. MCP, CLI, webhooks, and UI are interfaces around the GTM engine, not the engine itself.</p>
+      </section>
+      <section id="engagements" class="section">
+        <p class="eyebrow">Engagement Models</p>
+        <div class="module-grid">
+          <article class="module"><h3>Diagnose</h3><p>Audit, current-state map, systems map, data inventory, and prioritized roadmap.</p></article>
+          <article class="module"><h3>Build</h3><p>Scoring, workflows, CRM actions, outbound tests, playbooks, alerts, and client artifacts.</p></article>
+          <article class="module"><h3>Partner</h3><p>Ongoing iteration, reporting, vendor support, workflow refinement, and GTM advisory.</p></article>
+        </div>
+      </section>
+      <section id="sandbox" class="section sandbox">
+        <div class="panel-heading">
+          <div><p class="eyebrow">Sandbox Module</p><h2>Account prioritization preview</h2><p id="generatedAt" class="subtle"></p></div>
+          <a class="button" href="3_operations/outputs/peregrine_route_report.md">Markdown report</a>
+        </div>
+        <section class="summary-grid" aria-label="Score summary">
+          <article class="metric"><span class="metric-label">Accounts scored</span><strong id="accountsScored">0</strong></article>
+          <article class="metric"><span class="metric-label">Avg ICP</span><strong id="avgIcp">0</strong></article>
+          <article class="metric"><span class="metric-label">Avg urgency</span><strong id="avgUrgency">0</strong></article>
+          <article class="metric"><span class="metric-label">Actionable routes</span><strong id="actionableRoutes">0</strong></article>
+        </section>
+        <section class="workspace">
+          <aside class="route-panel" aria-label="Route filters"><div class="panel-heading compact"><h2>Routes</h2><button id="resetFilters" type="button" title="Show all routes">All</button></div><div id="routeFilters" class="route-list"></div></aside>
+          <section class="accounts-panel" aria-label="Scored accounts"><div id="accountList" class="account-list"></div></section>
         </section>
       </section>
     </main>
-
     <script src="dashboard.js"></script>
   </body>
 </html>
