@@ -15,6 +15,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 score_module = SourceFileLoader("score_accounts", str(SCRIPT_DIR / "score_accounts.py")).load_module()
 report_module = SourceFileLoader("build_route_report", str(SCRIPT_DIR / "build_route_report.py")).load_module()
+validate_module = SourceFileLoader("validate_client", str(SCRIPT_DIR / "validate_client.py")).load_module()
 
 
 def execution_id() -> str:
@@ -37,6 +38,12 @@ def main() -> None:
     try:
         if args.workflow != "score_accounts":
             raise ValueError(f"Unsupported workflow: {args.workflow}")
+
+        validation = validate_module.validate_client(args.client, args.clients_root)
+        validation_report = validate_module.write_validation_report(validation, args.clients_root, run_id)
+        outputs_written.append(validation_report)
+        if not validation.valid:
+            raise validate_module.ClientValidationError(validation)
 
         score_output, _ = score_module.score_client(args.client, score_module.parse_date(args.as_of), args.clients_root)
         outputs_written.append(paths.output)

@@ -77,7 +77,7 @@ class ScoreAccountsTest(unittest.TestCase):
         )
 
     def test_client_workspace_validation_catches_missing_files(self) -> None:
-        with self.assertRaisesRegex(ValueError, "Missing account input"):
+        with self.assertRaisesRegex(ValueError, "Missing file"):
             score_module.validate_client_workspace("missing_client_for_test")
 
     def test_bootstrap_client_creates_workspace_from_template(self) -> None:
