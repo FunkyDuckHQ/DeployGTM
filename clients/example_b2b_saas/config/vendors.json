@@ -1,0 +1,28 @@
+{
+  "client_id": "example_b2b_saas",
+  "vendors": {
+    "crm": {
+      "preferred": "HubSpot",
+      "status": "candidate_not_connected"
+    },
+    "signal": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "enrichment": {
+      "preferred": "Apollo",
+      "status": "candidate_not_connected"
+    },
+    "sequencer": {
+      "preferred": "SuperSend",
+      "status": "candidate_not_connected"
+    },
+    "content": {
+      "preferred": "ClaudeMarkdownContentAdapter",
+      "status": "operator_assisted"
+    }
+  },
+  "notes": [
+    "Fixture only. No real vendor integrations are enabled."
+  ]
+}

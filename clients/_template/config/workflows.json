@@ -1,0 +1,23 @@
+{
+  "client_id": "__CLIENT_ID__",
+  "default_workflow": "score_accounts",
+  "workflows": [
+    {
+      "workflow_id": "score_accounts",
+      "phase": "design",
+      "trigger": "operator_cli",
+      "inputs": [
+        "inputs/accounts.json",
+        "config/scoring.json",
+        "config/signal_definitions.json"
+      ],
+      "outputs": [
+        "outputs/score_snapshots.json"
+      ],
+      "human_review_rules": [
+        "Review high-urgency accounts before automated outreach."
+      ],
+      "success_condition": "Each account has an ICP score, urgency score, evidence, and recommended route."
+    }
+  ]
+}

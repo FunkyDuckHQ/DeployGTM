@@ -19,6 +19,24 @@ from typing import Any
 
 
 CLIENTS_ROOT = Path("clients")
+REQUIRED_ACCOUNT_FIELDS = {
+    "account_id",
+    "company_name",
+}
+REQUIRED_SCORING_FIELDS = {
+    "client_id",
+    "icp_components",
+    "route_thresholds",
+}
+REQUIRED_WORKFLOW_FIELDS = {
+    "client_id",
+    "default_workflow",
+    "workflows",
+}
+REQUIRED_VENDOR_FIELDS = {
+    "client_id",
+    "vendors",
+}
 
 
 @dataclass
@@ -83,6 +101,79 @@ def get_client_paths(client_id: str, clients_root: Path = CLIENTS_ROOT) -> Clien
         output=root / "outputs" / "score_snapshots.json",
         runs=root / "runs",
     )
+
+
+def validation_error(errors: list[str]) -> None:
+    if errors:
+        detail = "\n".join(f"- {error}" for error in errors)
+        raise ValueError(f"Client workspace validation failed:\n{detail}")
+
+
+def require_file(path: Path, label: str, errors: list[str]) -> None:
+    if not path.exists():
+        errors.append(f"Missing {label}: {path}")
+
+
+def require_keys(payload: dict[str, Any], keys: set[str], label: str, errors: list[str]) -> None:
+    missing = sorted(key for key in keys if key not in payload)
+    if missing:
+        errors.append(f"{label} missing required keys: {', '.join(missing)}")
+
+
+def validate_client_workspace(client_id: str, clients_root: Path = CLIENTS_ROOT) -> ClientPaths:
+    paths = get_client_paths(client_id, clients_root)
+    errors: list[str] = []
+
+    require_file(paths.accounts, "account input", errors)
+    require_file(paths.scoring, "scoring config", errors)
+    require_file(paths.signals, "signal definitions", errors)
+    require_file(paths.root / "config" / "vendors.json", "vendor config", errors)
+    require_file(paths.root / "config" / "workflows.json", "workflow config", errors)
+    validation_error(errors)
+
+    accounts = load_json(paths.accounts)
+    scoring = load_json(paths.scoring)
+    signals = load_json(paths.signals)
+    vendors = load_json(paths.root / "config" / "vendors.json")
+    workflows = load_json(paths.root / "config" / "workflows.json")
+
+    require_keys(accounts, {"client_id", "accounts"}, "accounts.json", errors)
+    require_keys(scoring, REQUIRED_SCORING_FIELDS, "scoring.json", errors)
+    require_keys(signals, {"client_id", "signal_definitions"}, "signal_definitions.json", errors)
+    require_keys(vendors, REQUIRED_VENDOR_FIELDS, "vendors.json", errors)
+    require_keys(workflows, REQUIRED_WORKFLOW_FIELDS, "workflows.json", errors)
+
+    if accounts.get("client_id") != client_id:
+        errors.append(f"accounts.json client_id {accounts.get('client_id')} does not match {client_id}")
+    if scoring.get("client_id") != client_id:
+        errors.append(f"scoring.json client_id {scoring.get('client_id')} does not match {client_id}")
+    if signals.get("client_id") != client_id:
+        errors.append(f"signal_definitions.json client_id {signals.get('client_id')} does not match {client_id}")
+
+    if not isinstance(scoring.get("icp_components"), dict) or not scoring.get("icp_components"):
+        errors.append("scoring.json icp_components must be a non-empty object")
+    if not isinstance(scoring.get("route_thresholds"), list) or not scoring.get("route_thresholds"):
+        errors.append("scoring.json route_thresholds must be a non-empty list")
+
+    account_rows = accounts.get("accounts", [])
+    if not isinstance(account_rows, list):
+        errors.append("accounts.json accounts must be a list")
+    else:
+        for index, account in enumerate(account_rows):
+            missing = sorted(field for field in REQUIRED_ACCOUNT_FIELDS if field not in account)
+            if missing:
+                errors.append(f"accounts[{index}] missing required fields: {', '.join(missing)}")
+
+    signal_rows = signals.get("signal_definitions", [])
+    if not isinstance(signal_rows, list):
+        errors.append("signal_definitions.json signal_definitions must be a list")
+    else:
+        for index, signal in enumerate(signal_rows):
+            if "signal_definition_id" not in signal:
+                errors.append(f"signal_definitions[{index}] missing required field: signal_definition_id")
+
+    validation_error(errors)
+    return paths
 
 
 def score_icp(account: dict[str, Any], scoring_config: dict[str, Any]) -> tuple[float, dict[str, float]]:
@@ -236,7 +327,7 @@ def score_accounts(accounts_path: Path, signals_path: Path, as_of: date, scoring
 
 
 def score_client(client_id: str, as_of: date, clients_root: Path = CLIENTS_ROOT, output_path: Path | None = None) -> tuple[dict[str, Any], ClientPaths]:
-    paths = get_client_paths(client_id, clients_root)
+    paths = validate_client_workspace(client_id, clients_root)
     output = score_accounts(paths.accounts, paths.signals, as_of, paths.scoring)
     write_json(output_path or paths.output, output)
     return output, paths
