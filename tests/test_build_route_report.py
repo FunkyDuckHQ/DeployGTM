@@ -10,13 +10,14 @@ report_module = SourceFileLoader(
 
 class BuildRouteReportTest(unittest.TestCase):
     def test_report_includes_routes_and_next_actions(self) -> None:
-        score_data = report_module.load_json(Path("3_operations/outputs/peregrine_score_snapshots.json"))
-        report = report_module.build_report(score_data)
+        score_path = Path("clients/peregrine_space/outputs/score_snapshots.json")
+        score_data = report_module.load_json(score_path)
+        report = report_module.build_report(score_data, score_path)
 
         self.assertIn("Xona Space Systems", report)
         self.assertIn("Enrich + campaign test", report)
         self.assertIn("Next action", report)
-        self.assertIn("Peregrine Space working brief", report)
+        self.assertIn("clients/peregrine_space/outputs/score_snapshots.json", report)
 
 
 if __name__ == "__main__":

@@ -14,8 +14,9 @@ If your host still auto-detects Python, the repo root also includes `app.py`, `m
 ## Entry Point
 
 - `/` loads `index.html`.
-- The dashboard reads `3_operations/outputs/peregrine_score_snapshots.json`.
-- The linked Markdown report is at `3_operations/outputs/peregrine_route_report.md`.
+- The dashboard reads `dashboard_manifest.json`.
+- The current manifest points at `clients/peregrine_space/outputs/score_snapshots.json`.
+- The linked Markdown report is at `clients/peregrine_space/outputs/route_report.md`.
 
 ## Current Scope
 

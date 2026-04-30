@@ -8,8 +8,9 @@ const files = [
   "index.html",
   "dashboard.css",
   "dashboard.js",
-  "3_operations/outputs/peregrine_score_snapshots.json",
-  "3_operations/outputs/peregrine_route_report.md",
+  "dashboard_manifest.json",
+  "clients/peregrine_space/outputs/score_snapshots.json",
+  "clients/peregrine_space/outputs/route_report.md",
 ];
 
 fs.rmSync(dist, { recursive: true, force: true });

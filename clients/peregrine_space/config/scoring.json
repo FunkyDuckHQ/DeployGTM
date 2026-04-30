@@ -1,0 +1,71 @@
+{
+  "client_id": "peregrine_space",
+  "icp_components": {
+    "firmographic_fit": 20,
+    "segment_fit": 20,
+    "pain_hypothesis": 15,
+    "ability_to_buy": 15,
+    "strategic_value": 10,
+    "evidence_confidence": 20
+  },
+  "negative_adjustment_field": "negative_adjustment",
+  "urgency_multiplier": 4,
+  "default_signal_weight": 10,
+  "default_signal_confidence": 0.5,
+  "default_decay_half_life_days": 30,
+  "route_thresholds": [
+    {
+      "route": "manual_sales_review_and_enrich",
+      "conditions": {
+        "min_icp": 80,
+        "min_urgency": 70
+      }
+    },
+    {
+      "route": "enrich_and_campaign_test",
+      "conditions": {
+        "min_icp": 80,
+        "min_urgency": 40
+      }
+    },
+    {
+      "route": "enrich_selectively_or_monitor",
+      "conditions": {
+        "min_icp": 80
+      }
+    },
+    {
+      "route": "manual_sales_review",
+      "conditions": {
+        "min_icp": 65,
+        "max_icp": 79.99,
+        "min_urgency": 80
+      }
+    },
+    {
+      "route": "monitor_or_test_cohort",
+      "conditions": {
+        "min_icp": 65,
+        "max_icp": 79.99,
+        "min_urgency": 50
+      }
+    },
+    {
+      "route": "human_review_only",
+      "conditions": {
+        "max_icp": 64.99,
+        "min_urgency": 85
+      }
+    },
+    {
+      "route": "hold_or_monitor",
+      "conditions": {
+        "min_icp": 50
+      }
+    },
+    {
+      "route": "exclude",
+      "conditions": {}
+    }
+  ]
+}

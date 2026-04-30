@@ -116,10 +116,12 @@ function renderAccounts(items) {
               ${routeLabels[item.recommended_route] || item.recommended_route}
             </span>
           </div>
+
           <div class="score-row">
             ${scoreBar("ICP", item.icp_score)}
             ${scoreBar("Urgency", item.urgency_score)}
           </div>
+
           <p class="next-action"><strong>Next action:</strong> ${nextAction(item.recommended_route)}</p>
           ${evidenceList(item.evidence)}
         </article>
@@ -144,10 +146,16 @@ async function fetchFirst(paths) {
   throw new Error("Unable to load score snapshots");
 }
 
+async function loadManifest() {
+  const response = await fetchFirst(["dashboard_manifest.json", "data/dashboard_manifest.json"]);
+  return response.json();
+}
+
 async function loadDashboard() {
+  const manifest = await loadManifest();
   const response = await fetchFirst([
-    "3_operations/outputs/peregrine_score_snapshots.json",
-    "data/peregrine_score_snapshots.json",
+    manifest.score_snapshots_path,
+    "clients/peregrine_space/outputs/score_snapshots.json",
   ]);
   const data = await response.json();
   allSnapshots = data.score_snapshots || [];

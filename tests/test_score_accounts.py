@@ -17,9 +17,10 @@ class ScoreAccountsTest(unittest.TestCase):
 
     def test_score_accounts_outputs_routes(self) -> None:
         output = score_module.score_accounts(
-            Path("examples/peregrine/accounts.json"),
-            Path("examples/peregrine/signal_definitions.json"),
+            Path("clients/peregrine_space/inputs/accounts.json"),
+            Path("clients/peregrine_space/config/signal_definitions.json"),
             date(2026, 4, 29),
+            Path("clients/peregrine_space/config/scoring.json"),
         )
         snapshots = {item["account_id"]: item for item in output["score_snapshots"]}
 
@@ -33,6 +34,26 @@ class ScoreAccountsTest(unittest.TestCase):
             },
         )
         self.assertIn(snapshots["acc_generic_prime"]["recommended_route"], {"hold_or_monitor", "exclude"})
+
+    def test_scoring_config_changes_score_output(self) -> None:
+        accounts = Path("clients/peregrine_space/inputs/accounts.json")
+        signals = Path("clients/peregrine_space/config/signal_definitions.json")
+        scoring = Path("clients/peregrine_space/config/scoring.json")
+        original = score_module.score_accounts(accounts, signals, date(2026, 4, 29), scoring)
+        original_xona = {item["account_id"]: item for item in original["score_snapshots"]}["acc_xona"]
+
+        changed_scoring = Path("tests/tmp_scoring.json")
+        config = score_module.load_json(scoring)
+        config["icp_components"]["evidence_confidence"] = 0
+        try:
+            score_module.write_json(changed_scoring, config)
+            changed = score_module.score_accounts(accounts, signals, date(2026, 4, 29), changed_scoring)
+            changed_xona = {item["account_id"]: item for item in changed["score_snapshots"]}["acc_xona"]
+        finally:
+            if changed_scoring.exists():
+                changed_scoring.unlink()
+
+        self.assertLess(changed_xona["icp_score"], original_xona["icp_score"])
 
 
 if __name__ == "__main__":

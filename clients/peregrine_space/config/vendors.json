@@ -1,0 +1,29 @@
+{
+  "client_id": "peregrine_space",
+  "vendors": {
+    "crm": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "signal": {
+      "preferred": "BirdDog",
+      "status": "recommended_not_connected"
+    },
+    "enrichment": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "sequencer": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "content": {
+      "preferred": "ClaudeMarkdownContentAdapter",
+      "status": "operator_assisted"
+    }
+  },
+  "notes": [
+    "Phase 1 is file-based. No real vendor integrations are enabled.",
+    "BirdDog is a recommended signal adapter candidate for this client, not a dependency."
+  ]
+}
