@@ -116,12 +116,10 @@ function renderAccounts(items) {
               ${routeLabels[item.recommended_route] || item.recommended_route}
             </span>
           </div>
-
           <div class="score-row">
             ${scoreBar("ICP", item.icp_score)}
             ${scoreBar("Urgency", item.urgency_score)}
           </div>
-
           <p class="next-action"><strong>Next action:</strong> ${nextAction(item.recommended_route)}</p>
           ${evidenceList(item.evidence)}
         </article>
@@ -138,9 +136,19 @@ function render() {
   renderAccounts(filtered);
 }
 
+async function fetchFirst(paths) {
+  for (const path of paths) {
+    const response = await fetch(path);
+    if (response.ok) return response;
+  }
+  throw new Error("Unable to load score snapshots");
+}
+
 async function loadDashboard() {
-  const response = await fetch("3_operations/outputs/peregrine_score_snapshots.json");
-  if (!response.ok) throw new Error("Unable to load score snapshots");
+  const response = await fetchFirst([
+    "3_operations/outputs/peregrine_score_snapshots.json",
+    "data/peregrine_score_snapshots.json",
+  ]);
   const data = await response.json();
   allSnapshots = data.score_snapshots || [];
   renderSummary(allSnapshots, data.generated_at || "unknown");
