@@ -240,12 +240,25 @@ Every output must include:
 - QA notes
 - claims used
 - claims blocked
+- copy packet if the output is prospect-facing
+
+Prospect-facing copy must conform to `templates/copy-packet.schema.json`.
+
+Do not trust final copy unless:
+
+- `templates/copy-quality-rubric.json` has been applied
+- QA score is 85 or higher
+- hard fail flags are empty
+- every claim has a source reference
+- banned phrases are absent
 
 ## 10. Voice QA Checklist
 
 Use `templates/copy-qa-checklist.md`.
 
 The QA pass should be separate from draft generation.
+
+Use `docs/copy-quality-standard.md` as the human quality bar and `templates/copy-quality-rubric.json` as the machine-readable rubric.
 
 ## 11. Banned Phrases
 

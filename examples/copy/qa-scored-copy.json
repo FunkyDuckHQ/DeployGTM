@@ -1,0 +1,83 @@
+{
+  "copy_packet_id": "copy_peregrine_space_demo_001",
+  "client_id": "peregrine_space",
+  "workflow_name": "DeployGTM Prospect Copy",
+  "target_company": {
+    "name": "Peregrine Space",
+    "domain": "example.com",
+    "account_id": "acct_peregrine_demo"
+  },
+  "target_person": {
+    "name": "Tyler Ritz",
+    "title": "Founder",
+    "persona": "technical founder"
+  },
+  "context_bundle_ref": "clients/peregrine_space/copy/context_bundle_demo.json",
+  "message_strategy": {
+    "primary_hypothesis": "Peregrine needs repeatable account selection logic for NewSpace buyers with real timing pressure.",
+    "pain_angle": "Broad aerospace lead gen is too noisy for a technical, trust-heavy sale.",
+    "timing_angle": "The first 2-4 weeks should test ICP assumptions before optimizing the motion.",
+    "credibility_angle": "DeployGTM can turn founder-held account logic into signal-based scoring, research, and message tests.",
+    "cta": "Ask whether that account logic already exists in a repeatable format.",
+    "tone": "direct, practical, careful about uncertainty",
+    "claims_allowed": [
+      "DeployGTM builds scoring, account research, and message tests.",
+      "The engagement starts by testing ICP assumptions."
+    ],
+    "claims_blocked": [
+      "Peregrine has confirmed a specific CRM problem.",
+      "Peregrine is definitely losing deals because of flight heritage."
+    ]
+  },
+  "emails": [
+    {
+      "step": 1,
+      "send_day": 0,
+      "subject": "NewSpace buyer timing",
+      "body": "Tyler,\n\nI may be off, but Peregrine's hardest GTM problem does not look like broad aerospace lead gen.\n\nIt looks more like finding NewSpace teams with active build cycles, enough urgency to buy before the next milestone, and enough technical risk that the usual objections get handled early.\n\nThat is the kind of account logic I help turn into a repeatable system: signals, scoring, account research, and message tests that show which assumptions are actually working.\n\nWorth comparing notes on where that logic lives today?",
+      "cta": "Worth comparing notes on where that logic lives today?",
+      "claims_used": [
+        "Peregrine sells into a NewSpace/aerospace context.",
+        "DeployGTM builds signal-based scoring, account research, and message tests."
+      ],
+      "source_refs": [
+        "client_working_brief",
+        "deploygtm_architecture_docs"
+      ],
+      "qa_status": "pass"
+    }
+  ],
+  "qa_result": {
+    "total_score": 91,
+    "decision": "pass",
+    "dimension_scores": {
+      "entity_correctness": 20,
+      "source_grounded_specificity": 18,
+      "pain_trigger_relevance": 14,
+      "message_strategy_fit": 14,
+      "voice_fit": 9,
+      "cta_quality": 9,
+      "brevity_readability": 4,
+      "risk_control": 3
+    },
+    "hard_fail_flags": [],
+    "review_notes": [
+      "Passes because it stays hypothesis-led and avoids unsupported certainty."
+    ]
+  },
+  "source_trace": [
+    {
+      "source_ref": "client_working_brief",
+      "source_type": "client_notes",
+      "claim": "Peregrine is treated as a NewSpace/aerospace sales context.",
+      "confidence": "medium"
+    },
+    {
+      "source_ref": "deploygtm_architecture_docs",
+      "source_type": "repo_docs",
+      "claim": "DeployGTM builds signal-based scoring, account research, and message tests.",
+      "confidence": "high"
+    }
+  ],
+  "final_recommended_step": 1
+}

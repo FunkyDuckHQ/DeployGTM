@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeployGTM Copy Packet",
+  "type": "object",
+  "required": [
+    "copy_packet_id",
+    "client_id",
+    "workflow_name",
+    "target_company",
+    "context_bundle_ref",
+    "message_strategy",
+    "emails",
+    "qa_result",
+    "source_trace"
+  ],
+  "properties": {
+    "copy_packet_id": { "type": "string" },
+    "client_id": { "type": "string" },
+    "workflow_name": { "const": "DeployGTM Prospect Copy" },
+    "target_company": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "domain": { "type": "string" },
+        "account_id": { "type": "string" }
+      }
+    },
+    "target_person": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "persona": { "type": "string" }
+      }
+    },
+    "context_bundle_ref": { "type": "string" },
+    "message_strategy": {
+      "type": "object",
+      "required": ["primary_hypothesis", "pain_angle", "cta", "tone"],
+      "properties": {
+        "primary_hypothesis": { "type": "string" },
+        "pain_angle": { "type": "string" },
+        "timing_angle": { "type": "string" },
+        "credibility_angle": { "type": "string" },
+        "cta": { "type": "string" },
+        "tone": { "type": "string" },
+        "claims_allowed": { "type": "array", "items": { "type": "string" } },
+        "claims_blocked": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "emails": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["step", "send_day", "subject", "body", "cta", "claims_used", "source_refs", "qa_status"],
+        "properties": {
+          "step": { "type": "integer" },
+          "send_day": { "type": "integer" },
+          "subject": { "type": "string" },
+          "body": { "type": "string" },
+          "cta": { "type": "string" },
+          "claims_used": { "type": "array", "items": { "type": "string" } },
+          "source_refs": { "type": "array", "items": { "type": "string" } },
+          "qa_status": { "enum": ["pass", "rewrite", "fail", "human_review"] }
+        }
+      }
+    },
+    "linkedin": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["format", "body", "cta", "source_refs", "qa_status"],
+        "properties": {
+          "format": { "type": "string" },
+          "body": { "type": "string" },
+          "cta": { "type": "string" },
+          "source_refs": { "type": "array", "items": { "type": "string" } },
+          "qa_status": { "enum": ["pass", "rewrite", "fail", "human_review"] }
+        }
+      }
+    },
+    "call_opener": {
+      "type": "object",
+      "properties": {
+        "body": { "type": "string" },
+        "source_refs": { "type": "array", "items": { "type": "string" } },
+        "qa_status": { "enum": ["pass", "rewrite", "fail", "human_review"] }
+      }
+    },
+    "qa_result": {
+      "type": "object",
+      "required": ["total_score", "decision", "dimension_scores", "hard_fail_flags", "review_notes"],
+      "properties": {
+        "total_score": { "type": "number" },
+        "decision": { "enum": ["pass", "rewrite", "fail", "human_review"] },
+        "dimension_scores": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "hard_fail_flags": { "type": "array", "items": { "type": "string" } },
+        "review_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "source_trace": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_ref", "source_type", "claim"],
+        "properties": {
+          "source_ref": { "type": "string" },
+          "source_type": { "type": "string" },
+          "claim": { "type": "string" },
+          "confidence": { "type": "string" }
+        }
+      }
+    },
+    "final_recommended_step": { "type": "integer" }
+  }
+}

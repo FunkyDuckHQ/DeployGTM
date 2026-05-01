@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeployGTM Copy Quality Rubric",
+  "version": "1.0.0",
+  "pass_threshold": 85,
+  "rewrite_threshold": 70,
+  "dimensions": [
+    {
+      "id": "entity_correctness",
+      "label": "Entity correctness",
+      "max_points": 20,
+      "description": "The company, person, role, and identity are resolved from trusted sources."
+    },
+    {
+      "id": "source_grounded_specificity",
+      "label": "Source-grounded specificity",
+      "max_points": 20,
+      "description": "Specific claims trace to trusted source refs and do not invent facts."
+    },
+    {
+      "id": "pain_trigger_relevance",
+      "label": "Pain and trigger relevance",
+      "max_points": 15,
+      "description": "The message maps to a real business problem, signal, or timing reason."
+    },
+    {
+      "id": "message_strategy_fit",
+      "label": "Message strategy fit",
+      "max_points": 15,
+      "description": "The copy follows the approved hypothesis, angle, CTA, and blocked claims."
+    },
+    {
+      "id": "voice_fit",
+      "label": "Voice fit",
+      "max_points": 10,
+      "description": "The copy sounds direct, practical, restrained, and operator-led."
+    },
+    {
+      "id": "cta_quality",
+      "label": "CTA quality",
+      "max_points": 10,
+      "description": "The ask is low-friction, relevant, and easy to answer."
+    },
+    {
+      "id": "brevity_readability",
+      "label": "Brevity and readability",
+      "max_points": 5,
+      "description": "The message is tight enough for a busy buyer."
+    },
+    {
+      "id": "risk_control",
+      "label": "Risk control",
+      "max_points": 5,
+      "description": "The copy avoids fake certainty, unsafe personalization, and sensitive claims."
+    }
+  ],
+  "hard_fail_rules": [
+    "wrong_company_or_person",
+    "unresolved_or_ambiguous_entity",
+    "unsupported_factual_claim",
+    "invented_pain_or_trigger",
+    "adapter_used_for_entity_resolution",
+    "sensitive_claim_without_review",
+    "banned_phrase_present",
+    "generic_segment_copy",
+    "meeting_ask_before_value"
+  ],
+  "banned_phrases": [
+    "at DeployGTM",
+    "I hope this finds you well",
+    "just checking in",
+    "quick question",
+    "revolutionize",
+    "game-changing",
+    "cutting-edge",
+    "AI-powered GTM engine",
+    "unlock growth",
+    "supercharge your pipeline",
+    "we help companies like yours"
+  ]
+}
