@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeployGTM Prospect Copy Context Bundle",
+  "type": "object",
+  "required": [
+    "workflow",
+    "client",
+    "target_company",
+    "entity_resolution",
+    "canonical_sources",
+    "account_person_brief",
+    "message_strategy",
+    "adapter_instructions",
+    "qa",
+    "source_trace"
+  ],
+  "properties": {
+    "workflow": {
+      "type": "object",
+      "required": ["name", "version", "requested_output"],
+      "properties": {
+        "name": { "const": "DeployGTM Prospect Copy" },
+        "version": { "type": "string" },
+        "requested_output": { "type": "string" }
+      }
+    },
+    "client": {
+      "type": "object",
+      "required": ["client_id", "client_name"],
+      "properties": {
+        "client_id": { "type": "string" },
+        "client_name": { "type": "string" }
+      }
+    },
+    "target_company": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "domain": { "type": "string" },
+        "account_id": { "type": "string" }
+      }
+    },
+    "target_person": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "title": { "type": "string" },
+        "persona": { "type": "string" },
+        "source_ref": { "type": "string" }
+      }
+    },
+    "entity_resolution": {
+      "type": "object",
+      "required": ["status", "confidence", "trusted_source"],
+      "properties": {
+        "status": { "enum": ["resolved", "ambiguous", "blocked"] },
+        "confidence": { "type": "string" },
+        "duplicate_name_risk": { "type": "string" },
+        "trusted_source": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "canonical_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_type", "source_ref", "trust_level"],
+        "properties": {
+          "source_type": { "type": "string" },
+          "source_ref": { "type": "string" },
+          "trust_level": { "enum": ["primary", "supporting", "unverified"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "account_person_brief": {
+      "type": "object",
+      "required": ["current_gtm_situation", "likely_business_problem", "deploygtm_angle", "confidence"],
+      "properties": {
+        "role": { "type": "string" },
+        "persona": { "type": "string" },
+        "current_gtm_situation": { "type": "string" },
+        "likely_business_problem": { "type": "string" },
+        "relevant_signal": { "type": "string" },
+        "why_now": { "type": "string" },
+        "deploygtm_angle": { "type": "string" },
+        "what_not_to_overclaim": { "type": "array", "items": { "type": "string" } },
+        "confidence": { "type": "string" }
+      }
+    },
+    "message_strategy": {
+      "type": "object",
+      "required": ["primary_hypothesis", "pain_angle", "cta", "tone"],
+      "properties": {
+        "primary_hypothesis": { "type": "string" },
+        "pain_angle": { "type": "string" },
+        "timing_angle": { "type": "string" },
+        "credibility_angle": { "type": "string" },
+        "cta": { "type": "string" },
+        "tone": { "type": "string" },
+        "banned_framing": { "type": "array", "items": { "type": "string" } },
+        "best_offer_fit": { "type": "string" },
+        "claims_allowed": { "type": "array", "items": { "type": "string" } },
+        "claims_blocked": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "adapter_instructions": {
+      "type": "object",
+      "required": ["use_octave_for", "do_not_use_octave_for"],
+      "properties": {
+        "use_octave_for": { "type": "array", "items": { "type": "string" } },
+        "do_not_use_octave_for": { "type": "array", "items": { "type": "string" } },
+        "other_content_adapter": { "type": "string" }
+      }
+    },
+    "qa": {
+      "type": "object",
+      "properties": {
+        "banned_phrases": { "type": "array", "items": { "type": "string" } },
+        "requires_human_review": { "type": "boolean" },
+        "qa_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "source_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "source_ref"],
+        "properties": {
+          "claim": { "type": "string" },
+          "source_ref": { "type": "string" },
+          "confidence": { "type": "string" }
+        }
+      }
+    }
+  }
+}
