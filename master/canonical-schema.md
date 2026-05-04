@@ -320,6 +320,25 @@ Fields:
 - `next_iteration`
 - `source_refs`
 
+### AutomationCoverage
+
+Fields:
+
+- `automation_coverage_id`
+- `client_id`
+- `workstream`
+- `current_state`
+- `manual_tasks_found`
+- `software_better_tasks`
+- `required_context`
+- `required_adapters`
+- `candidate_tools`
+- `quick_win_score`
+- `risk_score`
+- `human_review_required`
+- `recommended_next_action`
+- `source_refs`
+
 ### Task
 
 Fields:
@@ -400,8 +419,18 @@ Fields:
 - `budget`
 - `strategic_fit`
 
+### `automation_workstream`
+
+- `research_and_targeting`
+- `enrichment_and_data`
+- `personalization_and_copy`
+- `sending_and_deliverability`
+- `inbound_and_routing`
+- `pipeline_and_coaching`
+
 ## Source Notes
 
 - Existing schema source: [DeployGTM - Canonical Schema](https://docs.google.com/document/d/1EWaXmVvE5D5n68xSQqqTTynFLXge5BVTDvkkhdSwi_g).
 - Existing build and context specs define ProjectContext, Account, Contact, Signal, Task, Opportunity, OutreachDraft, and ExecutionResult as core objects: [Build Spec](https://docs.google.com/document/d/13tkqFzql8LsqIZQa0uQijYMlJcTcI9tTPeazTDqWEXg) and [Context Engine Spec](https://docs.google.com/document/d/1Yrg-AK8YlDnVxi9Eqk7kqZmXtbnCR4amtmqVNBRElXw).
 - Clay signal materials support fields for custom signals, actionability, timing, signal categories, frequency, and conversion potential: [Intro to Signals](https://university.clay.com/lessons/intro-to-signals-in-clay-signals-abm), [Announcing custom signals](https://www.clay.com/blog/signals), and [Building Custom Signals in Clay](https://university.clay.com/lessons/building-custom-signals-in-clay).
+- SDR automation coverage source: [sdr-automation-map.md](sdr-automation-map.md).

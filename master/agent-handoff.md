@@ -28,12 +28,17 @@ The repo now includes:
   - `scripts/email_sync.py`
   - `n8n/README.md`
   - `n8n/workflows/signal-audit-runtime.json`
+- Clarify/API/CLI and SDR automation strategy:
+  - `docs/clarify-api-cli-strategy.md`
+  - `master/sdr-automation-map.md`
 
 ## Product Direction
 
 DeployGTM is an end-to-end GTM operating system.
 
 Signal Audit is the wedge offer: a paid test that leaves the client with real accounts, real ICP/urgency scores, real signal definitions, real enriched target profiles, real copy, and a CRM push plan. The audit proves whether the system should continue into an operated retainer.
+
+Signal Audit should also assess SDR automation coverage across six workstreams: research/targeting, enrichment/data, personalization/copy, sending/deliverability, inbound/routing, and pipeline/coaching. See `master/sdr-automation-map.md`.
 
 The intended flow is:
 
@@ -104,6 +109,11 @@ Customer + desired outcome
    - Read `docs/clarify-api-cli-strategy.md`.
    - Treat Clarify as a first-class CRM/workspace target, not a place to hide business logic.
    - Do not enable live Clarify writes until the adapter can prove schema, dry-run payloads, approval, and receipt logging.
+
+9. Follow the SDR automation map:
+   - Read `master/sdr-automation-map.md`.
+   - Build toward automating the mechanical SDR workload while routing live discovery, hard objections, multi-stakeholder navigation, executive trust, and recovery from misfires to humans.
+   - Treat 90-day profitable pipeline guarantee language as an offer hypothesis until qualification, economics, client obligations, deliverability, and scope guardrails are defined.
 
 ## Branch Cleanup Guidance
 

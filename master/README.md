@@ -13,6 +13,7 @@ This folder defines the durable operating architecture for DeployGTM: a headless
 - [scoring-model.md](scoring-model.md): ICP score, urgency score, decay, routing thresholds, and engagement feedback.
 - [client-workflow.md](client-workflow.md): practical workflow from intake command through prep, customer docs, account scoring, enrichment, copy, testing, manual routing, and success tracking.
 - [growth-engine-integration.md](growth-engine-integration.md): integration of the Ascend-style Growth Engine pattern: ICP research, data-driven brand/message alignment, acquisition execution, CRM attribution, nurture, SLA, and operations.
+- [sdr-automation-map.md](sdr-automation-map.md): six-workstream SDR automation coverage model, human boundary, Signal Audit impact, and guarantee guardrails.
 - [vendor-strategy.md](vendor-strategy.md): vendor evaluation strategy for Mantis-style providers, uncommon data access, adapter fit, and cost per useful signal.
 - [../docs/clarify-api-cli-strategy.md](../docs/clarify-api-cli-strategy.md): Clarify-first CRM/workspace posture plus API/CLI control-plane rules.
 
@@ -31,7 +32,8 @@ Related contracts and templates:
 6. Create a SignalDefinition template that can be translated into BirdDog monitoring setup.
 7. Create a MessageMatrix template for Claude/Octave-backed content generation.
 8. Create a weekly growth report template that reads from canonical scoring and execution objects.
-9. Run vendor evaluations for MANTIS Group, Mantis Solutions, Firecrawl, People Data Labs, Apollo, Clay, Bombora, Demandbase, and any niche vertical data sources relevant to the client.
+9. Add `automation_coverage.json` to Signal Audit output using the six-workstream SDR automation coverage model.
+10. Run vendor evaluations for MANTIS Group, Mantis Solutions, Firecrawl, People Data Labs, Apollo, Clay, Bombora, Demandbase, and any niche vertical data sources relevant to the client.
 
 ## Source Spine
 

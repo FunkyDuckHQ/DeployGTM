@@ -89,7 +89,7 @@ Disqualifying cleanly builds more credibility than a weak close.
 - Has tried something and it failed
 - Founder is personally spending hours/week on the thing I solve
 - "Our AE starts [specific date]" / "We need this before [specific event]"
-- Already has HubSpot / willing to adopt it
+- Already has a modern CRM/workspace or is willing to adopt one
 
 **Warm signals (qualified with clarification):**
 - "We've been thinking about this" — ask what they've tried and why it didn't work
@@ -104,7 +104,7 @@ Disqualifying cleanly builds more credibility than a weak close.
 **Hard disqualifiers:**
 - Pre-product (nothing to sell)
 - Consumer / B2C
-- Expecting guaranteed reply rates or meeting counts
+- Expecting guaranteed reply rates or meeting counts before ICP, offer, client obligations, and deliverability prerequisites are defined
 - Budget under $3,500 (don't negotiate down)
 - Wants to hire in-house and just needs a job description (not our problem)
 

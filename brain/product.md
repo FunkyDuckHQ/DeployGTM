@@ -4,6 +4,10 @@
 
 We build the outbound pipeline infrastructure that turns buying signals into qualified meetings for early-stage B2B SaaS companies.
 
+Alternate operating lens:
+
+We automate the mechanical SDR workload so reps spend their time on live discovery, hard objections, multi-stakeholder navigation, executive trust, and recovery from misfires.
+
 ## We are not
 
 - A lead gen agency (we build infrastructure, not lists)
@@ -20,8 +24,9 @@ We build the outbound pipeline infrastructure that turns buying signals into qua
 **What it is:** The diagnostic that shows them what they're missing and creates the need for the retainer.
 
 **What they get:**
-- Enriched target account list (CSV + HubSpot import ready)
+- Enriched target account list (CSV + CRM/workspace import ready)
 - Signal report — which accounts have active buying signals and why
+- SDR automation coverage map — what can be automated now, what should stay human, and what tooling/workflow gaps exist
 - 3–5 outreach message templates by persona (calibrated through Octave)
 - System architecture recommendation (what their full pipeline should look like)
 - BirdDog account list (already monitoring 30–50 accounts)
@@ -53,7 +58,8 @@ We build the outbound pipeline infrastructure that turns buying signals into qua
 **What's included:**
 - BirdDog signal monitoring (continuous) on target accounts
 - Ongoing enrichment and outreach generation
-- HubSpot CRM setup/optimization, workflows, lead scoring
+- Clarify-first CRM/workspace setup where it fits; HubSpot compatibility where the client already uses HubSpot
+- CRM/workspace workflows, field mapping, lead scoring, and task/writeback planning
 - Octave brain configuration for messaging intelligence
 - Weekly signal reports and pipeline analysis
 - Outreach iteration based on reply data
@@ -78,6 +84,6 @@ $3,500 is low enough to be a fast yes for a funded startup. It's positioned as a
 | Signal Detection | BirdDog | Continuous monitoring of target accounts |
 | Messaging Intelligence | Octave | ICP/persona context brain |
 | Enrichment | Clay + Claude | Contact/company data, waterfall lookups |
-| CRM | HubSpot | System of record, automation, sequences, pipeline |
-| Outreach | HubSpot Sequences / Apollo | Email sequences, follow-up |
+| CRM / Workspace | Clarify first; HubSpot compatibility | Rep-facing system of record, tasks, lists, deals, field mapping, writeback |
+| Outreach | Clarify Campaigns / HubSpot Sequences / Apollo | Sequence-ready copy, controlled testing, engagement feedback |
 | Data Providers | Apollo | Contact finding, email verification |

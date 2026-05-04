@@ -23,13 +23,15 @@ The Signal Audit is DeployGTM's entry engagement. $3,500, 2-week delivery. It's 
 2. **Score accounts** — separate ICP fit, urgency, engagement, confidence, and activation priority
 3. **Build buyer profiles and pain hypotheses** — for each account, what's their likely problem and why would they buy?
 4. **Generate outreach copy and sequence-ready drafts** — reps approve/send; managed sending is not part of v1
-5. **Build CRM push plan** — DeployGTM-found leads/tasks/deals only, dry-run by default
-6. **Compile deliverable** — signal report, enriched account list, profiles, copy, system architecture
+5. **Build SDR automation coverage map** — which workstreams can be automated now, which are risky, and what stays human
+6. **Build CRM push plan** — DeployGTM-found leads/tasks/deals only, dry-run by default
+7. **Compile deliverable** — signal report, enriched account list, profiles, copy, system architecture
 
 ### Deliverable package
-- Enriched target account list (CSV + HubSpot import ready)
+- Enriched target account list (CSV + CRM/workspace import ready)
 - Signal report showing which accounts have active buying signals and why
 - ICP, urgency, engagement, confidence, and activation scores with rationale
+- SDR automation coverage map across research/targeting, enrichment/data, personalization/copy, sending/deliverability, inbound/routing, and pipeline/coaching
 - Buyer profiles and rep-ready copy
 - 3-5 outreach message templates by persona
 - System architecture recommendation

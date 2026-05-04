@@ -36,7 +36,9 @@
 
 **The positioning:** We build systems, not guarantees. Anyone promising guaranteed reply rates or meeting counts is either lying or is about to learn an expensive lesson about their ICP definition.
 
-**Reframe:** "I can't guarantee reply rates — no one should. What I can guarantee is that you'll walk away with a working system: a prioritized account list with active buying signals, enriched contacts, outreach sequences live, and HubSpot configured to track all of it. What you do with that system determines the ROI."
+**Reframe:** "I can't guarantee reply rates — no one should. What I can guarantee is that you'll walk away with a working system: a prioritized account list with active buying signals, enriched contacts, outreach drafts, CRM/workspace tasks, and a clear measurement loop. What you do with that system determines the ROI."
+
+**Guarantee experiment:** Matthew is considering stronger guarantee language around a 90-day profitable pipeline target. Do not use this by default until the offer has written guardrails: agreed sales-qualified meeting definition, client approval SLAs, tool/data/domain prerequisites, deliverability scope, client-caused delay rules, free-work cap, and explicit separation from revenue or reply-rate guarantees.
 
 ---
 

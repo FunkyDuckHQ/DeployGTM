@@ -4,7 +4,7 @@
 
 As of 2026-05-04, PR #7 (`Recover DeployGTM Signal Audit system`) has been merged into `main`, and the repo now treats Clarify as the preferred CRM/workspace candidate while keeping HubSpot as a compatibility adapter.
 
-The repo has been re-centered around Signal Audit as the entry offer and DeployGTM as the end-to-end operated GTM system. Future Claude/Codex sessions should read `master/agent-handoff.md`, `docs/clarify-api-cli-strategy.md`, `RUNBOOK.md`, `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `EXTERNAL_REPOS.md`, `CLAUDE_MASTER_FILES.md`, and `CLEANUP_PLAN.md` before making architectural changes.
+The repo has been re-centered around Signal Audit as the entry offer and DeployGTM as the end-to-end operated GTM system. Future Claude/Codex sessions should read `master/agent-handoff.md`, `docs/clarify-api-cli-strategy.md`, `master/sdr-automation-map.md`, `RUNBOOK.md`, `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `EXTERNAL_REPOS.md`, `CLAUDE_MASTER_FILES.md`, and `CLEANUP_PLAN.md` before making architectural changes.
 
 Important operating constraints:
 - GitHub Cloud `FunkyDuckHQ/DeployGTM` is the source of truth.
@@ -14,6 +14,7 @@ Important operating constraints:
 - Use `make signal-audit-dry-run`, `python3 -m pytest tests -q`, and `make daily` as the first trust loop.
 - n8n is the workflow runtime after scripts are proven; Python remains the business logic layer.
 - Complex APIs and CLIs must go through the DeployGTM lifecycle: validate, describe capabilities, read, plan, dry-run, write with confirmation, sync events, and save receipts.
+- Signal Audit should assess SDR automation coverage across research/targeting, enrichment/data, personalization/copy, sending/deliverability, inbound/routing, and pipeline/coaching.
 
 ## Who We Are
 
@@ -30,6 +31,7 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 - ICP validation and TAM construction
 - Signal mapping: which signals indicate buying intent for their specific product
 - Enrichment of target accounts with pain hypotheses
+- SDR automation coverage map: what should be automated, what should stay human, and which tooling/workflow gaps matter
 - Deliverable: prioritized account list, signal report, outreach templates, architecture recommendation
 - Goal: show them what they're missing and what the system should look like
 
@@ -72,7 +74,7 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 - Consumer/B2C (not our motion)
 - Wants only "more leads" without willingness to build infrastructure
 - Budget under $3,500 for any engagement
-- Expects guaranteed reply rates or meeting counts (we build systems, not guarantees)
+- Expects guaranteed reply rates or meeting counts before ICP, offer, client obligations, and deliverability prerequisites are defined
 
 ### Personas We Sell To
 

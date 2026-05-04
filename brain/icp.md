@@ -12,13 +12,13 @@
 
 **Geography:** US-based. No timezone constraints.
 
-**CRM:** Using HubSpot or willing to adopt it.
+**CRM / workspace:** Using a modern CRM/workspace or willing to adopt one. Clarify is preferred when it fits; HubSpot is supported for compatibility.
 
 ## What they look like
 
 - Founder is still doing sales OR just hired their first 1–2 AEs
 - No repeatable outbound pipeline exists — they're doing it manually or not at all
-- They may have tools (Clay, Apollo, HubSpot) but no system connecting them
+- They may have tools (Clay, Apollo, Clarify, HubSpot) but no system connecting them
 - They're burning founder time on prospecting instead of closing and building
 
 ## Trigger signals (buy now)
@@ -37,5 +37,5 @@
 - B2C or consumer-facing
 - Wants "more leads" without infrastructure commitment
 - Budget under $3,500 for any engagement
-- Expects guaranteed reply rates or meeting counts
+- Expects guaranteed reply rates or meeting counts before ICP, offer, client obligations, and deliverability prerequisites are defined
 - Outside the US (timezone / relationship complexity)

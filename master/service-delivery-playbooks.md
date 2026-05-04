@@ -28,6 +28,25 @@ Sell a business decision artifact:
 
 The platform is how the work gets done. The client buys the answer, the operating layer, and the action queue.
 
+## SDR Automation Coverage Lens
+
+Use the SDR automation map as a diagnostic layer for every Signal Audit and retainer plan.
+
+The six workstreams:
+
+- research and targeting
+- enrichment and data
+- personalization and copy
+- sending and deliverability
+- inbound and routing
+- pipeline and coaching
+
+The Signal Audit should identify which workstreams are manual, which are already handled by tooling, which are broken or duplicated, and which should be automated first.
+
+The retainer should operate the automatable workload while preserving human attention for live discovery, hard objections, multi-stakeholder navigation, executive trust, and recovery from misfires.
+
+See [sdr-automation-map.md](sdr-automation-map.md).
+
 ## Architecture Components Used
 
 ### Context Engine
@@ -110,6 +129,7 @@ The client is buying:
 - ICP scoring profile
 - sample scored account set
 - practical recommendation on what motion to run next
+- SDR automation coverage map across the six workstreams
 
 They are not buying a promise that the platform will magically work.
 
