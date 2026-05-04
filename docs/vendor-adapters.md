@@ -2,7 +2,9 @@
 
 ## Purpose
 
-DeployGTM should be vendor-aware without becoming vendor-dependent. The system can use Clay, BirdDog, Mantis, SuperSend, Octave, HubSpot, Salesforce, Apollo, Drive, Gmail, and future providers, but none of them should define the core workflow.
+DeployGTM should be vendor-aware without becoming vendor-dependent. The system can use Clay, BirdDog, Mantis, SuperSend, Octave, Clarify, HubSpot, Salesforce, Apollo, Drive, Gmail, and future providers, but none of them should define the core workflow.
+
+Clarify is the preferred modern CRM/workspace candidate for DeployGTM because its product direction lines up with flexible CRM data, AI-assisted workflow, Lead Finder, Campaigns, MCP, and API access. HubSpot remains a compatibility adapter for clients already using it, not the default architectural center.
 
 ## Adapter Types
 
@@ -10,10 +12,10 @@ DeployGTM should be vendor-aware without becoming vendor-dependent. The system c
 
 Examples:
 
+- Clarify
 - HubSpot
 - Salesforce
 - Attio
-- Clarify
 
 Responsibilities:
 
@@ -24,6 +26,12 @@ Responsibilities:
 - preserve CRM IDs
 - map custom fields
 - respect writeback approval rules
+
+Preferred order:
+
+1. Clarify for DeployGTM-operated workflows where API/MCP access and field mapping are confirmed.
+2. HubSpot for client compatibility and legacy/current accounts.
+3. Salesforce/Attio/other CRMs through the same adapter contract.
 
 ### Sequencer Adapter
 
@@ -134,6 +142,21 @@ Responsibilities:
 - cite signal and claim basis
 - output reviewable artifacts
 
+## API And CLI Control Plane
+
+Complex APIs and CLIs should be wrapped behind a stable DeployGTM command lifecycle:
+
+- `validate-env`
+- `describe-capabilities`
+- `read`
+- `plan`
+- `dry-run`
+- `write --confirm`
+- `sync-events`
+- `receipt`
+
+Codex and Claude can operate this surface safely because every vendor exposes the same shape: inspect, plan, dry-run, approve, write, and record the result. Raw vendor APIs should not leak into scoring, research, signal, or deliverable modules.
+
 ## Vendor Selection Rules
 
 - Choose vendors for data advantage, not novelty.
@@ -154,3 +177,4 @@ Responsibilities:
 - Strategy source: user-provided DeployGTM Strategy / Product / Architecture Condensed Brief, shared April 30, 2026.
 - Existing adapter source: [master/adapter-contracts.md](../master/adapter-contracts.md).
 - Supporting architecture source: [docs/architecture.md](architecture.md).
+- Clarify/API/CLI control-plane source: [docs/clarify-api-cli-strategy.md](clarify-api-cli-strategy.md).

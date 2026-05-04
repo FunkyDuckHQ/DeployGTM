@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Adapters translate between DeployGTM canonical objects and external systems. The core system should think in canonical objects, not in HubSpot, BirdDog, Clay, Octave, Apollo, Drive, or CSV shapes.
+Adapters translate between DeployGTM canonical objects and external systems. The core system should think in canonical objects, not in Clarify, HubSpot, BirdDog, Clay, Octave, Apollo, Drive, or CSV shapes.
 
 ## General Rules
 
@@ -36,6 +36,37 @@ Required behaviors:
 - preserve CRM IDs
 - map custom properties per CRM
 - write back score, urgency, status, and next action fields
+
+Preferred implementation priority:
+
+- Clarify first for DeployGTM-operated workflows once API/MCP access and field mappings are confirmed.
+- HubSpot remains the compatibility adapter for clients already on HubSpot.
+- Other CRMs should follow the same contract.
+
+### API / CLI Tool Adapter
+
+Purpose: manage complex external APIs and CLIs through a stable DeployGTM lifecycle.
+
+Required methods:
+
+- `validate_env()`
+- `describe_capabilities()`
+- `read(args)`
+- `plan_write(args)`
+- `dry_run_write(plan)`
+- `write_with_confirmation(plan, approval_ref)`
+- `sync_events(args)`
+- `write_receipt(result)`
+
+Required behaviors:
+
+- dry-run is the default
+- live writes require explicit approval
+- credentials and scopes are validated before execution
+- every external ID is preserved
+- every run returns a structured execution receipt
+- raw vendor API shapes stay inside the adapter
+- failures include retryability and human next action
 
 ## Signal Adapter
 
@@ -201,3 +232,4 @@ Exception report fields:
 - Existing build and context specs define command routing, memory, adapters, workflow types, and execution results: [Build Spec](https://docs.google.com/document/d/13tkqFzql8LsqIZQa0uQijYMlJcTcI9tTPeazTDqWEXg) and [Context Engine Spec](https://docs.google.com/document/d/1Yrg-AK8YlDnVxi9Eqk7kqZmXtbnCR4amtmqVNBRElXw).
 - The prior local content adapter artifact defines the messaging adapter shape: [content-adapter-contract.md](../docs/content-adapter-contract.md).
 - Clay's custom signal docs support signal definitions, enrichment, and action routing: [Announcing custom signals](https://www.clay.com/blog/signals) and [Building Custom Signals in Clay](https://university.clay.com/lessons/building-custom-signals-in-clay).
+- Clarify control-plane source: [clarify-api-cli-strategy.md](../docs/clarify-api-cli-strategy.md).

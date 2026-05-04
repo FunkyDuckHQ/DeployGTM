@@ -7,7 +7,7 @@ from .types import CompanyRecord, ContactRecord, CRMContext, SyncResult
 
 
 class CRMAdapter(ABC):
-    """Contract for CRM providers (HubSpot first, extensible later)."""
+    """Contract for CRM providers behind DeployGTM canonical objects."""
 
     provider: str
 

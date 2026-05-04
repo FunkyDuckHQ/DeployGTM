@@ -23,8 +23,8 @@ make signals
 # 5. Run full pipeline on a batch
 make batch
 
-# 6. Push priority accounts to HubSpot (≥8 priority)
-make push-hubspot
+# 6. Generate a CRM push plan first after platform bootstrap (dry-run/no-write by default)
+# make platform-crm-plan CLIENT=acme-space
 ```
 
 One account at a time:
@@ -67,7 +67,7 @@ python scripts/local_api_harness.py crm-read
 python scripts/local_api_harness.py one-second-read
 ```
 
-Write tests are gated by `LOCAL_API_ALLOW_WRITE=1`. CRM provider is selected by `CRM_PROVIDER=hubspot|generic` in `.env.local`. HubSpot aliases (`hubspot-read`, `hubspot-upsert-company`) also work. See `master/local-api-testing-plan.md` for the full runbook.
+Write tests are gated by `LOCAL_API_ALLOW_WRITE=1`. The legacy local harness supports `CRM_PROVIDER=hubspot|generic`; new CRM work should follow `docs/clarify-api-cli-strategy.md` and the adapter contract before live writes. HubSpot aliases (`hubspot-read`, `hubspot-upsert-company`) still work for compatibility. See `master/local-api-testing-plan.md` for the full runbook.
 
 ---
 
@@ -91,9 +91,10 @@ scripts/batch.py run         ← list of accounts from CSV
           ▼
       output/                 JSON files, one per account
           │
-          ├─ export.py        → HubSpot import CSVs
-          ├─ hubspot.py push  → Direct API push (requires confirmation)
-          └─ hubspot.py enroll→ Sequence enrollment by persona
+          ├─ crm_push_plan    → Dry-run CRM plan before any write
+          ├─ clarify_adapter  → Preferred CRM/workspace target once approved
+          ├─ hubspot.py push  → Compatibility API push (requires confirmation)
+          └─ sequence drafts  → Sequence-ready copy, not unmanaged sending
                 │
                 ▼
           follow_up.py        Track cadence: due / generate / log / respond

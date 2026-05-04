@@ -14,6 +14,7 @@ This folder defines the durable operating architecture for DeployGTM: a headless
 - [client-workflow.md](client-workflow.md): practical workflow from intake command through prep, customer docs, account scoring, enrichment, copy, testing, manual routing, and success tracking.
 - [growth-engine-integration.md](growth-engine-integration.md): integration of the Ascend-style Growth Engine pattern: ICP research, data-driven brand/message alignment, acquisition execution, CRM attribution, nurture, SLA, and operations.
 - [vendor-strategy.md](vendor-strategy.md): vendor evaluation strategy for Mantis-style providers, uncommon data access, adapter fit, and cost per useful signal.
+- [../docs/clarify-api-cli-strategy.md](../docs/clarify-api-cli-strategy.md): Clarify-first CRM/workspace posture plus API/CLI control-plane rules.
 
 Related contracts and templates:
 

@@ -1,6 +1,6 @@
 # DeployGTM Agent Handoff
 
-Updated: 2026-04-29
+Updated: 2026-05-04
 
 Purpose: give the next Claude/Codex session the current operating truth without relying on a standalone desktop chat.
 
@@ -58,8 +58,10 @@ Customer + desired outcome
 - Claude/Codex/OpenAI are the reasoning, generation, review, and code-change layer.
 - n8n is only the durable runtime for schedules, webhooks, retries, approvals, and notifications.
 - BirdDog is the signal monitoring layer.
-- HubSpot is the first CRM adapter.
+- Clarify is the preferred CRM/workspace candidate once API/MCP access and field mapping are confirmed.
+- HubSpot is a compatibility adapter for clients already on HubSpot, not the default center of gravity.
 - SuperSend/email engagement is a feedback signal only until managed sending controls exist.
+- Complex APIs/CLIs must be wrapped in the DeployGTM control-plane lifecycle: validate, describe, read, plan, dry-run, write with confirmation, sync events, and save receipts.
 
 ## What To Do Next
 
@@ -82,6 +84,8 @@ Customer + desired outcome
    - `crm_push_plan.json` is dry-run by default.
    - Push only DeployGTM-found accounts, contacts, notes, tasks, and deals.
    - Do not ingest or mutate the entire client CRM yet.
+   - Prefer Clarify for new DeployGTM-operated workflows after API/MCP access is confirmed.
+   - Keep HubSpot adapter support for client compatibility.
 
 5. Defer managed sending:
    - Generate copy and sequence-ready drafts.
@@ -95,6 +99,11 @@ Customer + desired outcome
    - Matthew flagged https://github.com/stars/elviskahoro/lists/cli as a useful research source.
    - The likely value is agent observability, codebase visualization, context hygiene, and workflow/runtime tooling.
    - Do not add these tools directly to the system. Use the watchlist and evaluation rules in `EXTERNAL_REPOS.md`.
+
+8. Follow the Clarify/API/CLI strategy:
+   - Read `docs/clarify-api-cli-strategy.md`.
+   - Treat Clarify as a first-class CRM/workspace target, not a place to hide business logic.
+   - Do not enable live Clarify writes until the adapter can prove schema, dry-run payloads, approval, and receipt logging.
 
 ## Branch Cleanup Guidance
 

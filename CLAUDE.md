@@ -2,9 +2,9 @@
 
 ## Current Recovery State — Read First
 
-As of 2026-04-29, PR #7 (`Recover DeployGTM Signal Audit system`) has been merged into `main`.
+As of 2026-05-04, PR #7 (`Recover DeployGTM Signal Audit system`) has been merged into `main`, and the repo now treats Clarify as the preferred CRM/workspace candidate while keeping HubSpot as a compatibility adapter.
 
-The repo has been re-centered around Signal Audit as the entry offer and DeployGTM as the end-to-end operated GTM system. Future Claude/Codex sessions should read `master/agent-handoff.md`, `RUNBOOK.md`, `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `EXTERNAL_REPOS.md`, `CLAUDE_MASTER_FILES.md`, and `CLEANUP_PLAN.md` before making architectural changes.
+The repo has been re-centered around Signal Audit as the entry offer and DeployGTM as the end-to-end operated GTM system. Future Claude/Codex sessions should read `master/agent-handoff.md`, `docs/clarify-api-cli-strategy.md`, `RUNBOOK.md`, `AUDIT.md`, `BRANCH_DISPOSITION.md`, `DUPLICATE_WORK.md`, `EXTERNAL_REPOS.md`, `CLAUDE_MASTER_FILES.md`, and `CLEANUP_PLAN.md` before making architectural changes.
 
 Important operating constraints:
 - GitHub Cloud `FunkyDuckHQ/DeployGTM` is the source of truth.
@@ -13,6 +13,7 @@ Important operating constraints:
 - Do not delete old branches, force push, write to production CRM, or send email during recovery.
 - Use `make signal-audit-dry-run`, `python3 -m pytest tests -q`, and `make daily` as the first trust loop.
 - n8n is the workflow runtime after scripts are proven; Python remains the business logic layer.
+- Complex APIs and CLIs must go through the DeployGTM lifecycle: validate, describe capabilities, read, plan, dry-run, write with confirmation, sync events, and save receipts.
 
 ## Who We Are
 
@@ -36,7 +37,7 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 - Full build and operation of the outbound pipeline system
 - BirdDog signal monitoring on target accounts
 - Ongoing enrichment and outreach generation
-- HubSpot CRM setup/optimization, workflows, lead scoring
+- CRM/workspace setup, workflows, field mapping, lead scoring, and writeback planning
 - Octave brain configuration for messaging intelligence
 - Weekly signal reports, pipeline analysis, outreach iteration
 - Goal: working revenue system that generates qualified meetings
@@ -56,7 +57,7 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 - Selling to technical or enterprise buyers
 - Founder is still doing sales OR just hired first 1-2 AEs
 - No repeatable pipeline infrastructure exists
-- Using HubSpot or willing to adopt it
+- Using a modern CRM/workspace or willing to adopt one; Clarify is preferred when it fits, HubSpot is supported for compatibility
 - Based in US (no timezone constraint for us — we're remote)
 
 **Trigger signals that indicate readiness to buy:**
@@ -111,8 +112,8 @@ We design, build, and operate the systems that turn signals into pipeline. Signa
 | Signal Detection | BirdDog | Continuous monitoring of target accounts for buying signals |
 | Messaging Intelligence | Octave | ICP/persona context brain for calibrated messaging across channels |
 | Enrichment | Clay + Claude | Contact/company data enrichment, waterfall lookups |
-| CRM | HubSpot | System of record, automation, sequences, pipeline management |
-| Outreach | HubSpot Sequences / Apollo | Email sequences, follow-up automation |
+| CRM / Workspace | Clarify first; HubSpot compatibility | Rep-facing system of record, tasks, lists, deals, field mapping, writeback |
+| Outreach | Clarify Campaigns / HubSpot Sequences / Apollo | Sequence-ready drafts, controlled testing, engagement feedback |
 | Data Providers | Apollo, web search, niche APIs | Contact finding, email verification, firmographic data |
 
 ## Rules for Claude Code

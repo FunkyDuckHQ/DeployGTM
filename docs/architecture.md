@@ -42,13 +42,13 @@ External systems map into this model through adapters. They do not define it.
 
 Vendor adapters translate between DeployGTM objects and external systems:
 
-- HubSpot, Salesforce, Attio, Clarify
+- Clarify, HubSpot, Salesforce, Attio
 - Google Drive, Docs, Sheets, Gmail
 - Apollo, Clay, BirdDog, Mantis, SuperSend, Octave
 - call transcript systems
 - public web and research providers
 
-The adapter contract is more important than any single vendor. Vendors should be swappable underneath the workflow.
+The adapter contract is more important than any single vendor. Vendors should be swappable underneath the workflow. Clarify is the preferred CRM/workspace candidate for DeployGTM-operated work once access is confirmed; HubSpot is compatibility support for clients already living there.
 
 ### 3. Deterministic Function Layer
 
@@ -94,6 +94,8 @@ Interfaces sit around the engine:
 
 The API should be the backbone. MCP can expose capabilities later, but it should not become the operating system.
 
+Every API/CLI integration should support the same execution pattern: validate environment, describe capabilities, read, plan, dry-run, write with confirmation, sync events, and save receipts.
+
 ### 6. Observability And Memory Layer
 
 Every run should leave behind enough context to trust and improve the system:
@@ -138,4 +140,5 @@ Event happens
 
 - Strategy source: user-provided DeployGTM Strategy / Product / Architecture Condensed Brief, shared April 30, 2026.
 - Existing repo sources: [master/build-spec.md](../master/build-spec.md), [master/adapter-contracts.md](../master/adapter-contracts.md), [master/canonical-schema.md](../master/canonical-schema.md), and [master/design-principles.md](../master/design-principles.md).
+- Clarify/API/CLI strategy source: [docs/clarify-api-cli-strategy.md](clarify-api-cli-strategy.md).
 - Prior external concepts referenced in the brief: Josh Whitfield / GTM Engineer School E4 principles, Clay's GTM alpha and custom signal concepts, and Kellen's service-business positioning feedback.

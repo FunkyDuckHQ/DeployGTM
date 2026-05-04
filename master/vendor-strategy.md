@@ -6,6 +6,8 @@ DeployGTM should stay ahead by finding vendors that expose data, context, or exe
 
 Vendors are not the operating system. Vendors are context sources, execution surfaces, or workflow accelerators. DeployGTM owns the canonical schema, scoring logic, routing logic, and client-specific GTM intelligence.
 
+Clarify is currently the preferred CRM/workspace candidate for the DeployGTM operating surface. That preference should shape adapter priority, not core lock-in. HubSpot remains useful as a compatibility adapter for clients that already run on HubSpot.
+
 ## Core Thesis
 
 Data is context, and context is everything.
@@ -41,6 +43,36 @@ Score every vendor against these dimensions before integrating it:
 | Human leverage | Does it save expert time or create insight experts would miss? |
 
 ## Adapter Categories
+
+### CRM / Workspace Adapter
+
+Projects DeployGTM intelligence into the system reps actually use.
+
+Preferred candidate:
+
+- Clarify, if API/MCP access, schema control, campaign/list/task support, and write approvals are available for the workspace
+
+Compatibility candidates:
+
+- HubSpot
+- Salesforce
+- Attio
+
+Canonical outputs:
+
+- `Account`
+- `Contact`
+- `Opportunity`
+- `Task`
+- `CRMWritePlan`
+- `EngagementEvent`
+- `ScoreSnapshot`
+
+Decision rule:
+
+- Build against DeployGTM canonical objects first.
+- Use Clarify as the preferred operator workspace when it can support the flow.
+- Do not place scoring, routing, or research logic inside Clarify-specific code.
 
 ### Research Adapter
 
@@ -218,6 +250,23 @@ If a vendor only duplicates existing data at higher cost, treat it as optional.
 8. Add environment variables only after the vendor passes evaluation.
 9. Create a small adapter or workflow before expanding use.
 
+## API And CLI Management Rule
+
+Every vendor integration should be exposed through a stable internal API/CLI control plane before it becomes production automation.
+
+Minimum lifecycle:
+
+- validate credentials and scopes
+- describe read/write capabilities
+- read normalized objects
+- generate a write plan
+- dry-run payloads
+- write only with explicit approval
+- sync events back into DeployGTM
+- store an execution receipt
+
+This is how Codex, Claude, and future agents should manage complex APIs without becoming the runtime themselves.
+
 ## Source Notes
 
 - User guidance: data is context, context is everything; vendor access and uncommon data should become a differentiator.
@@ -228,3 +277,4 @@ If a vendor only duplicates existing data at higher cost, treat it as optional.
 - People Data Labs offers person and company enrichment/search APIs and data feeds: https://www.peopledatalabs.com/
 - Firecrawl provides an API to search, scrape, and interact with the web for AI applications: https://www.firecrawl.dev/
 - Demandbase and Bombora provide B2B intent/account intelligence data: https://www.demandbase.com/products/account-intelligence/intent/ and https://bombora.com/intent/
+- Clarify API/MCP/product notes are summarized in [../docs/clarify-api-cli-strategy.md](../docs/clarify-api-cli-strategy.md).

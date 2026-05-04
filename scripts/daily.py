@@ -279,7 +279,7 @@ def briefing(output_dir: str, projects_dir: str, days: int):
     click.echo("  make batch                 — run pipeline on signals_intake.csv")
     click.echo("  make batch-resume          — resume interrupted batch")
     click.echo("  make report                — weekly signal report")
-    click.echo("  make push-hubspot          — push priority accounts to HubSpot")
+    click.echo("  make platform-crm-plan CLIENT=client-slug  — build dry-run CRM push plan")
     click.echo("  make birddog-pull          — pull signals from BirdDog")
 
     click.echo(f"\n{'='*65}\n")
