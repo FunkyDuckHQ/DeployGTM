@@ -91,6 +91,11 @@ Customer + desired outcome
    - Use the specs in `n8n/`.
    - n8n should call tested scripts; it should not become the business logic.
 
+7. Evaluate CLI/agent tooling carefully:
+   - Matthew flagged https://github.com/stars/elviskahoro/lists/cli as a useful research source.
+   - The likely value is agent observability, codebase visualization, context hygiene, and workflow/runtime tooling.
+   - Do not add these tools directly to the system. Use the watchlist and evaluation rules in `EXTERNAL_REPOS.md`.
+
 ## Branch Cleanup Guidance
 
 Do not delete branches yet.

@@ -28,6 +28,37 @@ For this recovery phase, prefer documentation links plus selective port. Add sub
 | `discolike-cli` | https://github.com/MitchellkellerLG/discolike-cli | defer | B2B company discovery, lookalikes, market sizing/enrichment | Evaluate after base pipeline works; could support account discovery. |
 | `techsight-cli` | https://github.com/MitchellkellerLG/techsight-cli | defer | Free tech-stack detection via HTTP/DNS/TLS fingerprinting | Evaluate as low-cost signal source after no-write pipeline is green. |
 
+## Additional CLI And Agent Tooling Watchlist
+
+Source: https://github.com/stars/elviskahoro/lists/cli
+
+Use this list as a research backlog only. Do not add tools to DeployGTM just because they are interesting. Any candidate must either improve the trusted Signal Audit loop, make agent work more observable, or reduce operational risk.
+
+Relevant candidates to evaluate later:
+
+| Tool | URL | Possible Role | Decision |
+|---|---|---|---|
+| `agentsview` | https://github.com/wesm/agentsview | Local-first session intelligence for Claude/Codex and other coding agents; could help Matthew understand what happened across machines. | Evaluate after one real no-write Signal Audit. |
+| `agor` | https://github.com/preset-io/agor | Multiplayer canvas for Claude Code, Codex, Gemini, git worktrees, and agent conversation tracking. | Reference only until agent workflow is stable. |
+| `CodeBoarding` | https://github.com/CodeBoarding/CodeBoarding | Interactive architecture diagrams for codebases; useful for understanding AI-built code visually. | Evaluate as documentation aid, not runtime dependency. |
+| `noodles` | https://github.com/unslop-xyz/noodles | Interactive diagrams for understanding AI-generated codebases. | Evaluate as a repo-understanding aid. |
+| `contextai` | https://github.com/madeburo/contextai | Generates `AGENTS.md`, `CLAUDE.md`, `.cursorrules` from one context config. | Reference for future context hygiene; do not replace current handoff files yet. |
+| `openai/codex-plugin-cc` | https://github.com/openai/codex-plugin-cc | Lets Claude Code delegate review/work to Codex. | Reference only; use native Codex/GitHub workflow first. |
+| `googleworkspace/cli` | https://github.com/googleworkspace/cli | CLI access to Drive, Gmail, Calendar, Sheets, Docs, and Chat; may help Google Drive intake later. | Evaluate only when Drive intake becomes the blocker. |
+| `Doppler CLI` | https://github.com/DopplerHQ/cli | Secrets/config management. | Defer; `.env` plus current guardrails are enough for recovery. |
+| `Infisical agent-vault` | https://github.com/Infisical/agent-vault | Credential proxy/vault for AI agents. | Defer until multi-agent automation needs stronger secret isolation. |
+| `inngest` | https://github.com/inngest/inngest | Durable workflow orchestration for step functions and AI workflows. | Compare against n8n only after Python scripts are proven. |
+| `openai-agents-python` | https://github.com/openai/openai-agents-python | Multi-agent framework. | Reference only; do not rebuild DeployGTM around agent frameworks. |
+| `pydantic/logfire` | https://github.com/pydantic/logfire | Observability for LLM/agent systems. | Consider when runtime workflows exist and need monitoring. |
+
+Evaluation rule:
+
+1. Read README and license.
+2. Confirm active maintenance and security posture.
+3. Run only local/no-write smoke checks.
+4. Document the exact problem it solves.
+5. Add to DeployGTM only through a small PR with tests/runbook updates.
+
 ## Proposed Role In DeployGTM Architecture
 
 ### Research Layer
