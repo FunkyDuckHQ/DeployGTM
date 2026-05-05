@@ -1,0 +1,28 @@
+{
+  "client_id": "__CLIENT_ID__",
+  "vendors": {
+    "crm": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "signal": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "enrichment": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "sequencer": {
+      "preferred": null,
+      "status": "not_configured"
+    },
+    "content": {
+      "preferred": "ClaudeMarkdownContentAdapter",
+      "status": "operator_assisted"
+    }
+  },
+  "notes": [
+    "No real vendor integrations are enabled by default."
+  ]
+}

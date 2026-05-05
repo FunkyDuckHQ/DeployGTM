@@ -1,0 +1,24 @@
+{
+  "client_id": "example_b2b_saas",
+  "default_workflow": "score_accounts",
+  "workflows": [
+    {
+      "workflow_id": "score_accounts",
+      "phase": "design",
+      "trigger": "operator_cli",
+      "inputs": [
+        "inputs/accounts.json",
+        "config/scoring.json",
+        "config/signal_definitions.json"
+      ],
+      "outputs": [
+        "outputs/score_snapshots.json"
+      ],
+      "human_review_rules": [
+        "Review accounts with CRM migration signals.",
+        "Review executive contacts before direct outreach."
+      ],
+      "success_condition": "Each account has an ICP score, urgency score, evidence, and recommended route."
+    }
+  ]
+}

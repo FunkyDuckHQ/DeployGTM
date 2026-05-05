@@ -3,7 +3,14 @@ const path = require("path");
 
 const root = process.cwd();
 const dist = path.join(root, "dist");
-const files = ["index.html", "dashboard.css", "dashboard.js", "data/peregrine_score_snapshots.json"];
+const files = [
+  "index.html",
+  "dashboard.css",
+  "dashboard.js",
+  "data/dashboard_manifest.json",
+  "data/score_snapshots.json",
+  "data/route_report.md",
+];
 
 fs.rmSync(dist, { recursive: true, force: true });
 

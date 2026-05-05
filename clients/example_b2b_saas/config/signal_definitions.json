@@ -1,0 +1,33 @@
+{
+  "client_id": "example_b2b_saas",
+  "signal_definitions": [
+    {
+      "signal_definition_id": "sales_hiring_spike",
+      "name": "Sales hiring spike",
+      "signal_category": "growth",
+      "alpha_signal_type": "ability_to_act",
+      "client_specific_insight": "A sudden increase in sales hiring often precedes process and tooling pressure.",
+      "why_it_matters": "Sales leaders adding headcount may need cleaner account prioritization and workflow infrastructure.",
+      "urgency_weight": 18,
+      "fit_weight": 12,
+      "default_decay_days": 45,
+      "decay_half_life_days": 21,
+      "recommended_action": "Enrich sales leadership and RevOps roles, then run a workflow-gap message test.",
+      "bird_dog_setup_notes": "Monitor revenue hiring pages, sales leadership job posts, and RevOps openings."
+    },
+    {
+      "signal_definition_id": "crm_migration",
+      "name": "CRM migration or cleanup",
+      "signal_category": "change",
+      "alpha_signal_type": "timing",
+      "client_specific_insight": "CRM change creates a window to redesign fields, workflows, and attribution.",
+      "why_it_matters": "Teams in migration have both pain and permission to change the operating system.",
+      "urgency_weight": 24,
+      "fit_weight": 15,
+      "default_decay_days": 60,
+      "decay_half_life_days": 30,
+      "recommended_action": "Route to manual review if the account is mid-migration.",
+      "bird_dog_setup_notes": "Watch job posts, implementation partner announcements, and CRM admin hiring."
+    }
+  ]
+}

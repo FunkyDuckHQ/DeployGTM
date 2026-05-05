@@ -48,6 +48,6 @@ Evidence:
 
 ## Source Notes
 
-- Generated from `3_operations/outputs/peregrine_score_snapshots.json`.
+- Generated from `clients/peregrine_space/outputs/score_snapshots.json`.
 - Scoring logic lives in `3_operations/scripts/score_accounts.py`.
-- Sandbox source context references the Peregrine Space working brief in Drive.
+- Source context should live in the active client workspace.

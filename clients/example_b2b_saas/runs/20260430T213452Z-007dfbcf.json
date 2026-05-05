@@ -1,0 +1,19 @@
+{
+  "execution_id": "20260430T213452Z-007dfbcf",
+  "timestamp": "2026-04-30T21:34:52+00:00",
+  "client_id": "example_b2b_saas",
+  "workflow": "score_accounts",
+  "inputs_used": [
+    "clients\\example_b2b_saas\\inputs\\accounts.json"
+  ],
+  "config_used": [
+    "clients\\example_b2b_saas\\config\\scoring.json",
+    "clients\\example_b2b_saas\\config\\signal_definitions.json",
+    "clients\\example_b2b_saas\\config\\workflows.json"
+  ],
+  "outputs_written": [
+    "clients\\example_b2b_saas\\outputs\\score_snapshots.json",
+    "clients\\example_b2b_saas\\outputs\\route_report.md"
+  ],
+  "errors": []
+}

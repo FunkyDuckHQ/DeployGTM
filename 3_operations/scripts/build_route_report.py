@@ -56,7 +56,7 @@ def next_action(route: str) -> str:
     return "Exclude from current motion."
 
 
-def build_report(score_data: dict[str, Any]) -> str:
+def build_report(score_data: dict[str, Any], source_path: Path | None = None) -> str:
     lines = [
         f"# Route Report: {score_data.get('client_id', 'unknown')}",
         "",
@@ -99,9 +99,9 @@ def build_report(score_data: dict[str, Any]) -> str:
         [
             "## Source Notes",
             "",
-            "- Generated from `3_operations/outputs/peregrine_score_snapshots.json`.",
+            f"- Generated from `{source_path.as_posix() if source_path else 'score_snapshots.json'}`.",
             "- Scoring logic lives in `3_operations/scripts/score_accounts.py`.",
-            "- Sandbox source context references the Peregrine Space working brief in Drive.",
+            "- Source context should live in the active client workspace.",
             "",
         ]
     )
@@ -110,13 +110,18 @@ def build_report(score_data: dict[str, Any]) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build a route report from score snapshots.")
-    parser.add_argument("--input", type=Path, default=Path("3_operations/outputs/peregrine_score_snapshots.json"))
-    parser.add_argument("--output", type=Path, default=Path("3_operations/outputs/peregrine_route_report.md"))
+    parser.add_argument("--client", default="peregrine_space")
+    parser.add_argument("--clients-root", type=Path, default=Path("clients"))
+    parser.add_argument("--input", type=Path)
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
-    report = build_report(load_json(args.input))
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(report, encoding="utf-8")
+    client_root = args.clients_root / args.client
+    input_path = args.input or client_root / "outputs" / "score_snapshots.json"
+    output_path = args.output or client_root / "outputs" / "route_report.md"
+    report = build_report(load_json(input_path), input_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(report, encoding="utf-8")
     print(report)
 
 

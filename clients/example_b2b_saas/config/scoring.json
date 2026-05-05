@@ -1,0 +1,49 @@
+{
+  "client_id": "example_b2b_saas",
+  "icp_components": {
+    "firmographic_fit": 15,
+    "segment_fit": 25,
+    "pain_hypothesis": 20,
+    "ability_to_buy": 10,
+    "strategic_value": 10,
+    "evidence_confidence": 20
+  },
+  "negative_adjustment_field": "negative_adjustment",
+  "urgency_multiplier": 5,
+  "default_signal_weight": 8,
+  "default_signal_confidence": 0.5,
+  "default_decay_half_life_days": 21,
+  "route_thresholds": [
+    {
+      "route": "manual_sales_review_and_enrich",
+      "conditions": {
+        "min_icp": 82,
+        "min_urgency": 65
+      }
+    },
+    {
+      "route": "enrich_and_campaign_test",
+      "conditions": {
+        "min_icp": 75,
+        "min_urgency": 35
+      }
+    },
+    {
+      "route": "monitor_or_test_cohort",
+      "conditions": {
+        "min_icp": 65,
+        "min_urgency": 25
+      }
+    },
+    {
+      "route": "hold_or_monitor",
+      "conditions": {
+        "min_icp": 50
+      }
+    },
+    {
+      "route": "exclude",
+      "conditions": {}
+    }
+  ]
+}

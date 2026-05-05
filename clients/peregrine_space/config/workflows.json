@@ -1,0 +1,24 @@
+{
+  "client_id": "peregrine_space",
+  "default_workflow": "score_accounts",
+  "workflows": [
+    {
+      "workflow_id": "score_accounts",
+      "phase": "design",
+      "trigger": "operator_cli",
+      "inputs": [
+        "inputs/accounts.json",
+        "config/scoring.json",
+        "config/signal_definitions.json"
+      ],
+      "outputs": [
+        "outputs/score_snapshots.json"
+      ],
+      "human_review_rules": [
+        "Review accounts routed to manual_sales_review_and_enrich.",
+        "Review high-urgency accounts before automated outreach."
+      ],
+      "success_condition": "Each account has an ICP score, urgency score, evidence, and recommended route."
+    }
+  ]
+}

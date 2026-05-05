@@ -1,0 +1,73 @@
+{
+  "client_id": "example_b2b_saas",
+  "generated_at": "2026-04-30",
+  "source_notes": [
+    "Generic B2B SaaS fixture to prove multi-client scoring."
+  ],
+  "score_snapshots": [
+    {
+      "account_id": "acc_northstar_crm",
+      "company_name": "Northstar CRM Co",
+      "icp_score": 88.0,
+      "urgency_score": 59.96,
+      "component_scores": {
+        "firmographic_fit": 14.0,
+        "segment_fit": 23.0,
+        "pain_hypothesis": 18.0,
+        "ability_to_buy": 9.0,
+        "strategic_value": 8.0,
+        "evidence_confidence": 17.0,
+        "negative_adjustment": -1.0
+      },
+      "recommended_route": "enrich_and_campaign_test",
+      "evidence": [
+        {
+          "signal_id": "sig_northstar_crm_migration",
+          "signal_type": "crm_migration",
+          "summary": "CRM administrator hiring suggests workflow cleanup or migration work is active.",
+          "source_url": "https://example.com/northstar/jobs/crm-admin",
+          "observed_at": "2026-04-24",
+          "original_strength": 82,
+          "current_strength": 71.39,
+          "confidence": 0.7,
+          "urgency_weight": 24.0,
+          "urgency_contribution": 11.99,
+          "ability_to_act_evidence": "Growth-stage company hiring CRM operations capacity.",
+          "willingness_to_act_evidence": "CRM admin hiring implies permission to adjust workflows."
+        }
+      ]
+    },
+    {
+      "account_id": "acc_flatfile_ops",
+      "company_name": "Flatfile Ops",
+      "icp_score": 57.0,
+      "urgency_score": 15.03,
+      "component_scores": {
+        "firmographic_fit": 11.0,
+        "segment_fit": 16.0,
+        "pain_hypothesis": 13.0,
+        "ability_to_buy": 5.0,
+        "strategic_value": 6.0,
+        "evidence_confidence": 10.0,
+        "negative_adjustment": -4.0
+      },
+      "recommended_route": "hold_or_monitor",
+      "evidence": [
+        {
+          "signal_id": "sig_flatfile_hiring",
+          "signal_type": "sales_hiring",
+          "summary": "Hiring first account executive suggests early sales process buildout.",
+          "source_url": "https://example.com/flatfile/jobs/ae",
+          "observed_at": "2026-04-12",
+          "original_strength": 55,
+          "current_strength": 30.36,
+          "confidence": 0.55,
+          "urgency_weight": 18.0,
+          "urgency_contribution": 3.01,
+          "ability_to_act_evidence": "Headcount growth is small but real.",
+          "willingness_to_act_evidence": "First sales hire may create demand for basic GTM process."
+        }
+      ]
+    }
+  ]
+}

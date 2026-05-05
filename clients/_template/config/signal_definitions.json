@@ -1,0 +1,19 @@
+{
+  "client_id": "__CLIENT_ID__",
+  "signal_definitions": [
+    {
+      "signal_definition_id": "active_need",
+      "name": "Active need",
+      "signal_category": "custom",
+      "alpha_signal_type": "timing",
+      "client_specific_insight": "Replace with the client-specific buying moment.",
+      "why_it_matters": "Replace with why this signal changes action.",
+      "urgency_weight": 20,
+      "fit_weight": 10,
+      "default_decay_days": 60,
+      "decay_half_life_days": 30,
+      "recommended_action": "Review, enrich, and decide whether to route to a test or human.",
+      "bird_dog_setup_notes": "Replace with signal monitoring notes if BirdDog or another signal provider is used."
+    }
+  ]
+}

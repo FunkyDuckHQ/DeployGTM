@@ -1,0 +1,5 @@
+{
+  "client_id": "peregrine_space",
+  "score_snapshots_path": "data/score_snapshots.json",
+  "route_report_path": "data/route_report.md"
+}
