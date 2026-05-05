@@ -8,7 +8,9 @@ Primary source sample:
 
 Raw source location:
 - Google Drive: `Messaging > Decks`
-- Exact PDF Drive URLs: pending connector verification.
+- Canonical artifact type: Google Slides decks.
+- Verified final deck: https://docs.google.com/presentation/d/1jzWhtDJufocPQNGurpOaKbulav-4sAIxIH_9R602jt0
+- Older version deck URLs: pending connector verification.
 
 ## Core Voice Rules
 

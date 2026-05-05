@@ -1,12 +1,13 @@
 # Voice Sample Extraction — Flashpoint Deck Version Comparison
 
 Source artifacts:
-- Raw PDFs moved by Matthew to Google Drive: `Messaging > Decks`
-- Original local extraction sources:
+- Canonical Google Slides decks in Drive: `Messaging > Decks`
+- Verified final deck: https://docs.google.com/presentation/d/1jzWhtDJufocPQNGurpOaKbulav-4sAIxIH_9R602jt0
+- Older version deck URLs: pending connector verification.
+- Local PDF exports used for extraction:
   - `/Users/matthew/Downloads/Flashpoint_Early_Read_Schoolfield.pdf`
   - `/Users/matthew/Downloads/Flashpoint_Some_Thoughts_Stegenga (3).pdf`
   - `/Users/matthew/Downloads/Flashpoint_Some_Thoughts_Stegenga.pdf`
-- Exact PDF Drive URLs: pending connector verification.
 
 Purpose:
 - Capture what changed across older and later deck versions.
