@@ -1,0 +1,14 @@
+{
+  "client_id": "flashpoint",
+  "valid": true,
+  "checked_at": "2026-05-05T18:55:40+00:00",
+  "files_checked": [
+    "clients\\flashpoint\\inputs\\accounts.json",
+    "clients\\flashpoint\\config\\scoring.json",
+    "clients\\flashpoint\\config\\signal_definitions.json",
+    "clients\\flashpoint\\config\\vendors.json",
+    "clients\\flashpoint\\config\\workflows.json"
+  ],
+  "errors": [],
+  "warnings": []
+}

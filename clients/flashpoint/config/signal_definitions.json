@@ -1,0 +1,116 @@
+{
+  "client_id": "flashpoint",
+  "signal_definitions": [
+    {
+      "signal_definition_id": "ai_self_serve_pressure",
+      "name": "AI / self-serve research pressure",
+      "signal_category": "market_pressure",
+      "alpha_signal_type": "timing",
+      "client_specific_insight": "Research agencies under AI or self-serve platform pressure may need delivery leverage instead of another tool pitch.",
+      "why_it_matters": "This can indicate willingness to consider Flashpoint as a way to defend margin, speed, or differentiation.",
+      "urgency_weight": 18,
+      "fit_weight": 8,
+      "default_decay_days": 45,
+      "decay_half_life_days": 30,
+      "recommended_action": "Research agency positioning, look for explicit AI/self-serve language, then test a delivery-leverage message.",
+      "research_process_refs": [
+        "find-growth-signals",
+        "find-news",
+        "find-competitors"
+      ],
+      "bird_dog_setup_notes": "Monitor target agencies for AI research, self-serve research, synthetic respondents, automation, and platform-disruption language."
+    },
+    {
+      "signal_definition_id": "survey_ops_or_programming_need",
+      "name": "Survey ops or programming need",
+      "signal_category": "research_operations",
+      "alpha_signal_type": "pain",
+      "client_specific_insight": "Agencies with visible survey programming, tracking, or operational delivery needs may understand Flashpoint faster.",
+      "why_it_matters": "This points to a concrete use case rather than a vague AI/research pitch.",
+      "urgency_weight": 20,
+      "fit_weight": 12,
+      "default_decay_days": 60,
+      "decay_half_life_days": 35,
+      "recommended_action": "Enrich account, map research ops buyer, and route to a use-case-specific discovery angle.",
+      "research_process_refs": [
+        "find-profiles",
+        "find-hiring",
+        "find-job-role-insights"
+      ],
+      "bird_dog_setup_notes": "Watch for survey programming, research operations, tracking studies, respondent quality, and delivery-speed language."
+    },
+    {
+      "signal_definition_id": "bank_cpg_product_innovation_fit",
+      "name": "Bank / CPG / product innovation vertical fit",
+      "signal_category": "vertical_fit",
+      "alpha_signal_type": "fit",
+      "client_specific_insight": "Agencies serving banks, CPG, product, innovation, or emerging markets may map to Flashpoint proof and use cases.",
+      "why_it_matters": "Vertical proof reduces explanation cost and makes the first wedge easier to buy.",
+      "urgency_weight": 12,
+      "fit_weight": 15,
+      "default_decay_days": 90,
+      "decay_half_life_days": 60,
+      "recommended_action": "Attach the strongest matching proof asset before copy generation.",
+      "research_process_refs": [
+        "find-profiles",
+        "find-growth-signals"
+      ],
+      "bird_dog_setup_notes": "Monitor site copy and case studies for banks, financial services, CPG, product innovation, emerging markets, and tracking."
+    },
+    {
+      "signal_definition_id": "tracking_or_monitoring_recurrence",
+      "name": "Tracking / monitoring recurrence",
+      "signal_category": "revenue_architecture",
+      "alpha_signal_type": "repeat_potential",
+      "client_specific_insight": "Agencies that run trackers or recurring monitoring have a clearer path to repeat revenue than one-off research projects.",
+      "why_it_matters": "This helps Flashpoint avoid only selling one-off projects and supports recurring/usage packaging feedback.",
+      "urgency_weight": 14,
+      "fit_weight": 12,
+      "default_decay_days": 90,
+      "decay_half_life_days": 60,
+      "recommended_action": "Prioritize for discovery if the agency also has proof-fit or ops pain.",
+      "research_process_refs": [
+        "find-growth-signals",
+        "find-profiles"
+      ],
+      "bird_dog_setup_notes": "Watch for trackers, tracking studies, brand health, concept monitoring, consumer pulse, and longitudinal research language."
+    },
+    {
+      "signal_definition_id": "rfp_differentiation_pressure",
+      "name": "RFP differentiation pressure",
+      "signal_category": "competitive_pressure",
+      "alpha_signal_type": "willingness",
+      "client_specific_insight": "Agencies competing in RFP-heavy markets may need a sharper delivery story to win work.",
+      "why_it_matters": "This can make Flashpoint a revenue lever for agencies, not a replacement threat.",
+      "urgency_weight": 16,
+      "fit_weight": 10,
+      "default_decay_days": 60,
+      "decay_half_life_days": 35,
+      "recommended_action": "Test message angles around RFP differentiation, speed, confidence, and delivery leverage.",
+      "research_process_refs": [
+        "find-competitors",
+        "find-growth-signals",
+        "find-news"
+      ],
+      "bird_dog_setup_notes": "Monitor for RFP, pitch, procurement, differentiation, competitive bid, and agency positioning language."
+    },
+    {
+      "signal_definition_id": "research_ops_hiring_signal",
+      "name": "Research ops hiring signal",
+      "signal_category": "hiring",
+      "alpha_signal_type": "ability_and_willingness",
+      "client_specific_insight": "Hiring for research operations, survey programming, data collection, insights delivery, or client delivery can reveal active capacity gaps.",
+      "why_it_matters": "Hiring can show both ability to spend and willingness to fix a live operational problem.",
+      "urgency_weight": 18,
+      "fit_weight": 10,
+      "default_decay_days": 45,
+      "decay_half_life_days": 30,
+      "recommended_action": "Run find-hiring first, then find-job-role-insights on the most relevant role before outreach.",
+      "research_process_refs": [
+        "find-hiring",
+        "find-job-role-insights"
+      ],
+      "bird_dog_setup_notes": "Monitor careers pages and ATS boards for research operations, survey programming, insights, data collection, project management, and client delivery roles."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "client_id": "flashpoint",
+  "accounts": [
+    {
+      "account_id": "segment_bank_focused_research_agencies",
+      "company_name": "Segment: bank-focused research agencies",
+      "agency_fit": 18,
+      "research_ops_pain": 13,
+      "vertical_relevance": 15,
+      "repeat_revenue_potential": 12,
+      "proof_asset_fit": 9,
+      "ability_to_buy": 7,
+      "evidence_confidence": 9,
+      "negative_adjustment": 0,
+      "signals": [
+        {
+          "signal_id": "sig_bank_agency_tracking",
+          "signal_definition_id": "bank_cpg_product_innovation_fit",
+          "signal_type": "vertical_fit",
+          "summary": "Hypothesis segment: agencies serving banks or financial services may map to Flashpoint proof.",
+          "source_url": "manual://flashpoint-pilot-context",
+          "observed_at": "2026-05-05",
+          "original_strength": 70,
+          "confidence": 0.55,
+          "ability_to_act_evidence": "Agencies already selling paid research projects into banks may have budget-backed client demand.",
+          "willingness_to_act_evidence": "Needs validation through revenue map and proof asset review."
+        }
+      ]
+    },
+    {
+      "account_id": "segment_survey_programming_agencies",
+      "company_name": "Segment: survey programming agencies",
+      "agency_fit": 19,
+      "research_ops_pain": 14,
+      "vertical_relevance": 10,
+      "repeat_revenue_potential": 13,
+      "proof_asset_fit": 7,
+      "ability_to_buy": 7,
+      "evidence_confidence": 8,
+      "negative_adjustment": 0,
+      "signals": [
+        {
+          "signal_id": "sig_survey_ops_need",
+          "signal_definition_id": "survey_ops_or_programming_need",
+          "signal_type": "research_operations",
+          "summary": "Hypothesis segment: agencies doing survey programming may understand Flashpoint as delivery leverage.",
+          "source_url": "manual://flashpoint-pilot-context",
+          "observed_at": "2026-05-05",
+          "original_strength": 75,
+          "confidence": 0.6,
+          "ability_to_act_evidence": "Survey programming work implies existing project revenue and operational delivery burden.",
+          "willingness_to_act_evidence": "Needs validation through agency account research and discovery."
+        }
+      ]
+    }
+  ],
+  "source_notes": [
+    "Seeded as hypothesis segments, not real target accounts.",
+    "Replace with researched agency accounts before live outreach."
+  ]
+}

@@ -52,3 +52,11 @@ python 3_operations/scripts/run_client_workflow.py --client acme
 ```
 
 The engine should load client configuration from this folder instead of hardcoding client-specific paths in scripts.
+
+## Active Workspaces
+
+| Client | Purpose | Status |
+| --- | --- | --- |
+| `peregrine_space` | Space/hardware demo client used to prove the multi-client scoring spine. | Demo workspace. |
+| `example_b2b_saas` | Generic second-client fixture used to prove the engine is not Peregrine-specific. | Test fixture. |
+| `flashpoint` | Flashpoint GTM pilot prep: revenue map, agency research, signal definitions, scoring, and copy-packet workflow. | Onboarding workspace; no live vendor integrations. |

@@ -4,6 +4,46 @@ Date: 2026-04-28
 
 Purpose: decide how Mitchell Keller's repos should inform DeployGTM without creating more untracked local-only state.
 
+## Update: 2026-05-05 Flashpoint Readiness Pass
+
+Mitchell Keller's public GitHub profile now shows 15 public repos. The useful DeployGTM move is still selective adoption, not wholesale import.
+
+What changed for Flashpoint:
+
+- Added a full deep-dive at `docs/mitchell-keller-github-deep-dive.md`.
+- Added `clients/flashpoint/` as a client workspace.
+- Added `workflows/flashpoint-gtm-pilot.md`.
+- Adopted the `research-process-builder` method into Flashpoint agency research:
+  - define the research goal
+  - state what a good result looks like
+  - use tested search patterns
+  - keep kill patterns
+  - stop when evidence is sufficient
+  - capture a source trace
+- Added Flashpoint-specific signals for:
+  - AI/self-serve research pressure
+  - survey ops or programming need
+  - bank/CPG/product innovation proof fit
+  - tracker or monitoring repeat potential
+  - RFP differentiation pressure
+  - research ops hiring signal
+- Adopted paid-data guardrails from AI Ark and DiscoLike:
+  - count or dry-run first
+  - review URL when available
+  - 10-record validation before full export
+  - client approval before paid data export
+
+What did not change:
+
+- No external repo code was vendored.
+- No submodules were added.
+- No real vendor integrations were enabled.
+- No MCP/n8n/social-signal runtime was made core to DeployGTM.
+
+Operational decision:
+
+Use Mitchell's repos as a free workflow library and vendor watchlist. DeployGTM should keep the core engine file/API/function-first and client-configurable.
+
 ## Principle
 
 External repos must be visible from GitHub Cloud if they are part of the operating plan. Local clones are not enough.

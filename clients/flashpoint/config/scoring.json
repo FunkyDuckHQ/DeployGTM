@@ -1,0 +1,50 @@
+{
+  "client_id": "flashpoint",
+  "icp_components": {
+    "agency_fit": 20,
+    "research_ops_pain": 15,
+    "vertical_relevance": 15,
+    "repeat_revenue_potential": 15,
+    "proof_asset_fit": 10,
+    "ability_to_buy": 10,
+    "evidence_confidence": 15
+  },
+  "negative_adjustment_field": "negative_adjustment",
+  "urgency_multiplier": 4,
+  "default_signal_weight": 10,
+  "default_signal_confidence": 0.5,
+  "default_decay_half_life_days": 30,
+  "route_thresholds": [
+    {
+      "route": "founder_assisted_discovery",
+      "conditions": {
+        "min_icp": 82,
+        "min_urgency": 68
+      }
+    },
+    {
+      "route": "enrich_and_test_sequence",
+      "conditions": {
+        "min_icp": 78,
+        "min_urgency": 38
+      }
+    },
+    {
+      "route": "proof_asset_review_then_enrich",
+      "conditions": {
+        "min_icp": 70,
+        "min_urgency": 45
+      }
+    },
+    {
+      "route": "monitor_for_signal",
+      "conditions": {
+        "min_icp": 60
+      }
+    },
+    {
+      "route": "exclude_or_revisit_later",
+      "conditions": {}
+    }
+  ]
+}

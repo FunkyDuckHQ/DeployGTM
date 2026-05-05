@@ -1,0 +1,20 @@
+{
+  "execution_id": "20260505T185540Z-d501dc64",
+  "timestamp": "2026-05-05T18:55:40+00:00",
+  "client_id": "flashpoint",
+  "workflow": "score_accounts",
+  "inputs_used": [
+    "clients\\flashpoint\\inputs\\accounts.json"
+  ],
+  "config_used": [
+    "clients\\flashpoint\\config\\scoring.json",
+    "clients\\flashpoint\\config\\signal_definitions.json",
+    "clients\\flashpoint\\config\\workflows.json"
+  ],
+  "outputs_written": [
+    "clients\\flashpoint\\runs\\20260505T185540Z-d501dc64.validation.json",
+    "clients\\flashpoint\\outputs\\score_snapshots.json",
+    "clients\\flashpoint\\outputs\\route_report.md"
+  ],
+  "errors": []
+}

@@ -10,13 +10,18 @@ from typing import Any
 
 
 ROUTE_LABELS = {
+    "founder_assisted_discovery": "Founder-assisted discovery",
     "manual_sales_review_and_enrich": "Manual sales review + enrich",
+    "enrich_and_test_sequence": "Enrich + test sequence",
     "enrich_and_campaign_test": "Enrich + campaign test",
     "enrich_selectively_or_monitor": "Selective enrichment or monitor",
+    "proof_asset_review_then_enrich": "Proof asset review + enrich",
     "manual_sales_review": "Manual sales review",
     "monitor_or_test_cohort": "Monitor or test cohort",
+    "monitor_for_signal": "Monitor for signal",
     "human_review_only": "Human review only",
     "hold_or_monitor": "Hold or monitor",
+    "exclude_or_revisit_later": "Exclude or revisit later",
     "exclude": "Exclude",
 }
 
@@ -41,18 +46,28 @@ def format_evidence(evidence: list[dict[str, Any]]) -> str:
 
 
 def next_action(route: str) -> str:
+    if route == "founder_assisted_discovery":
+        return "Review with founder/team, attach proof asset, enrich buyer map, and prepare a discovery-led approach."
     if route == "manual_sales_review_and_enrich":
         return "Assign to founder/seller, enrich contacts, and draft founder-reviewed outreach."
+    if route == "enrich_and_test_sequence":
+        return "Enrich likely buyers and create a controlled sequence test with source-traced copy."
     if route == "enrich_and_campaign_test":
         return "Enrich likely buyers and create a controlled message-market fit test."
     if route == "enrich_selectively_or_monitor":
         return "Monitor for urgency signals and enrich only if a timing event appears."
+    if route == "proof_asset_review_then_enrich":
+        return "Attach the right proof story before enrichment or outbound."
     if route in {"manual_sales_review", "human_review_only"}:
         return "Review manually before any automation."
     if route == "monitor_or_test_cohort":
         return "Keep in a small test cohort or monitor for stronger timing."
+    if route == "monitor_for_signal":
+        return "Keep in research/watch mode until a stronger timing, proof-fit, or ability-to-act signal appears."
     if route == "hold_or_monitor":
         return "Hold until more evidence appears."
+    if route == "exclude_or_revisit_later":
+        return "Exclude from the current test unless new evidence changes fit or urgency."
     return "Exclude from current motion."
 
 

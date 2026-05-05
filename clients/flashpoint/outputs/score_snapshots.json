@@ -1,0 +1,76 @@
+{
+  "client_id": "flashpoint",
+  "generated_at": "2026-05-05",
+  "source_notes": [
+    "Seeded as hypothesis segments, not real target accounts.",
+    "Replace with researched agency accounts before live outreach."
+  ],
+  "score_snapshots": [
+    {
+      "account_id": "segment_bank_focused_research_agencies",
+      "company_name": "Segment: bank-focused research agencies",
+      "icp_score": 83.0,
+      "urgency_score": 18.48,
+      "component_scores": {
+        "agency_fit": 18.0,
+        "research_ops_pain": 13.0,
+        "vertical_relevance": 15.0,
+        "repeat_revenue_potential": 12.0,
+        "proof_asset_fit": 9.0,
+        "ability_to_buy": 7.0,
+        "evidence_confidence": 9.0,
+        "negative_adjustment": 0.0
+      },
+      "recommended_route": "monitor_for_signal",
+      "evidence": [
+        {
+          "signal_id": "sig_bank_agency_tracking",
+          "signal_type": "vertical_fit",
+          "summary": "Hypothesis segment: agencies serving banks or financial services may map to Flashpoint proof.",
+          "source_url": "manual://flashpoint-pilot-context",
+          "observed_at": "2026-05-05",
+          "original_strength": 70,
+          "current_strength": 70.0,
+          "confidence": 0.55,
+          "urgency_weight": 12.0,
+          "urgency_contribution": 4.62,
+          "ability_to_act_evidence": "Agencies already selling paid research projects into banks may have budget-backed client demand.",
+          "willingness_to_act_evidence": "Needs validation through revenue map and proof asset review."
+        }
+      ]
+    },
+    {
+      "account_id": "segment_survey_programming_agencies",
+      "company_name": "Segment: survey programming agencies",
+      "icp_score": 78.0,
+      "urgency_score": 36.0,
+      "component_scores": {
+        "agency_fit": 19.0,
+        "research_ops_pain": 14.0,
+        "vertical_relevance": 10.0,
+        "repeat_revenue_potential": 13.0,
+        "proof_asset_fit": 7.0,
+        "ability_to_buy": 7.0,
+        "evidence_confidence": 8.0,
+        "negative_adjustment": 0.0
+      },
+      "recommended_route": "monitor_for_signal",
+      "evidence": [
+        {
+          "signal_id": "sig_survey_ops_need",
+          "signal_type": "research_operations",
+          "summary": "Hypothesis segment: agencies doing survey programming may understand Flashpoint as delivery leverage.",
+          "source_url": "manual://flashpoint-pilot-context",
+          "observed_at": "2026-05-05",
+          "original_strength": 75,
+          "current_strength": 75.0,
+          "confidence": 0.6,
+          "urgency_weight": 20.0,
+          "urgency_contribution": 9.0,
+          "ability_to_act_evidence": "Survey programming work implies existing project revenue and operational delivery burden.",
+          "willingness_to_act_evidence": "Needs validation through agency account research and discovery."
+        }
+      ]
+    }
+  ]
+}

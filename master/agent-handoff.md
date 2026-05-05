@@ -1,6 +1,6 @@
 # DeployGTM Agent Handoff
 
-Updated: 2026-05-04
+Updated: 2026-05-05
 
 Purpose: give the next Claude/Codex session the current operating truth without relying on a standalone desktop chat.
 
@@ -8,7 +8,7 @@ Purpose: give the next Claude/Codex session the current operating truth without 
 
 PR #7, `Recover DeployGTM Signal Audit system`, has been merged into `main`.
 
-The repo now includes:
+The repo now includes the recovery spine plus the multi-client workflow spine and Flashpoint onboarding prep.
 
 - Recovery audit docs:
   - `AUDIT.md`
@@ -31,6 +31,25 @@ The repo now includes:
 - Clarify/API/CLI and SDR automation strategy:
   - `docs/clarify-api-cli-strategy.md`
   - `master/sdr-automation-map.md`
+- Multi-client workflow spine:
+  - `clients/_template/`
+  - `clients/peregrine_space/`
+  - `clients/example_b2b_saas/`
+  - `3_operations/scripts/bootstrap_client.py`
+  - `3_operations/scripts/validate_client.py`
+  - `3_operations/scripts/score_accounts.py`
+  - `3_operations/scripts/run_client_workflow.py`
+- Copy quality infrastructure:
+  - `workflows/deploygtm-prospect-copy.md`
+  - `templates/copy-packet.schema.json`
+  - `templates/copy-quality-rubric.json`
+  - `3_operations/scripts/validate_copy_packet.py`
+- Flashpoint onboarding prep:
+  - `clients/flashpoint/`
+  - `clients/flashpoint/research/agency-research-processes.md`
+  - `clients/flashpoint/research/revenue-map.md`
+  - `workflows/flashpoint-gtm-pilot.md`
+  - `docs/mitchell-keller-github-deep-dive.md`
 
 ## Product Direction
 
@@ -71,61 +90,68 @@ Customer + desired outcome
 ## What To Do Next
 
 1. Keep the repo green:
-   - `python3 -m pytest tests -q`
+   - `python -m pytest tests -q`
    - `make daily`
    - `make signal-audit-dry-run`
 
-2. Prove one real no-write Signal Audit:
+2. Prepare Flashpoint with the file-based client workspace:
+   - Validate `clients/flashpoint/`.
+   - Complete `clients/flashpoint/research/revenue-map.md` with real revenue/project rows.
+   - Replace seed segment rows in `clients/flashpoint/inputs/accounts.json` with researched agency accounts.
+   - Run Mitchell-style agency research from `clients/flashpoint/research/agency-research-processes.md`.
+   - Score accounts with `3_operations/scripts/score_accounts.py --client flashpoint`.
+   - Use the copy packet workflow only after account evidence and proof asset fit are attached.
+
+3. Prove one real no-write Signal Audit:
    - Run `platform-intake` for a real customer/outcome.
    - Fill or import `projects/<client>/targets.csv`.
    - Run `context-pack`, `platform-strategy`, `platform-signals`, `platform-matrix`, `platform-crm-plan`, and `platform-deliverable`.
    - Confirm the output is useful before adding automation.
 
-3. Verify BirdDog API reality:
+4. Verify BirdDog API reality:
    - Confirm whether BirdDog supports custom signal definitions and recommended accounts via API.
    - Until confirmed, keep `birddog_signal_manifest.json` as manual-review/export artifact.
 
-4. Keep CRM safe:
+5. Keep CRM safe:
    - `crm_push_plan.json` is dry-run by default.
    - Push only DeployGTM-found accounts, contacts, notes, tasks, and deals.
    - Do not ingest or mutate the entire client CRM yet.
    - Prefer Clarify for new DeployGTM-operated workflows after API/MCP access is confirmed.
    - Keep HubSpot adapter support for client compatibility.
 
-5. Defer managed sending:
+6. Defer managed sending:
    - Generate copy and sequence-ready drafts.
    - Do not own sending until domain warming, suppression, unsubscribe, bounce handling, deliverability reporting, and approval controls exist.
 
-6. Only then wire n8n:
+7. Only then wire n8n:
    - Use the specs in `n8n/`.
    - n8n should call tested scripts; it should not become the business logic.
 
-7. Evaluate CLI/agent tooling carefully:
+8. Evaluate CLI/agent tooling carefully:
    - Matthew flagged https://github.com/stars/elviskahoro/lists/cli as a useful research source.
+   - Matthew also flagged https://github.com/MitchellkellerLG for free workflows and vendor ideas.
    - The likely value is agent observability, codebase visualization, context hygiene, and workflow/runtime tooling.
    - Do not add these tools directly to the system. Use the watchlist and evaluation rules in `EXTERNAL_REPOS.md`.
 
-8. Follow the Clarify/API/CLI strategy:
+9. Follow the Clarify/API/CLI strategy:
    - Read `docs/clarify-api-cli-strategy.md`.
    - Treat Clarify as a first-class CRM/workspace target, not a place to hide business logic.
    - Do not enable live Clarify writes until the adapter can prove schema, dry-run payloads, approval, and receipt logging.
 
-9. Follow the SDR automation map:
+10. Follow the SDR automation map:
    - Read `master/sdr-automation-map.md`.
    - Build toward automating the mechanical SDR workload while routing live discovery, hard objections, multi-stakeholder navigation, executive trust, and recovery from misfires to humans.
    - Treat 90-day profitable pipeline guarantee language as an offer hypothesis until qualification, economics, client obligations, deliverability, and scope guardrails are defined.
 
 ## Branch Cleanup Guidance
 
-Do not delete branches yet.
-
-Use `BRANCH_DISPOSITION.md` and `DUPLICATE_WORK.md` for branch decisions. The Claude branch contains useful master files but should not be wholesale-merged. The SuperSend/email feedback concept has been ported into `scripts/email_sync.py`; review PR/branch duplicates before closing anything.
+Branch cleanup has been completed. `main` is the source of truth. Keep `origin/claude/read-master-files-wWR6f` only as a low-cost salvage/reference branch until its master-file value is fully extracted.
 
 ## Guardrails
 
 - No production CRM write without explicit confirmation.
 - No email sends during recovery.
 - No force pushes.
-- No branch deletion until the cleanup pass.
+- No branch deletion unless branch disposition has been checked.
 - No broad refactor unless it directly improves the trusted Signal Audit loop.
 - No local-only deliverables; commit durable state to GitHub Cloud.

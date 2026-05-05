@@ -1,0 +1,87 @@
+{
+  "client_id": "flashpoint",
+  "vendors": {
+    "source_of_truth": {
+      "preferred": "Google Sheet for week 1, then HubSpot or Attio",
+      "status": "decision_needed",
+      "minimum_fields": [
+        "account",
+        "domain",
+        "contact",
+        "title",
+        "segment",
+        "use_case",
+        "source",
+        "stage",
+        "next_step",
+        "owner",
+        "last_touch",
+        "next_touch",
+        "objection",
+        "repeat_potential",
+        "project_type",
+        "estimated_value",
+        "founder_involvement_needed"
+      ]
+    },
+    "crm": {
+      "preferred": "HubSpot or Attio",
+      "status": "not_configured",
+      "decision_rule": "Use the tool Flashpoint will actually keep updated; do not let CRM implementation delay testing."
+    },
+    "research_process": {
+      "preferred": "Mitchell Keller research-process-builder methodology",
+      "status": "reference_adopted",
+      "url": "https://github.com/MitchellkellerLG/research-process-builder"
+    },
+    "company_discovery": {
+      "preferred": "Manual research, Clay, Apollo, then DiscoLike if universe sizing is needed",
+      "status": "evaluate_no_write",
+      "guardrails": [
+        "count before pull",
+        "dry-run before spend",
+        "10-record validation before full export",
+        "client approval required for paid data"
+      ]
+    },
+    "people_enrichment": {
+      "preferred": "Apollo or AI Ark",
+      "status": "evaluate_no_write",
+      "guardrails": [
+        "review URL required when available",
+        "domain include list required for scoped searches",
+        "no export until segment logic is approved"
+      ]
+    },
+    "technographics": {
+      "preferred": "TechSight as free enrichment candidate",
+      "status": "optional",
+      "url": "https://github.com/MitchellkellerLG/techsight-cli"
+    },
+    "signal": {
+      "preferred": "Manual research plus Clay/BirdDog/Trigify after signal proof",
+      "status": "manual_first",
+      "decision_rule": "Only automate signals that change account routing or message strategy."
+    },
+    "sequencer": {
+      "preferred": "SuperSend, Instantly, or Smartlead",
+      "status": "decision_needed",
+      "guardrails": [
+        "no sending until domains, suppression, unsubscribe, bounce handling, and approval gates are defined"
+      ]
+    },
+    "content": {
+      "preferred": "ClaudeMarkdownContentAdapter",
+      "status": "operator_assisted",
+      "guardrails": [
+        "copy packet required",
+        "copy quality score must be 85 or higher",
+        "source trace required"
+      ]
+    }
+  },
+  "notes": [
+    "No real vendor integrations are enabled by default.",
+    "Client should pay or reimburse Flashpoint-specific CRM, data, enrichment, domains, and sequencing costs."
+  ]
+}

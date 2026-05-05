@@ -15,6 +15,10 @@ node_modules/
 __pycache__/
 *.pyc
 venv/
+.pytest_cache/
+.pytest-tmp/
+pytest-cache-files-*/
+tests/tmp_pytest_runtime/
 
 # Sensitive client data
 projects/*/prospects_enriched.csv

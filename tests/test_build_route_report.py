@@ -19,6 +19,15 @@ class BuildRouteReportTest(unittest.TestCase):
         self.assertIn("Next action", report)
         self.assertIn("clients/peregrine_space/outputs/score_snapshots.json", report)
 
+    def test_report_understands_flashpoint_custom_routes(self) -> None:
+        score_path = Path("clients/flashpoint/outputs/score_snapshots.json")
+        score_data = report_module.load_json(score_path)
+        report = report_module.build_report(score_data, score_path)
+
+        self.assertIn("Monitor for signal", report)
+        self.assertIn("research/watch mode", report)
+        self.assertNotIn("Next action: Exclude from current motion.", report)
+
 
 if __name__ == "__main__":
     unittest.main()

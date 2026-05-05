@@ -1,0 +1,82 @@
+{
+  "client_id": "flashpoint",
+  "default_workflow": "score_accounts",
+  "workflows": [
+    {
+      "workflow_id": "revenue_map",
+      "phase": "diagnose",
+      "trigger": "operator_workshop",
+      "inputs": [
+        "current revenue list",
+        "project/customer list",
+        "pricing menu",
+        "margin notes"
+      ],
+      "outputs": [
+        "research/revenue-map.md"
+      ],
+      "human_review_rules": [
+        "Flashpoint must confirm project type, margin, repeat potential, and proof/case-study permission."
+      ],
+      "success_condition": "Current revenue is tagged well enough to decide what to sell first."
+    },
+    {
+      "workflow_id": "validated_agency_research",
+      "phase": "diagnose",
+      "trigger": "operator_cli_or_manual_research",
+      "inputs": [
+        "research/agency-research-processes.md",
+        "target agency domain",
+        "segment hypothesis"
+      ],
+      "outputs": [
+        "account brief",
+        "source trace",
+        "candidate signals"
+      ],
+      "human_review_rules": [
+        "Do not treat a signal as real unless source, date, and why-it-matters are captured.",
+        "Use kill patterns to avoid generic market research noise."
+      ],
+      "success_condition": "Each researched account has a profile, signal stack, and recommended next action."
+    },
+    {
+      "workflow_id": "score_accounts",
+      "phase": "design",
+      "trigger": "operator_cli",
+      "inputs": [
+        "inputs/accounts.json",
+        "config/scoring.json",
+        "config/signal_definitions.json"
+      ],
+      "outputs": [
+        "outputs/score_snapshots.json"
+      ],
+      "human_review_rules": [
+        "Founder-assisted routes require manual review before outreach.",
+        "High-urgency accounts need a proof asset attached before copy generation."
+      ],
+      "success_condition": "Each account has an ICP score, urgency score, evidence, and recommended route."
+    },
+    {
+      "workflow_id": "copy_packet",
+      "phase": "activate",
+      "trigger": "operator_cli",
+      "inputs": [
+        "account brief",
+        "message strategy",
+        "source trace",
+        "templates/copy-packet.schema.json",
+        "templates/copy-quality-rubric.json"
+      ],
+      "outputs": [
+        "copy packet",
+        "QA result"
+      ],
+      "human_review_rules": [
+        "No prospect-facing copy unless score is 85+ and hard fail flags are empty."
+      ],
+      "success_condition": "Copy is entity-correct, source-grounded, and ready for human review."
+    }
+  ]
+}
