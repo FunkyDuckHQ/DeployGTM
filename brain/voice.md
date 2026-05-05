@@ -4,6 +4,7 @@ This file is the reusable voice layer for DeployGTM-generated messaging, opportu
 
 Primary source sample:
 - `projects/deploygtm-own/artifacts/voice-samples/flashpoint-some-thoughts-extraction.md`
+- `projects/deploygtm-own/artifacts/voice-samples/flashpoint-deck-version-comparison.md`
 
 ## Core Voice Rules
 
@@ -36,6 +37,14 @@ Primary source sample:
 - Use compact section titles like "What I'd Solve First", "Where I'd Start", "Revenue Math", "Recurring Revenue", and "Execution".
 - Make each section resolve to a decision or learning question.
 - Keep slides tight: one thesis line, then two to three grouped points.
+
+## Revision Pattern
+
+- Early drafts can be conversational and expansive, but final drafts should compress toward sharper operating choices.
+- Keep the human caveat, but remove extra hedging once the thesis is clear.
+- Preserve concrete proof only when it changes the decision; cut background detail when it slows the read.
+- As drafts mature, turn "thinking out loud" into "my read" plus a testable next move.
+- The final version should sound like a useful operator, not a pitch deck narrator.
 
 ## Avoid
 
