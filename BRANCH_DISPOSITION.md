@@ -3,6 +3,35 @@
 Date: 2026-04-28
 Scope: `FunkyDuckHQ/DeployGTM` only.
 
+## Update: 2026-05-05
+
+`main` now includes the tested multi-client workflow spine and copy infrastructure via:
+
+- `8c4fe9b` - `Merge multi-client workflow spine`
+
+The following remote branches were deleted after spot-checking branch state:
+
+- `Test`
+- `codex/apply-updated-files-and-set-up-api-tests`
+- `codex/check-progress-on-deploygtm-artifacts`
+- `codex/main-integration-phase1`
+- `codex/phase1-multi-client`
+- `recovery/full-audit-cleanup`
+- `recovery/signal-audit-build`
+- `codex/apply-updated-files-and-set-up-api-tests-uzmqm8`
+- `codex/check-progress-on-deploygtm-artifacts-u4uyba`
+- `claude/system-architecture-diagram-XZyil`
+- `claude/consolidation`
+- `claude/test-octave-mcp-vNDu5`
+
+Retain temporarily:
+
+- `claude/read-master-files-wWR6f` - salvage/reference only. Do not merge wholesale. Review by subsystem if account matrix, variant tracking, derived ICP, engagement scoring, or old runtime test cases become useful.
+
+Not found in local or remote branch list during cleanup:
+
+- `claude/add-audit-and-adrs-Jjifb` - if this branch exists only in a prior session context, it has no pushed GitHub state to preserve. Scope any new audit/ADR work from current `main`.
+
 Disposition labels:
 
 - `keep as mainline`: current source of truth.
