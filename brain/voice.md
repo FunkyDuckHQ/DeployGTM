@@ -6,6 +6,10 @@ Primary source sample:
 - `projects/deploygtm-own/artifacts/voice-samples/flashpoint-some-thoughts-extraction.md`
 - `projects/deploygtm-own/artifacts/voice-samples/flashpoint-deck-version-comparison.md`
 
+Raw source location:
+- Google Drive: `Messaging > Decks`
+- Exact PDF Drive URLs: pending connector verification.
+
 ## Core Voice Rules
 
 - Write with honest uncertainty and a clear point of view: "I may be missing pieces, but this is where I'd start."

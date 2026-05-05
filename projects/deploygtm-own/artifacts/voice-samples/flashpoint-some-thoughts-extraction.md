@@ -1,7 +1,9 @@
 # Voice Sample Extraction — Flashpoint Some Thoughts
 
 Source artifact:
-- Local PDF provided by Matthew: `/Users/matthew/Downloads/Flashpoint_Some_Thoughts_Stegenga.pdf`
+- Raw PDF moved by Matthew to Google Drive: `Messaging > Decks`
+- Original local extraction source: `/Users/matthew/Downloads/Flashpoint_Some_Thoughts_Stegenga.pdf`
+- Exact PDF Drive URL: pending connector verification.
 - Artifact type: opportunity slide deck / strategic memo
 - Audience: Christian and Ben at Flashpoint
 - Date on deck: May 2026
