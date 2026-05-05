@@ -20,3 +20,6 @@ def test_context_pack_has_source_trace_for_deploygtm_own():
             assert ev["source_type"] in {"client_context", "transcript_summary", "master_brain", "customer_outcome_intake"}
             assert ev["source_ref"]
             assert ev["evidence_snippet"]
+
+    assert "brain/voice.md" in pack["sources_scanned"]["brain_files"]
+    assert any("Matthew's voice" in p["principle_text"] for p in pack["principles"])

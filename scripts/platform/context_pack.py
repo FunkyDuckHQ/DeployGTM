@@ -121,6 +121,7 @@ def build_context_pack(client_slug: str) -> dict:
     priors_icp = _chunk_md_evidence(BRAIN_DIR / "icp.md", "master_brain")
     priors_personas = _chunk_md_evidence(BRAIN_DIR / "personas.md", "master_brain")
     priors_messaging = _chunk_md_evidence(BRAIN_DIR / "messaging.md", "master_brain")
+    priors_voice = _chunk_md_evidence(BRAIN_DIR / "voice.md", "master_brain")
 
     principles: list[Principle] = []
 
@@ -178,6 +179,15 @@ def build_context_pack(client_slug: str) -> dict:
             )
         )
 
+    if priors_voice:
+        principles.append(
+            Principle(
+                principle_text="Draft deliverables and messaging in Matthew's voice: honest uncertainty, clear operating judgment, simple math, and concrete next steps.",
+                confidence="medium",
+                source_trace=priors_voice[:3],
+            )
+        )
+
     return {
         "client_slug": client_slug,
         "principles": [
@@ -199,6 +209,7 @@ def build_context_pack(client_slug: str) -> dict:
                 str(BRAIN_DIR / "icp.md"),
                 str(BRAIN_DIR / "personas.md"),
                 str(BRAIN_DIR / "messaging.md"),
+                str(BRAIN_DIR / "voice.md"),
             ],
             "transcript_dir": str(client_dir / "transcripts"),
         },

@@ -61,7 +61,7 @@ PERSONA_CONTEXT = {
 
 def load_brain(brain_path: str = "brain") -> str:
     brain_dir = Path(brain_path)
-    files = ["messaging.md", "personas.md", "product.md", "objections.md"]
+    files = ["messaging.md", "voice.md", "personas.md", "product.md", "objections.md"]
     sections = []
     for fname in files:
         fpath = brain_dir / fname

@@ -57,7 +57,7 @@ def save_output_file(path: Path, data: dict) -> None:
 
 def load_brain(brain_path: str = "brain") -> str:
     brain_dir = Path(brain_path)
-    files = ["messaging.md", "personas.md", "icp.md"]
+    files = ["messaging.md", "voice.md", "personas.md", "icp.md"]
     sections = []
     for fname in files:
         fpath = brain_dir / fname

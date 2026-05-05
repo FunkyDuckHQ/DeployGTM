@@ -44,7 +44,7 @@ def load_config() -> dict:
 
 
 def load_brain() -> str:
-    files = ["personas.md", "messaging.md", "product.md", "objections.md"]
+    files = ["personas.md", "messaging.md", "voice.md", "product.md", "objections.md"]
     sections = []
     for fname in files:
         fpath = BRAIN_DIR / fname

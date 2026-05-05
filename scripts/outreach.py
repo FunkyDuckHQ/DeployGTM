@@ -33,7 +33,7 @@ MODEL = "claude-sonnet-4-6"
 
 def load_brain(brain_path: str = "brain") -> str:
     brain_dir = Path(brain_path)
-    files = ["product.md", "icp.md", "personas.md", "messaging.md", "objections.md"]
+    files = ["product.md", "icp.md", "personas.md", "messaging.md", "voice.md", "objections.md"]
     sections = []
     for fname in files:
         fpath = brain_dir / fname
