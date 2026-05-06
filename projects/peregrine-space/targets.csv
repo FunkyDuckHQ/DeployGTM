@@ -1,0 +1,9 @@
+company,domain,employees,industry,hq_country,funding_stage,crm_provider,notes
+Xona Space Systems,xonaspace.com,50,Space Technology,US,Series A,hubspot,PNT constellation operator; strategic funding announced
+Umbra,umbra.space,120,Satellite Imaging,US,Series B,hubspot,SAR constellation operator; expansion milestone announced
+HawkEye 360,hawkeye360.ai,150,RF Intelligence,US,Series C,hubspot,RF intelligence operator; constellation deployment active
+Terran Orbital,terranorbital.com,300,Space Systems,US,Public,hubspot,Satellite bus manufacturer; active backlog and program execution
+York Space Systems,yorkspacesystems.com,200,Defense Space,US,Growth,hubspot,Defense constellation bus integrator; new mission awards
+AFRL Space Vehicles Directorate,afrl.af.mil,500,Government R&D,US,Government,hubspot,Heritage-agnostic research programs; active SBIR/STTR awards
+MIT Lincoln Laboratory,ll.mit.edu,4000,Applied Research,US,Government,hubspot,Advanced mission research; ongoing space mission research
+Johns Hopkins APL,jhuapl.edu,7000,Applied Research,US,Government,hubspot,Applied mission development; active defense-supported payload programs

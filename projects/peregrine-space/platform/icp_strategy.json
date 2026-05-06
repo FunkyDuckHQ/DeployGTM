@@ -1,0 +1,239 @@
+{
+  "schema_version": "v1.0",
+  "client_slug": "peregrine-space",
+  "generated_on": "2026-05-06",
+  "inputs": {
+    "context_pack_path": "projects/peregrine-space/platform/context_pack.json",
+    "principle_count": 6,
+    "intake_path": "projects/peregrine-space/platform/intake.json"
+  },
+  "strategy": {
+    "principles": [
+      {
+        "principle_text": "Start every Signal Audit from the customer's stated outcome, offer, constraints, and CRM scope.",
+        "confidence": "high",
+        "source_trace": [
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do."
+          },
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side."
+          },
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Flight heritage objection blocks deals with large primes and government programs"
+          }
+        ]
+      },
+      {
+        "principle_text": "Anchor ICP strategy to explicit project objective and current state before scoring accounts.",
+        "confidence": "high",
+        "source_trace": [
+          {
+            "source_type": "client_context",
+            "source_ref": "projects/peregrine-space/context.md",
+            "evidence_snippet": "Company: Peregrine Space"
+          },
+          {
+            "source_type": "client_context",
+            "source_ref": "projects/peregrine-space/context.md",
+            "evidence_snippet": "Website: https://peregrine.space"
+          },
+          {
+            "source_type": "client_context",
+            "source_ref": "projects/peregrine-space/handoff.md",
+            "evidence_snippet": "# Peregrine Space - Handoff ## Current state Signal Audit intake captured."
+          }
+        ]
+      },
+      {
+        "principle_text": "Treat unresolved blockers in open loops as first-class constraints in strategy and execution order.",
+        "confidence": "high",
+        "source_trace": [
+          {
+            "source_type": "client_context",
+            "source_ref": "projects/peregrine-space/open-loops.md",
+            "evidence_snippet": "BirdDog API support for signal definitions and recommended accounts"
+          }
+        ]
+      },
+      {
+        "principle_text": "Blend client specifics with DeployGTM's baseline ICP and persona priors for initial targeting assumptions.",
+        "confidence": "medium",
+        "source_trace": [
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/icp.md",
+            "evidence_snippet": "Founder is still doing sales OR just hired their first 1\u20132 AEs"
+          },
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/icp.md",
+            "evidence_snippet": "No repeatable outbound pipeline exists \u2014 they're doing it manually or not at all"
+          },
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/personas.md",
+            "evidence_snippet": "# DeployGTM \u2014 Buyer Personas ## Persona 1: The Founder-Seller **Title:** CEO, CTO, Co-Founder **Situation:** Doing sales themselves alongside running the company **Team size:** Usually 5\u201315 people."
+          }
+        ]
+      },
+      {
+        "principle_text": "Keep strategy signal-first and concrete so downstream messaging remains grounded in observable triggers.",
+        "confidence": "medium",
+        "source_trace": [
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/messaging.md",
+            "evidence_snippet": "Lead with the specific signal. Not \"I was researching your company.\" Tell them what you saw and why it matters."
+          },
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/messaging.md",
+            "evidence_snippet": "Bridge to pain. Don't describe what we do \u2014 describe what they're probably experiencing right now."
+          }
+        ]
+      },
+      {
+        "principle_text": "Draft deliverables and messaging in Matthew's voice: honest uncertainty, clear operating judgment, simple math, and concrete next steps.",
+        "confidence": "medium",
+        "source_trace": [
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/voice.md",
+            "evidence_snippet": "`projects/deploygtm-own/artifacts/voice-samples/flashpoint-some-thoughts-extraction.md`"
+          },
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/voice.md",
+            "evidence_snippet": "`projects/deploygtm-own/artifacts/voice-samples/flashpoint-deck-version-comparison.md`"
+          },
+          {
+            "source_type": "master_brain",
+            "source_ref": "brain/voice.md",
+            "evidence_snippet": "Google Drive: `Messaging > Decks`"
+          }
+        ]
+      }
+    ],
+    "icps": [
+      {
+        "name": "Primary outcome owner",
+        "description": "Companies where a named owner is accountable for Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do..",
+        "fit_criteria": [
+          "Clear business pain tied to the target outcome",
+          "A buyer persona has budget or execution ownership",
+          "The account shows public evidence of timing or change",
+          "The customer's offer can plausibly resolve the pain"
+        ],
+        "personas": [
+          {
+            "title": "Economic owner",
+            "problem_ownership_reason": "Owns whether Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. can create the promised business result."
+          },
+          {
+            "title": "Operational owner",
+            "problem_ownership_reason": "Feels the current workflow pain and can validate urgency."
+          }
+        ],
+        "disqualifiers": [
+          "No named owner for the problem",
+          "Problem is not painful enough to change behavior",
+          "Signal is stale or cannot be verified"
+        ],
+        "source_trace": [
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do."
+          },
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side."
+          },
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Flight heritage objection blocks deals with large primes and government programs"
+          },
+          {
+            "source_type": "client_context",
+            "source_ref": "projects/peregrine-space/context.md",
+            "evidence_snippet": "Company: Peregrine Space"
+          }
+        ]
+      },
+      {
+        "name": "Expansion or adjacent segment",
+        "description": "Accounts adjacent to the primary ICP where signals suggest emerging demand for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
+        "fit_criteria": [
+          "Same pain pattern appears in a nearby segment",
+          "Signal recency is strong enough to justify testing",
+          "Messaging can be adapted without changing the core offer"
+        ],
+        "personas": [
+          {
+            "title": "Functional leader",
+            "problem_ownership_reason": "Owns the team or process affected by the pain."
+          }
+        ],
+        "disqualifiers": [
+          "Requires a materially different product",
+          "Requires a channel the client cannot support"
+        ],
+        "source_trace": [
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do."
+          },
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side."
+          },
+          {
+            "source_type": "customer_outcome_intake",
+            "source_ref": "projects/peregrine-space/platform/intake.json",
+            "evidence_snippet": "Flight heritage objection blocks deals with large primes and government programs"
+          },
+          {
+            "source_type": "client_context",
+            "source_ref": "projects/peregrine-space/context.md",
+            "evidence_snippet": "Company: Peregrine Space"
+          }
+        ]
+      }
+    ],
+    "market_hypotheses": [
+      "Weight active, verifiable signals above static firmographics.",
+      "Prioritize segments with strongest ICP-fit confidence first.",
+      "Exclude accounts blocked by unresolved procurement or integration constraints."
+    ],
+    "scoring_matrix": {
+      "icp_fit_score": "0-100 based on customer-specific fit criteria, disqualifiers, and evidence confidence.",
+      "urgency_score": "0-100 based on current BirdDog/manual signals, source strength, and recency decay.",
+      "engagement_score": "0-100 based on email/CRM engagement once tests begin; defaults to 0 during audit.",
+      "confidence_score": "0-100 based on source quality and completeness of enrichment.",
+      "activation_priority": "Weighted blend used for action ordering; does not hide ICP fit or urgency."
+    },
+    "segment_rules": [
+      "Only include segments with clear problem ownership by a named persona.",
+      "Prefer segments with publicly verifiable timing signals."
+    ],
+    "persona_rules": [
+      "Map each segment to one primary buyer title.",
+      "Require one sentence on why that persona owns the problem."
+    ],
+    "angle_rules": [
+      "Angles must be directional claims, not generic pain statements.",
+      "Each angle must tie back to one observable signal category."
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": "v1.0",
+  "client_name": "Peregrine Space",
+  "client_slug": "peregrine-space",
+  "domain": "peregrine.space",
+  "crm_provider": "hubspot",
+  "voice_notes": "Direct, clear, signal-first."
+}

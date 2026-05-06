@@ -1,0 +1,378 @@
+{
+  "schema_version": "v1.0",
+  "client_slug": "peregrine-space",
+  "generated_on": "2026-05-06",
+  "client": {
+    "client_name": "Peregrine Space",
+    "domain": "peregrine.space",
+    "target_outcome": "Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do.",
+    "crm_provider": "hubspot"
+  },
+  "scoring": {
+    "model": "icp_fit + urgency + engagement + confidence",
+    "activation_priority_formula": "45% ICP fit + 35% urgency + 10% engagement + 10% confidence",
+    "managed_sending": "deferred"
+  },
+  "accounts": [
+    {
+      "company": "Xona Space Systems",
+      "domain": "xonaspace.com",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "Umbra",
+      "domain": "umbra.space",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "HawkEye 360",
+      "domain": "hawkeye360.ai",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "Terran Orbital",
+      "domain": "terranorbital.com",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "York Space Systems",
+      "domain": "yorkspacesystems.com",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "AFRL Space Vehicles Directorate",
+      "domain": "afrl.af.mil",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "MIT Lincoln Laboratory",
+      "domain": "ll.mit.edu",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    },
+    {
+      "company": "Johns Hopkins APL",
+      "domain": "jhuapl.edu",
+      "signals": [
+        {
+          "type": "manual",
+          "date": null,
+          "source": "manual",
+          "summary": "",
+          "birddog_score": null
+        }
+      ],
+      "scores": {
+        "icp_fit_score": 60,
+        "urgency_score": 16,
+        "engagement_score": 0,
+        "confidence_score": 45,
+        "activation_priority": 37,
+        "decay": {
+          "signal_type": "manual",
+          "signal_date": null,
+          "days_ago": null,
+          "decay_multiplier": 0.45,
+          "label": "undated",
+          "rationale": "manual urgency is undated"
+        },
+        "rationale": [
+          "domain present",
+          "customer-specific ICP strategy present",
+          "domain present but signal evidence incomplete"
+        ]
+      },
+      "buyer_profiles": [],
+      "contacts": [],
+      "copy": {
+        "status": "draft_required",
+        "sequence_mode": "draft_only",
+        "first_touch": "",
+        "followups": []
+      },
+      "crm": {
+        "scope": "deploygtm_found_leads_tasks_only",
+        "planned_action": "review_before_push"
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "v1.0",
+  "client_slug": "peregrine-space",
+  "generated_on": "2026-05-06",
+  "dry_run": true,
+  "writes_enabled": false,
+  "requires_explicit_approval": true,
+  "crm_provider": "hubspot",
+  "scope": "deploygtm_found_leads_tasks_only",
+  "min_activation_priority": 60,
+  "planned_records": [],
+  "deferred_records": [
+    {
+      "company": "Xona Space Systems",
+      "domain": "xonaspace.com",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "Umbra",
+      "domain": "umbra.space",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "HawkEye 360",
+      "domain": "hawkeye360.ai",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "Terran Orbital",
+      "domain": "terranorbital.com",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "York Space Systems",
+      "domain": "yorkspacesystems.com",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "AFRL Space Vehicles Directorate",
+      "domain": "afrl.af.mil",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "MIT Lincoln Laboratory",
+      "domain": "ll.mit.edu",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    },
+    {
+      "company": "Johns Hopkins APL",
+      "domain": "jhuapl.edu",
+      "activation_priority": 37,
+      "reason": "below activation threshold"
+    }
+  ],
+  "guardrails": [
+    "Do not ingest or modify the entire client CRM in v1.",
+    "Do not send email from this plan.",
+    "Do not write to production CRM without explicit confirmation.",
+    "Only push DeployGTM-found accounts, contacts, notes, tasks, and deals."
+  ]
+}

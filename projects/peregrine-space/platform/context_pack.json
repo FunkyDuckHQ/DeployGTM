@@ -1,0 +1,131 @@
+{
+  "client_slug": "peregrine-space",
+  "principles": [
+    {
+      "principle_text": "Start every Signal Audit from the customer's stated outcome, offer, constraints, and CRM scope.",
+      "confidence": "high",
+      "source_trace": [
+        {
+          "source_type": "customer_outcome_intake",
+          "source_ref": "projects/peregrine-space/platform/intake.json",
+          "evidence_snippet": "Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do."
+        },
+        {
+          "source_type": "customer_outcome_intake",
+          "source_ref": "projects/peregrine-space/platform/intake.json",
+          "evidence_snippet": "Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side."
+        },
+        {
+          "source_type": "customer_outcome_intake",
+          "source_ref": "projects/peregrine-space/platform/intake.json",
+          "evidence_snippet": "Flight heritage objection blocks deals with large primes and government programs"
+        }
+      ]
+    },
+    {
+      "principle_text": "Anchor ICP strategy to explicit project objective and current state before scoring accounts.",
+      "confidence": "high",
+      "source_trace": [
+        {
+          "source_type": "client_context",
+          "source_ref": "projects/peregrine-space/context.md",
+          "evidence_snippet": "Company: Peregrine Space"
+        },
+        {
+          "source_type": "client_context",
+          "source_ref": "projects/peregrine-space/context.md",
+          "evidence_snippet": "Website: https://peregrine.space"
+        },
+        {
+          "source_type": "client_context",
+          "source_ref": "projects/peregrine-space/handoff.md",
+          "evidence_snippet": "# Peregrine Space - Handoff ## Current state Signal Audit intake captured."
+        }
+      ]
+    },
+    {
+      "principle_text": "Treat unresolved blockers in open loops as first-class constraints in strategy and execution order.",
+      "confidence": "high",
+      "source_trace": [
+        {
+          "source_type": "client_context",
+          "source_ref": "projects/peregrine-space/open-loops.md",
+          "evidence_snippet": "BirdDog API support for signal definitions and recommended accounts"
+        }
+      ]
+    },
+    {
+      "principle_text": "Blend client specifics with DeployGTM's baseline ICP and persona priors for initial targeting assumptions.",
+      "confidence": "medium",
+      "source_trace": [
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/icp.md",
+          "evidence_snippet": "Founder is still doing sales OR just hired their first 1\u20132 AEs"
+        },
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/icp.md",
+          "evidence_snippet": "No repeatable outbound pipeline exists \u2014 they're doing it manually or not at all"
+        },
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/personas.md",
+          "evidence_snippet": "# DeployGTM \u2014 Buyer Personas ## Persona 1: The Founder-Seller **Title:** CEO, CTO, Co-Founder **Situation:** Doing sales themselves alongside running the company **Team size:** Usually 5\u201315 people."
+        }
+      ]
+    },
+    {
+      "principle_text": "Keep strategy signal-first and concrete so downstream messaging remains grounded in observable triggers.",
+      "confidence": "medium",
+      "source_trace": [
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/messaging.md",
+          "evidence_snippet": "Lead with the specific signal. Not \"I was researching your company.\" Tell them what you saw and why it matters."
+        },
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/messaging.md",
+          "evidence_snippet": "Bridge to pain. Don't describe what we do \u2014 describe what they're probably experiencing right now."
+        }
+      ]
+    },
+    {
+      "principle_text": "Draft deliverables and messaging in Matthew's voice: honest uncertainty, clear operating judgment, simple math, and concrete next steps.",
+      "confidence": "medium",
+      "source_trace": [
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/voice.md",
+          "evidence_snippet": "`projects/deploygtm-own/artifacts/voice-samples/flashpoint-some-thoughts-extraction.md`"
+        },
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/voice.md",
+          "evidence_snippet": "`projects/deploygtm-own/artifacts/voice-samples/flashpoint-deck-version-comparison.md`"
+        },
+        {
+          "source_type": "master_brain",
+          "source_ref": "brain/voice.md",
+          "evidence_snippet": "Google Drive: `Messaging > Decks`"
+        }
+      ]
+    }
+  ],
+  "sources_scanned": {
+    "client_files": [
+      "projects/peregrine-space/platform/intake.json",
+      "projects/peregrine-space/context.md",
+      "projects/peregrine-space/handoff.md",
+      "projects/peregrine-space/open-loops.md"
+    ],
+    "brain_files": [
+      "brain/icp.md",
+      "brain/personas.md",
+      "brain/messaging.md",
+      "brain/voice.md"
+    ],
+    "transcript_dir": "projects/peregrine-space/transcripts"
+  }
+}
