@@ -36,26 +36,48 @@ Return this exact JSON shape:
     {
       "name": "<short segment label, 2-5 words>",
       "description": "<1-2 sentences: what these companies are and why they buy>",
-      "fit_criteria": ["<verifiable criterion 1>", ...],
+      "must_have": ["<hard requirement — account must meet this to qualify>", ...],
+      "nice_to_have": ["<soft positive indicator that raises confidence>", ...],
+      "disqualifiers": ["<hard disqualifier — if present, score 0-19 and explain>", ...],
+      "scoring_weights": {
+        "must_have_met_pct": "<what % of must_have criteria being met = 80+ score>",
+        "signal_recency_matters": true,
+        "confidence_floor_without_enrichment": 40
+      },
       "personas": [
         {
-          "title": "<exact job title>",
-          "problem_ownership_reason": "<one sentence: why this person owns the pain>"
+          "title": "<exact job title for this segment>",
+          "problem_ownership_reason": "<one sentence: why this person owns the pain>",
+          "what_moves_them": "<one sentence: what makes them act>"
         }
       ],
-      "disqualifiers": ["<concrete disqualifier>", ...],
-      "why_now_signals": ["<observable trigger that means act now>", ...]
+      "why_now_signals": [
+        {
+          "signal": "<observable trigger>",
+          "source": "<where to find it: LinkedIn / SAM.gov / Crunchbase / job board / etc.>",
+          "urgency": "<high | medium | low>"
+        }
+      ],
+      "angle_template": "<one-sentence outreach angle template for this segment>"
     }
   ],
   "market_hypotheses": [
     "<directional bet about this specific market, 1 sentence>"
   ],
+  "scoring_rubric": {
+    "80_to_100": "<what it looks like when an account is a strong fit>",
+    "60_to_79": "<what it looks like when an account is a good fit with soft misses>",
+    "40_to_59": "<what it looks like when fit is possible but unconfirmed>",
+    "20_to_39": "<what it looks like when fit is weak>",
+    "0_to_19": "<what a hard disqualifier looks like — be specific to this market>"
+  },
   "segment_rules": ["<rule>"],
   "persona_rules": ["<rule>"],
   "angle_rules": ["<rule>"]
 }
 
-Generate 2-3 ICPs. At least 3 fit_criteria, 2 disqualifiers, 2 why_now_signals per ICP.
+Generate 2-3 ICPs. At least 3 must_have criteria, 2 disqualifiers, 2 why_now_signals per ICP.
+The scoring_rubric MUST be specific to this client's market — not generic.
 """
 
 
@@ -144,6 +166,13 @@ def _fallback_icps(intake: dict) -> dict:
         "market_hypotheses": [
             "Active, verifiable signals outperform static firmographics for prioritization.",
         ],
+        "scoring_rubric": {
+            "80_to_100": "Multiple must-have criteria met with verifiable evidence and a recent signal.",
+            "60_to_79": "Most criteria met; one or two soft misses; signal present but not hot.",
+            "40_to_59": "Some alignment but material gaps in criteria or evidence.",
+            "20_to_39": "Significant misalignment with must-have criteria.",
+            "0_to_19": "Hard disqualifier present — do not pursue.",
+        },
         "segment_rules": ["Only include segments with a named persona and verifiable signal."],
         "persona_rules": ["Map each segment to one primary buyer title with clear ownership reason."],
         "angle_rules": ["Every outreach angle must tie back to one observable signal."],
@@ -189,12 +218,13 @@ def generate_icp_strategy(client_slug: str, projects_dir: Path = PROJECTS_DIR) -
             "principles": principles,
             "icps": llm_out.get("icps", fallback["icps"]),
             "market_hypotheses": llm_out.get("market_hypotheses", fallback["market_hypotheses"]),
+            "scoring_rubric": llm_out.get("scoring_rubric", fallback.get("scoring_rubric", {})),
             "scoring_matrix": {
-                "icp_fit_score": "0-100 based on customer-specific fit criteria, disqualifiers, and evidence confidence.",
-                "urgency_score": "0-100 based on current BirdDog/manual signals, source strength, and recency decay.",
-                "engagement_score": "0-100 based on email/CRM engagement once tests begin; defaults to 0 during audit.",
-                "confidence_score": "0-100 based on source quality and completeness of enrichment.",
-                "activation_priority": "Weighted blend used for action ordering; does not hide ICP fit or urgency.",
+                "icp_fit_score": "0-100. Rubric defined in scoring_rubric field above.",
+                "urgency_score": "0-100 based on signal type, recency decay, and BirdDog score.",
+                "engagement_score": "0-100 based on email/CRM engagement; defaults to 0 during audit.",
+                "confidence_score": "0-100 based on enrichment completeness and source quality.",
+                "activation_priority": "45% ICP fit + 35% urgency + 10% engagement + 10% confidence.",
             },
             "segment_rules": llm_out.get("segment_rules", fallback["segment_rules"]),
             "persona_rules": llm_out.get("persona_rules", fallback["persona_rules"]),

@@ -33,10 +33,27 @@ Return this exact JSON shape:
   "icp_fit_score": <integer 0-100>,
   "confidence_score": <integer 0-100>,
   "icp_tier": <integer 1, 2, or 3>,
-  "rationale": "<one specific sentence explaining the dominant scoring factor>",
-  "key_fit_signals": ["<observable reason this account fits or doesn't>"],
-  "disqualifiers_present": ["<any hard disqualifiers, empty list if none>"]
+  "matched_icp": "<name of the ICP segment this account best fits, or 'none'>",
+  "rationale": "<one specific sentence: dominant factor that determined the score>",
+  "key_fit_signals": ["<observable evidence that supports or undermines fit>"],
+  "disqualifiers_present": ["<name any hard disqualifier exactly as defined in ICP>"],
+  "recommended_persona": "<exact job title of the buyer to target at this account>",
+  "recommended_angle": "<one-sentence outreach angle specific to this account and its signal>"
 }
+
+Scoring rubric (use this — do not estimate):
+  80-100: Multiple must-have criteria clearly met, verifiable evidence present, signal is recent
+  60-79:  Most must-have criteria met, one or two soft misses, signal present but not hot
+  40-59:  Some alignment, material gaps in must-have criteria or evidence is thin
+  20-39:  Significant misalignment with must-have criteria
+  0-19:   Hard disqualifier present — name it explicitly in disqualifiers_present
+
+Confidence rubric:
+  80-100: BirdDog signal, enriched contact data, verified domain
+  60-79:  Signal summary and date present, domain verified
+  40-59:  Domain present but signal evidence incomplete
+  20-39:  Sparse data, no verified signal
+  0-19:   Record is essentially empty
 """
 
 
@@ -59,24 +76,48 @@ def _read_targets(path: Path) -> list[dict]:
 
 
 def _icp_criteria_text(icp_strategy: dict) -> str:
-    icps = icp_strategy.get("strategy", {}).get("icps", [])
+    strategy = icp_strategy.get("strategy", {})
+    icps = strategy.get("icps", [])
+    rubric = strategy.get("scoring_rubric", {})
+
     if not icps:
-        return "No ICP definitions loaded — use general B2B SaaS criteria."
+        return "No ICP definitions loaded — score conservatively, max 50."
+
     lines = []
     for icp in icps:
         name = icp.get("name", "ICP")
         desc = icp.get("description", "")
-        fit = "; ".join(icp.get("fit_criteria", []))
-        disq = "; ".join(icp.get("disqualifiers", []))
-        personas = ", ".join(p.get("title", "") for p in icp.get("personas", []))
-        lines.append(
-            f"Segment: {name}\n"
-            f"  Description: {desc}\n"
-            f"  Fit criteria: {fit}\n"
-            f"  Personas: {personas}\n"
-            f"  Disqualifiers: {disq}"
+        must_have = icp.get("must_have") or icp.get("fit_criteria", [])
+        nice_to_have = icp.get("nice_to_have", [])
+        disq = icp.get("disqualifiers", [])
+        personas = "; ".join(
+            f"{p.get('title', '')} — {p.get('problem_ownership_reason', '')}"
+            for p in icp.get("personas", [])
         )
-    return "\n\n".join(lines)
+        signals = "; ".join(
+            s.get("signal", s) if isinstance(s, dict) else s
+            for s in icp.get("why_now_signals", [])
+        )
+        angle = icp.get("angle_template", "")
+        lines.append(
+            f"SEGMENT: {name}\n"
+            f"  Description: {desc}\n"
+            f"  Must-have criteria: {'; '.join(must_have)}\n"
+            f"  Nice-to-have: {'; '.join(nice_to_have)}\n"
+            f"  Hard disqualifiers: {'; '.join(disq)}\n"
+            f"  Buyer personas: {personas}\n"
+            f"  Why-now signals: {signals}\n"
+            f"  Angle template: {angle}"
+        )
+
+    rubric_text = ""
+    if rubric:
+        rubric_text = (
+            "\n\nSCORING RUBRIC FOR THIS MARKET:\n"
+            + "\n".join(f"  {k.replace('_', '-')}: {v}" for k, v in rubric.items())
+        )
+
+    return "\n\n".join(lines) + rubric_text
 
 
 def _score_account_with_llm(
@@ -128,11 +169,14 @@ Score this account against the ICP definitions above.
             "icp_fit_score": fallback_score,
             "confidence_score": 45,
             "icp_tier": 2,
+            "matched_icp": "none",
             "rationale": "Heuristic score — LLM unavailable.",
             "key_fit_signals": [],
             "disqualifiers_present": [],
+            "recommended_persona": "",
+            "recommended_angle": "",
         },
-        max_tokens=512,
+        max_tokens=600,
         temperature=0.1,  # Low temp for consistent scoring
     )
 
@@ -142,7 +186,13 @@ Score this account against the ICP definitions above.
     rationale.extend(result.get("key_fit_signals", []))
     disqualifiers = result.get("disqualifiers_present", [])
 
-    return fit, conf, rationale, disqualifiers
+    extras = {
+        "matched_icp": result.get("matched_icp", ""),
+        "recommended_persona": result.get("recommended_persona", ""),
+        "recommended_angle": result.get("recommended_angle", ""),
+    }
+
+    return fit, conf, rationale, disqualifiers, extras
 
 
 def _heuristic_fit(row: dict, icp_strategy: dict) -> int:
@@ -192,7 +242,7 @@ def _account_record(row: dict, icp_strategy: dict, intake: dict) -> dict:
     )
 
     # LLM scoring replaces the old keyword heuristic for ICP fit and confidence
-    fit, confidence, rationale, disqualifiers = _score_account_with_llm(
+    fit, confidence, rationale, disqualifiers, extras = _score_account_with_llm(
         row, icp_strategy, intake
     )
 
@@ -207,6 +257,7 @@ def _account_record(row: dict, icp_strategy: dict, intake: dict) -> dict:
     record = {
         "company": row.get("company") or row.get("domain") or "Unknown",
         "domain": row.get("domain", ""),
+        "matched_icp": extras.get("matched_icp", ""),
         "signals": [
             {
                 "type": signal_type,
@@ -227,6 +278,10 @@ def _account_record(row: dict, icp_strategy: dict, intake: dict) -> dict:
         },
         "buyer_profiles": [],
         "contacts": [],
+        # recommended_persona and recommended_angle are seeded here by scoring;
+        # the messaging step overwrites copy.first_touch with full drafted copy.
+        "recommended_persona": extras.get("recommended_persona", ""),
+        "recommended_angle": extras.get("recommended_angle", ""),
         "copy": {
             "status": "draft_required",
             "sequence_mode": "draft_only",

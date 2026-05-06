@@ -38,6 +38,15 @@ def build_signal_audit_deliverable(client_slug: str, projects_dir: Path = PROJEC
         reverse=True,
     )
 
+    briefs = _load_json(platform_dir / "account_briefs.json")
+
+    # Check which steps have run
+    messaging_run = any(
+        a.get("copy", {}).get("status") == "drafted"
+        for a in accounts
+    )
+    briefs_run = bool(briefs.get("briefs"))
+
     lines = [
         f"# {client_name} - Signal Audit Summary",
         "",
@@ -52,6 +61,8 @@ def build_signal_audit_deliverable(client_slug: str, projects_dir: Path = PROJEC
         "- ICP strategy",
         "- 20-signal BirdDog-ready signal strategy",
         "- Account matrix with separate ICP, urgency, engagement, confidence, and activation scores",
+        f"- First-touch messaging: {'drafted for all accounts' if messaging_run else 'not yet generated — run messaging step'}",
+        f"- Account briefs: {'generated' if briefs_run else 'not yet generated — run briefs step'}",
         "- CRM push plan for DeployGTM-found leads and tasks only",
         "",
         "## Top accounts",
@@ -92,6 +103,8 @@ def build_signal_audit_deliverable(client_slug: str, projects_dir: Path = PROJEC
         fieldnames = [
             "Company",
             "Domain",
+            "Matched ICP",
+            "Recommended Persona",
             "ICP Fit Score",
             "Urgency Score",
             "Engagement Score",
@@ -100,16 +113,21 @@ def build_signal_audit_deliverable(client_slug: str, projects_dir: Path = PROJEC
             "Signal Type",
             "Signal Date",
             "Signal Summary",
+            "First Touch Subject",
+            "First Touch Copy",
         ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for account in top_accounts:
             score = account.get("scores", {})
             signal = (account.get("signals") or [{}])[0]
+            copy = account.get("copy", {})
             writer.writerow(
                 {
                     "Company": account.get("company", ""),
                     "Domain": account.get("domain", ""),
+                    "Matched ICP": account.get("matched_icp", ""),
+                    "Recommended Persona": account.get("recommended_persona", ""),
                     "ICP Fit Score": score.get("icp_fit_score", ""),
                     "Urgency Score": score.get("urgency_score", ""),
                     "Engagement Score": score.get("engagement_score", ""),
@@ -118,6 +136,8 @@ def build_signal_audit_deliverable(client_slug: str, projects_dir: Path = PROJEC
                     "Signal Type": signal.get("type", ""),
                     "Signal Date": signal.get("date", ""),
                     "Signal Summary": signal.get("summary", ""),
+                    "First Touch Subject": copy.get("subject_line", ""),
+                    "First Touch Copy": copy.get("first_touch", ""),
                 }
             )
 

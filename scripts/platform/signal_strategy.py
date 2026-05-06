@@ -35,18 +35,20 @@ Return this exact JSON shape:
       "id": "<snake_case unique id>",
       "name": "<short display name, 2-5 words>",
       "category": "<one of: capital_event | hiring | leadership | market_motion | technology | pain | timing | education | downstream | operations | government | partnership>",
-      "description": "<one sentence: what is observed>",
-      "why_it_matters": "<one sentence: why this signal means NOW for this specific offer>",
+      "description": "<one sentence: what is observed and where>",
+      "why_it_matters": "<one sentence: what this implies about budget, timing, or urgency for this specific offer>",
+      "mapped_icps": ["<ICP segment name this signal most applies to — use exact names from ICP definitions above>"],
       "urgency_weight": <integer 40-90>,
-      "half_life_days": <integer: how long the signal stays hot>,
-      "stale_after_days": <integer: when it expires>
+      "half_life_days": <integer: days until signal loses 50% of its urgency value>,
+      "stale_after_days": <integer: days until signal should be ignored entirely>
     }
   ]
 }
 
 Generate exactly 20 signals ordered from highest to lowest urgency_weight.
-Mix categories — don't cluster all signals in one category.
-Make every signal specific to this client's market and buyer segments.
+Mix categories — don't cluster more than 4 signals in one category.
+Every signal must be specific to this client's market — observable via a named public source.
+mapped_icps must contain at least one ICP name from the ICP definitions above — no generic labels.
 """
 
 
@@ -171,7 +173,18 @@ def _enrich_signals(signals: list[dict], icp_strategy: dict, intake: dict) -> li
 
     enriched = []
     for i, sig in enumerate(signals):
-        mapped = sig.pop("_mapped_icp", icp_names[i % len(icp_names)])
+        # Use LLM-assigned mapped_icps if present; fall back to first ICP (not round-robin)
+        llm_mapped = sig.get("mapped_icps") or sig.pop("_mapped_icp", None)
+        if isinstance(llm_mapped, list) and llm_mapped:
+            mapped = llm_mapped[0]
+            mapped_all = llm_mapped
+        elif isinstance(llm_mapped, str) and llm_mapped:
+            mapped = llm_mapped
+            mapped_all = [llm_mapped]
+        else:
+            mapped = icp_names[0]
+            mapped_all = [icp_names[0]]
+
         name = sig.get("name", "Signal")
         desc = sig.get("description", "")
         enriched.append({
@@ -182,7 +195,8 @@ def _enrich_signals(signals: list[dict], icp_strategy: dict, intake: dict) -> li
             "description": desc,
             "why_it_matters": sig.get("why_it_matters", f"Indicates readiness toward: {outcome[:80]}."),
             "mapped_icp": mapped,
-            "bird_dog_query_hint": f"{name}: {desc}. Prioritize accounts matching {mapped}.",
+            "mapped_icps": mapped_all,
+            "bird_dog_query_hint": f"{name}: {desc}. Prioritize accounts matching {', '.join(mapped_all)}.",
             "evidence_required": [
                 "company domain",
                 "source URL or source system",
@@ -194,7 +208,7 @@ def _enrich_signals(signals: list[dict], icp_strategy: dict, intake: dict) -> li
                 "half_life_days": sig.get("half_life_days", 30),
                 "stale_after_days": sig.get("stale_after_days", 90),
             },
-            "crm_note_template": f"{name} signal: {{signal_summary}}. Relevance: {mapped}.",
+            "crm_note_template": f"{name} signal: {{signal_summary}}. Relevance: {', '.join(mapped_all)}.",
         })
     return enriched
 

@@ -8,6 +8,8 @@ opinionated default provider chosen for that task's characteristics:
   Signal strategy → Claude   (domain-specific signal creativity)
   Account scoring → GPT-4o   (structured JSON, parallel per-account calls, speed)
                     falls back to Claude if OPENAI_API_KEY is not set
+  Messaging       → Claude   (brand voice, persona matching, copy quality)
+  Brief           → Claude   (persona context, objection selection, call prep)
 
 Override defaults:
   LLM_PROVIDER=openai         switches global default to OpenAI
@@ -40,6 +42,8 @@ TASK_DEFAULTS: dict[str, Provider] = {
     "icp_strategy": Provider.CLAUDE,
     "signal_strategy": Provider.CLAUDE,
     "account_scoring": Provider.OPENAI,
+    "messaging": Provider.CLAUDE,
+    "brief": Provider.CLAUDE,
 }
 
 # Model pinning — update here when rotating models

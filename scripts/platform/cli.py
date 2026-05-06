@@ -7,11 +7,13 @@ import click
 
 from .bootstrap_client import bootstrap_client
 from .account_matrix import build_account_matrix, sample_target_rows
+from .brief import build_briefs
 from .context_pack import build_context_pack
 from .crm_push_plan import build_crm_push_plan
 from .deliverable import build_signal_audit_deliverable
 from .icp_strategy import generate_icp_strategy
 from .intake import create_customer_outcome_intake
+from .messaging import build_messaging
 from .signal_strategy import build_signal_strategy
 
 
@@ -101,6 +103,20 @@ def account_matrix_cmd(client_slug: str) -> None:
     click.echo(f"Saved account matrix: {out}")
 
 
+@cli.command("messaging")
+@click.option("--client", "client_slug", required=True, help="Client/project slug")
+def messaging_cmd(client_slug: str) -> None:
+    out = build_messaging(client_slug)
+    click.echo(f"Messaging written to accounts.json: {out}")
+
+
+@cli.command("briefs")
+@click.option("--client", "client_slug", required=True, help="Client/project slug")
+def briefs_cmd(client_slug: str) -> None:
+    out = build_briefs(client_slug)
+    click.echo(f"Saved account briefs: {out}")
+
+
 @cli.command("crm-plan")
 @click.option("--client", "client_slug", required=True, help="Client/project slug")
 @click.option("--min-activation-priority", default=60, show_default=True)
@@ -135,10 +151,12 @@ def signal_audit_dry_run_cmd(client_name: str, domain: str, target_outcome: str,
     strategy = generate_icp_strategy(client_slug)
     signals = build_signal_strategy(client_slug)
     matrix = build_account_matrix(client_slug, rows=sample_target_rows())
+    messaging = build_messaging(client_slug)
+    briefs = build_briefs(client_slug)
     crm_plan = build_crm_push_plan(client_slug)
     deliverable = build_signal_audit_deliverable(client_slug)
     click.echo("Signal Audit dry-run complete:")
-    for path in (intake, strategy, signals, matrix, crm_plan, deliverable):
+    for path in (intake, strategy, signals, matrix, messaging, briefs, crm_plan, deliverable):
         click.echo(f"  {path}")
 
 

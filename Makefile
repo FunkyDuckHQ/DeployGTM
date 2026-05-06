@@ -113,6 +113,12 @@ platform-signals:  ## Generate 20 BirdDog-ready signal definitions (set CLIENT=p
 platform-matrix:  ## Build account matrix from projects/<client>/targets.csv (set CLIENT=project-slug)
 	$(PYTHON) -m scripts.platform.cli account-matrix --client $(CLIENT)
 
+platform-messaging:  ## Generate first-touch copy for all scored accounts (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli messaging --client $(CLIENT)
+
+platform-briefs:  ## Generate per-account briefs with talking points and objection handling (set CLIENT=project-slug)
+	$(PYTHON) -m scripts.platform.cli briefs --client $(CLIENT)
+
 platform-crm-plan:  ## Build dry-run CRM push plan (set CLIENT=project-slug)
 	$(PYTHON) -m scripts.platform.cli crm-plan --client $(CLIENT)
 
