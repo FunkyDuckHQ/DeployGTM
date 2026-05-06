@@ -6,121 +6,121 @@
     {
       "name": "Recent funding",
       "category": "capital_event",
-      "query_hint": "Recent funding: Funding announcement in the last 90 days. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Recent funding: Funding announcement in the last 90 days. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 90
     },
     {
       "name": "Sales hiring",
       "category": "hiring",
-      "query_hint": "Sales hiring: New SDR, AE, RevOps, or sales leadership job posts. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Sales hiring: New SDR, AE, RevOps, or sales leadership job posts. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 75
     },
     {
       "name": "Revenue leadership change",
       "category": "leadership",
-      "query_hint": "Revenue leadership change: New CRO, VP Sales, VP Marketing, or founder GTM change. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Revenue leadership change: New CRO, VP Sales, VP Marketing, or founder GTM change. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 70
     },
     {
       "name": "Product launch",
       "category": "market_motion",
-      "query_hint": "Product launch: New product, tier, integration, or market expansion. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Product launch: New product, tier, integration, or market expansion. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 65
     },
     {
       "name": "Geographic expansion",
       "category": "market_motion",
-      "query_hint": "Geographic expansion: New market, region, office, or localized GTM motion. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Geographic expansion: New market, region, office, or localized GTM motion. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 55
     },
     {
       "name": "Relevant tool adoption",
       "category": "technology",
-      "query_hint": "Relevant tool adoption: New CRM, data, warehouse, outbound, or workflow tool detected. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Relevant tool adoption: New CRM, data, warehouse, outbound, or workflow tool detected. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 60
     },
     {
       "name": "Tool replacement window",
       "category": "technology",
-      "query_hint": "Tool replacement window: Public signal that an existing system is being replaced. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Tool replacement window: Public signal that an existing system is being replaced. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 65
     },
     {
       "name": "Competitor pressure",
-      "category": "market",
-      "query_hint": "Competitor pressure: Competitors are hiring, launching, or entering their segment. Prioritize accounts matching Expansion or adjacent segment.",
+      "category": "market_motion",
+      "query_hint": "Competitor pressure: Competitors are hiring, launching, or entering their segment. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 60
     },
     {
       "name": "Partner ecosystem activity",
-      "category": "market",
-      "query_hint": "Partner ecosystem activity: New channel, marketplace, or integration partner motion. Prioritize accounts matching Primary outcome owner.",
+      "category": "partnership",
+      "query_hint": "Partner ecosystem activity: New channel, marketplace, or integration partner motion. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 50
     },
     {
       "name": "Compliance pressure",
-      "category": "risk",
-      "query_hint": "Compliance pressure: New security, compliance, procurement, or audit requirement. Prioritize accounts matching Expansion or adjacent segment.",
+      "category": "operations",
+      "query_hint": "Compliance pressure: New security, compliance, procurement, or audit requirement. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 50
     },
     {
       "name": "Negative reviews",
       "category": "pain",
-      "query_hint": "Negative reviews: Recent reviews mention pain the client solves. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Negative reviews: Recent reviews mention pain the client solves. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 70
     },
     {
       "name": "Public pain post",
       "category": "pain",
-      "query_hint": "Public pain post: Founder or buyer posts about a problem the client solves. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Public pain post: Founder or buyer posts about a problem the client solves. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 85
     },
     {
       "name": "Community buying question",
       "category": "pain",
-      "query_hint": "Community buying question: Target persona asks for recommendations or alternatives. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Community buying question: Target persona asks for recommendations or alternatives. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 70
     },
     {
-      "name": "Agency/vendor churn",
+      "name": "Agency or vendor churn",
       "category": "pain",
-      "query_hint": "Agency/vendor churn: Account shows dissatisfaction with current agency, vendor, or workaround. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Agency or vendor churn: Account shows dissatisfaction with current agency or vendor. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 70
     },
     {
       "name": "Manual process workaround",
       "category": "pain",
-      "query_hint": "Manual process workaround: Job posts or content imply spreadsheet/manual operating pain. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Manual process workaround: Job posts or content imply spreadsheet or manual operating pain. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 65
     },
     {
       "name": "Budget or planning window",
       "category": "timing",
-      "query_hint": "Budget or planning window: Annual planning, budget allocation, or board pressure signal. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Budget or planning window: Annual planning, budget allocation, or board pressure signal. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 55
     },
     {
       "name": "Relevant event activity",
       "category": "timing",
-      "query_hint": "Relevant event activity: Account attends, sponsors, or speaks at market-relevant events. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Relevant event activity: Account attends, sponsors, or speaks at market-relevant events. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 45
     },
     {
       "name": "Repeated content theme",
       "category": "education",
-      "query_hint": "Repeated content theme: Company repeatedly publishes around the problem space. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Repeated content theme: Company repeatedly publishes around the problem space. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 45
     },
     {
       "name": "Their customer trigger",
       "category": "downstream",
-      "query_hint": "Their customer trigger: Their own customers are changing in ways that create demand. Prioritize accounts matching Primary outcome owner.",
+      "query_hint": "Their customer trigger: Their own customers are changing in ways that create demand. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 60
     },
     {
       "name": "Data quality gap",
       "category": "operations",
-      "query_hint": "Data quality gap: Signals of incomplete CRM, messy data, or reporting gaps. Prioritize accounts matching Expansion or adjacent segment.",
+      "query_hint": "Data quality gap: Signals of incomplete CRM, messy data, or reporting gaps. Prioritize accounts matching Primary buyer segment.",
       "urgency_weight": 65
     }
   ]

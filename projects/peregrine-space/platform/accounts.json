@@ -2,6 +2,7 @@
   "schema_version": "v1.0",
   "client_slug": "peregrine-space",
   "generated_on": "2026-05-06",
+  "llm_provider": "openai_with_claude_fallback",
   "client": {
     "client_name": "Peregrine Space",
     "domain": "peregrine.space",
@@ -9,7 +10,7 @@
     "crm_provider": "hubspot"
   },
   "scoring": {
-    "model": "icp_fit + urgency + engagement + confidence",
+    "model": "llm_icp_fit + urgency_decay + engagement + llm_confidence",
     "activation_priority_formula": "45% ICP fit + 35% urgency + 10% engagement + 10% confidence",
     "managed_sending": "deferred"
   },
@@ -27,11 +28,11 @@
         }
       ],
       "scores": {
-        "icp_fit_score": 60,
+        "icp_fit_score": 66,
         "urgency_score": 16,
         "engagement_score": 0,
         "confidence_score": 45,
-        "activation_priority": 37,
+        "activation_priority": 40,
         "decay": {
           "signal_type": "manual",
           "signal_date": null,
@@ -41,9 +42,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -86,9 +85,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -131,9 +128,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -176,9 +171,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -221,9 +214,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -266,9 +257,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -311,9 +300,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],
@@ -356,9 +343,7 @@
           "rationale": "manual urgency is undated"
         },
         "rationale": [
-          "domain present",
-          "customer-specific ICP strategy present",
-          "domain present but signal evidence incomplete"
+          "Heuristic score \u2014 LLM unavailable."
         ]
       },
       "buyer_profiles": [],

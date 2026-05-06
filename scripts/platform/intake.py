@@ -151,12 +151,15 @@ def create_customer_outcome_intake(
     if force or not context_path.exists():
         context_path.write_text(_context_markdown(intake))
 
+    # handoff.md and open-loops.md are human-maintained context files.
+    # intake only creates them when they don't exist yet — never overwrites them,
+    # even with --force. Use direct file editing to update these manually.
     for name, body in {
         "handoff.md": f"# {client_name} - Handoff\n\n## Current state\nSignal Audit intake captured.\n",
         "open-loops.md": f"# {client_name} - Open Loops\n\n## Need to verify\n- BirdDog API support for signal definitions and recommended accounts\n",
     }.items():
         path = project_dir / name
-        if force or not path.exists():
+        if not path.exists():
             path.write_text(body)
 
     targets_path = project_dir / "targets.csv"

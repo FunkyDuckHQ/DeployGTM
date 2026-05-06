@@ -2,6 +2,7 @@
   "schema_version": "v1.0",
   "client_slug": "peregrine-space",
   "generated_on": "2026-05-06",
+  "llm_provider": "claude",
   "source": {
     "intake_path": "projects/peregrine-space/platform/intake.json",
     "icp_strategy_path": "projects/peregrine-space/platform/icp_strategy.json"
@@ -13,9 +14,9 @@
       "name": "Recent funding",
       "category": "capital_event",
       "description": "Funding announcement in the last 90 days",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Recent funding: Funding announcement in the last 90 days. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Recent funding: Funding announcement in the last 90 days. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -27,7 +28,7 @@
         "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Recent funding signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Recent funding signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "sales_hiring",
@@ -35,9 +36,9 @@
       "name": "Sales hiring",
       "category": "hiring",
       "description": "New SDR, AE, RevOps, or sales leadership job posts",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Sales hiring: New SDR, AE, RevOps, or sales leadership job posts. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Sales hiring: New SDR, AE, RevOps, or sales leadership job posts. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -49,7 +50,7 @@
         "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Sales hiring signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Sales hiring signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "exec_change",
@@ -57,9 +58,9 @@
       "name": "Revenue leadership change",
       "category": "leadership",
       "description": "New CRO, VP Sales, VP Marketing, or founder GTM change",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Revenue leadership change: New CRO, VP Sales, VP Marketing, or founder GTM change. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Revenue leadership change: New CRO, VP Sales, VP Marketing, or founder GTM change. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -71,7 +72,7 @@
         "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Revenue leadership change signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Revenue leadership change signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "product_launch",
@@ -79,9 +80,9 @@
       "name": "Product launch",
       "category": "market_motion",
       "description": "New product, tier, integration, or market expansion",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Product launch: New product, tier, integration, or market expansion. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Product launch: New product, tier, integration, or market expansion. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -93,7 +94,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Product launch signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Product launch signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "geo_expansion",
@@ -101,9 +102,9 @@
       "name": "Geographic expansion",
       "category": "market_motion",
       "description": "New market, region, office, or localized GTM motion",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Geographic expansion: New market, region, office, or localized GTM motion. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Geographic expansion: New market, region, office, or localized GTM motion. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -115,7 +116,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Geographic expansion signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Geographic expansion signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "tech_adoption",
@@ -123,9 +124,9 @@
       "name": "Relevant tool adoption",
       "category": "technology",
       "description": "New CRM, data, warehouse, outbound, or workflow tool detected",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Relevant tool adoption: New CRM, data, warehouse, outbound, or workflow tool detected. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Relevant tool adoption: New CRM, data, warehouse, outbound, or workflow tool detected. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -137,7 +138,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Relevant tool adoption signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Relevant tool adoption signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "tech_replacement",
@@ -145,9 +146,9 @@
       "name": "Tool replacement window",
       "category": "technology",
       "description": "Public signal that an existing system is being replaced",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Tool replacement window: Public signal that an existing system is being replaced. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Tool replacement window: Public signal that an existing system is being replaced. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -156,20 +157,20 @@
       ],
       "urgency_weight": 65,
       "decay": {
-        "half_life_days": 60,
+        "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Tool replacement window signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Tool replacement window signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "competitor_hiring",
       "display_order": 8,
       "name": "Competitor pressure",
-      "category": "market",
+      "category": "market_motion",
       "description": "Competitors are hiring, launching, or entering their segment",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Competitor pressure: Competitors are hiring, launching, or entering their segment. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Competitor pressure: Competitors are hiring, launching, or entering their segment. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -181,17 +182,17 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Competitor pressure signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Competitor pressure signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "partner_motion",
       "display_order": 9,
       "name": "Partner ecosystem activity",
-      "category": "market",
+      "category": "partnership",
       "description": "New channel, marketplace, or integration partner motion",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Partner ecosystem activity: New channel, marketplace, or integration partner motion. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Partner ecosystem activity: New channel, marketplace, or integration partner motion. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -203,17 +204,17 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Partner ecosystem activity signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Partner ecosystem activity signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "security_compliance",
       "display_order": 10,
       "name": "Compliance pressure",
-      "category": "risk",
+      "category": "operations",
       "description": "New security, compliance, procurement, or audit requirement",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Compliance pressure: New security, compliance, procurement, or audit requirement. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Compliance pressure: New security, compliance, procurement, or audit requirement. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -225,7 +226,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Compliance pressure signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Compliance pressure signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "review_negativity",
@@ -233,9 +234,9 @@
       "name": "Negative reviews",
       "category": "pain",
       "description": "Recent reviews mention pain the client solves",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Negative reviews: Recent reviews mention pain the client solves. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Negative reviews: Recent reviews mention pain the client solves. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -247,7 +248,7 @@
         "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Negative reviews signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Negative reviews signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "social_pain",
@@ -255,9 +256,9 @@
       "name": "Public pain post",
       "category": "pain",
       "description": "Founder or buyer posts about a problem the client solves",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Public pain post: Founder or buyer posts about a problem the client solves. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Public pain post: Founder or buyer posts about a problem the client solves. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -266,10 +267,10 @@
       ],
       "urgency_weight": 85,
       "decay": {
-        "half_life_days": 30,
-        "stale_after_days": 90
+        "half_life_days": 14,
+        "stale_after_days": 60
       },
-      "crm_note_template": "Public pain post signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Public pain post signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "community_question",
@@ -277,9 +278,9 @@
       "name": "Community buying question",
       "category": "pain",
       "description": "Target persona asks for recommendations or alternatives",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Community buying question: Target persona asks for recommendations or alternatives. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Community buying question: Target persona asks for recommendations or alternatives. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -288,20 +289,20 @@
       ],
       "urgency_weight": 70,
       "decay": {
-        "half_life_days": 30,
-        "stale_after_days": 90
+        "half_life_days": 14,
+        "stale_after_days": 60
       },
-      "crm_note_template": "Community buying question signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Community buying question signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "agency_churn",
       "display_order": 14,
-      "name": "Agency/vendor churn",
+      "name": "Agency or vendor churn",
       "category": "pain",
-      "description": "Account shows dissatisfaction with current agency, vendor, or workaround",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Agency/vendor churn: Account shows dissatisfaction with current agency, vendor, or workaround. Prioritize accounts matching Expansion or adjacent segment.",
+      "description": "Account shows dissatisfaction with current agency or vendor",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Agency or vendor churn: Account shows dissatisfaction with current agency or vendor. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -313,17 +314,17 @@
         "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Agency/vendor churn signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Agency or vendor churn signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "manual_workaround",
       "display_order": 15,
       "name": "Manual process workaround",
       "category": "pain",
-      "description": "Job posts or content imply spreadsheet/manual operating pain",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Manual process workaround: Job posts or content imply spreadsheet/manual operating pain. Prioritize accounts matching Primary outcome owner.",
+      "description": "Job posts or content imply spreadsheet or manual operating pain",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Manual process workaround: Job posts or content imply spreadsheet or manual operating pain. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -335,7 +336,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Manual process workaround signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Manual process workaround signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "budget_cycle",
@@ -343,9 +344,9 @@
       "name": "Budget or planning window",
       "category": "timing",
       "description": "Annual planning, budget allocation, or board pressure signal",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Budget or planning window: Annual planning, budget allocation, or board pressure signal. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Budget or planning window: Annual planning, budget allocation, or board pressure signal. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -354,10 +355,10 @@
       ],
       "urgency_weight": 55,
       "decay": {
-        "half_life_days": 60,
+        "half_life_days": 30,
         "stale_after_days": 90
       },
-      "crm_note_template": "Budget or planning window signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Budget or planning window signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "event_attendance",
@@ -365,9 +366,9 @@
       "name": "Relevant event activity",
       "category": "timing",
       "description": "Account attends, sponsors, or speaks at market-relevant events",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Relevant event activity: Account attends, sponsors, or speaks at market-relevant events. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Relevant event activity: Account attends, sponsors, or speaks at market-relevant events. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -379,7 +380,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Relevant event activity signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Relevant event activity signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "content_theme",
@@ -387,9 +388,9 @@
       "name": "Repeated content theme",
       "category": "education",
       "description": "Company repeatedly publishes around the problem space",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Repeated content theme: Company repeatedly publishes around the problem space. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Repeated content theme: Company repeatedly publishes around the problem space. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -401,7 +402,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Repeated content theme signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Repeated content theme signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "customer_trigger",
@@ -409,9 +410,9 @@
       "name": "Their customer trigger",
       "category": "downstream",
       "description": "Their own customers are changing in ways that create demand",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Primary outcome owner",
-      "bird_dog_query_hint": "Their customer trigger: Their own customers are changing in ways that create demand. Prioritize accounts matching Primary outcome owner.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Their customer trigger: Their own customers are changing in ways that create demand. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -423,7 +424,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Their customer trigger signal: {signal_summary}. Relevance: Primary outcome owner."
+      "crm_note_template": "Their customer trigger signal: {signal_summary}. Relevance: Primary buyer segment."
     },
     {
       "id": "data_quality_gap",
@@ -431,9 +432,9 @@
       "name": "Data quality gap",
       "category": "operations",
       "description": "Signals of incomplete CRM, messy data, or reporting gaps",
-      "why_it_matters": "Indicates a possible path to Build a repeatable pipeline of qualified buyers for optical payload programs. Specifically: get in front of buyers who can move without strict flight heritage requirements \u2014 commercial EO operators, defense prime subcontractors, R&D-funded programs \u2014 before competitors do. for buyers of Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side..",
-      "mapped_icp": "Expansion or adjacent segment",
-      "bird_dog_query_hint": "Data quality gap: Signals of incomplete CRM, messy data, or reporting gaps. Prioritize accounts matching Expansion or adjacent segment.",
+      "why_it_matters": "Indicates buying readiness for Optical payload hardware for small satellites. Fast integration cycles, compact SWaP. No flight heritage requirement on the buyer side. toward: Build a repeatable pipeline of qualified buyers for optical payload programs. Sp.",
+      "mapped_icp": "Primary buyer segment",
+      "bird_dog_query_hint": "Data quality gap: Signals of incomplete CRM, messy data, or reporting gaps. Prioritize accounts matching Primary buyer segment.",
       "evidence_required": [
         "company domain",
         "source URL or source system",
@@ -445,7 +446,7 @@
         "half_life_days": 60,
         "stale_after_days": 90
       },
-      "crm_note_template": "Data quality gap signal: {signal_summary}. Relevance: Expansion or adjacent segment."
+      "crm_note_template": "Data quality gap signal: {signal_summary}. Relevance: Primary buyer segment."
     }
   ],
   "bird_dog": {
